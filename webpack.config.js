@@ -38,11 +38,15 @@ module.exports = {
             {
                 test: /\.css$/i,
                 use: [
-                    MiniCssExtractPlugin.loader, 
-                    "css-loader", 
+                    MiniCssExtractPlugin.loader,
+                    "css-loader",
                     "postcss-loader"
                 ]
-            }
+            },
+            {
+                test: /\.svg$/,
+                use: ['@svgr/webpack'],
+            },
         ]
     },
 
@@ -54,7 +58,7 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: "styles.css",
             chunkFilename: "styles.css"
-          }),
+        }),
         new webpack.DefinePlugin({
             "process.env": {
                 "NODE_ENV": JSON.stringify(process.env.NODE_ENV)
