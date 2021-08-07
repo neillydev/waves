@@ -4,9 +4,11 @@ import NavBar from './components/NavBar/NavBar';
 
 import './styles.css';
 
+require('./App.css');
+
 const App = () => {
     return (
-        <div>
+        <div className="appContainer">
             <NavBar />
             <Main />
         </div>
