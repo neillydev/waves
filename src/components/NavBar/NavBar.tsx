@@ -25,8 +25,10 @@ function NavBar() {
                             </form>
                         </div>
                     </div>
-                    <div className="navLoginContainer flex w-auto md:block h-9">
-
+                    <div className="navLoginContainer flex">
+                        <button className="loginBtn rounded-sm border-none">
+                            Log In
+                        </button>
                     </div>
                 </div>
             </div>

@@ -1,3 +1,14 @@
 .navTitle {
     font-family: 'Bebas Neue', cursive;
 }
+
+.loginBtn {
+    min-width: 100px;
+    background-color: #2ba0ff;
+    color: #fff;
+    font-family: 'Bebas Neue', cursive;
+    font-weight: 200;
+    height: 35px;
+    justify-content: center;
+    align-items: center;
+}
