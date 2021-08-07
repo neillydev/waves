@@ -27,7 +27,7 @@ function NavBar() {
                     </div>
                     <div className="navLoginContainer flex">
                         <button className="loginBtn rounded-sm border-none">
-                            Log In
+                            Login
                         </button>
                     </div>
                 </div>
