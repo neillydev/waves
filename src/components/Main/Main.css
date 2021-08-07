@@ -1,0 +1,25 @@
+.mainContainer {
+    background: #fff;
+    display: flex;
+    flex: 1 1 auto;
+    max-width: 1100px;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.leftScrollContainer {
+    left: unset;
+    position: fixed;
+    width: 340px !important;
+    padding: 0px 8px !important;
+    overflow: hidden auto;
+    overscroll-behavior-y: contain;
+    perspective: 1px;
+    perspective-origin: right top;
+    transform-style: preserve-3d;
+}
+
+.leftScrollWrapper {
+    padding-top: 20px;
+    width: 340px !important;
+}
