@@ -23,3 +23,12 @@
     padding-top: 20px;
     width: 340px !important;
 }
+
+.navItem {
+    margin-top: 1rem;
+}
+
+.navItemTitle {
+    font-family: 'Bebas Neue', cursive;
+    font-size: x-large;
+}

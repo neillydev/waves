@@ -9,8 +9,16 @@ const Main = () => {
                 <div className="leftScrollContainer">
                     <div className="leftScrollWrapper">
                         <div className="navWrapper flex flex-col">
-                            <a href="/" className="navItem">Trending</a>
-                            <a href="/" className="navItem">Following</a>
+                            <a href="/" className="navItem">
+                                <h2 className="navItemTitle">
+                                    Trending
+                                </h2>
+                            </a>
+                            <a href="/" className="navItem">
+                                <h2 className="navItemTitle">
+                                    Following
+                                </h2>
+                            </a>
                         </div>
                     </div>
                 </div>
