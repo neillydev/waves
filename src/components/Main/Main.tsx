@@ -20,6 +20,23 @@ const Main = () => {
                                 </h2>
                             </a>
                         </div>
+                        <div className="exploreWrapper pt-6">
+                            <h2 className="exploreTitle">
+                                Explore
+                            </h2>
+                            <div className="exploreTags w-full">
+                                <a href="/" className="exploreTag no-underline">
+                                    <div className="exploreTagContainer">
+                                        <div className="exploreTagIcon">
+
+                                        </div>
+                                        <span className="exploreTagTitle">
+                                            waves
+                                        </span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
