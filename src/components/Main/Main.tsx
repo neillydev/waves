@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import Explore from '../Explore/Explore';
 
 require('./Main.css');
 
@@ -21,21 +22,7 @@ const Main = () => {
                             </a>
                         </div>
                         <div className="exploreWrapper pt-6">
-                            <h2 className="exploreTitle">
-                                Explore
-                            </h2>
-                            <div className="exploreTags w-full">
-                                <a href="/" className="exploreTag no-underline">
-                                    <div className="exploreTagContainer">
-                                        <div className="exploreTagIcon">
-
-                                        </div>
-                                        <span className="exploreTagTitle">
-                                            waves
-                                        </span>
-                                    </div>
-                                </a>
-                            </div>
+                            <Explore />
                         </div>
                     </div>
                 </div>
