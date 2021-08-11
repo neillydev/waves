@@ -1,0 +1,28 @@
+.postContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.post {
+    max-width: 629px;
+    width: 629px;
+    position: relative;
+    padding: 20px 0px;
+    border-bottom: 0.5px solid rgba(22, 24, 35, 0.18);
+}
+
+.creatorAvatarImg {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.creatorAvatarImg > img {
+    object-fit: cover;
+}
