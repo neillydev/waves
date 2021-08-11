@@ -1,7 +1,4 @@
 
-.exploreWrapper {
-
-}
 
 .exploreTitle {
     font-family: 'Bebas Neue', cursive;
@@ -33,6 +30,7 @@
     border-radius: 12px;
     background: rgb(255, 255, 255);
     transition: all 200ms ease 0s;
+    margin-right: 8px;
 }
 
 .exploreTagTitle {
