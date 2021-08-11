@@ -1,5 +1,26 @@
+.navbarWrapper {
+    margin-left: 25rem;
+    margin-right: 25rem;
+}
+
 .navTitle {
     font-family: 'Bebas Neue', cursive;
+}
+
+.navSearchForm {
+    -webkit-box-align: center;
+    background: rgba(22, 24, 35, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+    padding: 9px;
+}
+
+.navSearchForm > input {
+    background: transparent;
+    border: none;
+    font-size: 15px;
+    width: 30rem;
+    outline: none;
 }
 
 .loginBtn {
