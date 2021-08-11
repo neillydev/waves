@@ -3,7 +3,12 @@ import WaveSVG from '../../svg/wave.svg';
 
 require('./NavBar.css');
 
-function NavBar() {
+type NavProps = {
+    isLoggedIn: boolean;
+    handleLoginBtn: () => void;
+}
+
+function NavBar({ isLoggedIn = false, handleLoginBtn }: NavProps) {
     return (
         <div className='navContainer flex border-b border-gray-200 relative top-0 inset-x-0 z-100 h-16 items-center'>
             <div className="navbarWrapper w-full max-w-screen-xl relative">
@@ -24,10 +29,12 @@ function NavBar() {
                         </form>
                     </div>
                     <div className="navRightBarContainer flex">
-                        <button className="loginBtn rounded-sm border-none">
+                        {
+                        isLoggedIn ? null : <button onClick={()=>handleLoginBtn()} className="loginBtn rounded-sm border-none">
                             Login
                         </button>
-                        <button className="uploadBtn border-none">
+                        }
+                        <button onClick={isLoggedIn ? ()=>null : ()=>handleLoginBtn()} className="uploadBtn border-none">
                             +
                         </button>
                     </div>
