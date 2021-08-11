@@ -23,9 +23,12 @@ function NavBar() {
                             <input placeholder="Search creators" type="search" className="" />
                         </form>
                     </div>
-                    <div className="navLoginContainer flex">
+                    <div className="navRightBarContainer flex">
                         <button className="loginBtn rounded-sm border-none">
                             Login
+                        </button>
+                        <button className="uploadBtn border-none">
+                            +
                         </button>
                     </div>
                 </div>
