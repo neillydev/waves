@@ -23,13 +23,21 @@ const Post = ({ author, title, creatorAvatarImg, contentTitle, contentDescriptio
                     </a>
                     <div className="content">
                         <div className="contentAuthorTitle">
-
+                            <h2 className="contentAuthorName">
+                                {author}
+                            </h2>
                         </div>
                         <div className="contentDescription">
-
+                            <h2 className="contentDescriptionText">
+                                {contentDescription}
+                            </h2>
                         </div>
                         <div className="mediaContainer">
-
+                            <a href="/" className="mediaWrapper">
+                                <div className="mediaImg">
+                                    <video src=""></video>
+                                </div>
+                            </a>
                         </div>
                     </div>
                 </div>
