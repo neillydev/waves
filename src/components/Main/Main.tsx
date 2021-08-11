@@ -1,5 +1,6 @@
 import React from 'react';
 import Explore from '../Explore/Explore';
+import Post from '../Post/Post';
 
 require('./Main.css');
 
