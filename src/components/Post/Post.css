@@ -12,6 +12,10 @@
     border-bottom: 0.5px solid rgba(22, 24, 35, 0.18);
 }
 
+.creatorAvatar {
+    float: left;
+}
+
 .creatorAvatarImg {
     display: inline-flex;
     justify-content: center;
@@ -25,4 +29,41 @@
 
 .creatorAvatarImg > img {
     object-fit: cover;
+}
+
+.content {
+    margin-left: 4.5rem;
+}
+
+.contentAuthorTitle {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.contentAuthorName {
+    margin-right: 1rem;
+    text-decoration: none;
+}
+
+.contentDescription {
+    margin-bottom: 1.5rem;
+}
+
+.mediaContainer {
+    display: inline-block;
+}
+
+.mediaWrapper {
+    display: flex;
+    width: calc(0.56 * (450px + ((100vw - 768px) / 1152) * 100));
+    height: calc(450px + ((100vw - 768px) / 1152) * 100);
+    overflow: hidden;
+    background: rgb(22,24,35);
+    border-radius: 10px;
+    -webkit-box-pack: center;
+    justify-content: center;
 }
