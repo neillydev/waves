@@ -22,13 +22,18 @@ const Main = () => {
                             </a>
                         </div>
                         <div className="exploreWrapper pt-6">
-                            <Explore />
+                            <h2 className="exploreTitle">
+                                Explore
+                            </h2>
+                            <div className="exploreTags w-full">
+                                <Explore title="waves" />
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div className="mainContentContainer">
-
+                
             </div>
         </div>
     )
