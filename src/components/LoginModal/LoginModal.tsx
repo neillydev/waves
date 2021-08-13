@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 require('./LoginModal.css');
 
 type LoginModalProps = {
     handleLoginBtn: () => void;
-    isLogin?: boolean;
 };
 
-const LoginModal = ({ handleLoginBtn, isLogin = false }: LoginModalProps) => {
+const LoginModal = ({ handleLoginBtn }: LoginModalProps) => {
+    const [isLoggingIn, useIsLoggingIn] = useState(true);
+
     return (
         <div className="loginModalContainer">
             <div className="loginModalWrapper flex flex-col">
@@ -20,7 +21,7 @@ const LoginModal = ({ handleLoginBtn, isLogin = false }: LoginModalProps) => {
                     <div className="loginBody">
                         <div className="loginContainer">
                             <div className="loginTitle">
-                                Sign up for Waves
+                                {isLoggingIn ? "Login to Waves" : "Sign up for Waves" }
                             </div>
                         </div>
                     </div>
@@ -28,9 +29,9 @@ const LoginModal = ({ handleLoginBtn, isLogin = false }: LoginModalProps) => {
                 <div className="loginModalFooter">
                     <div className="loginModalFooterWrapper flex items-center justify-center">
                         <div>
-                            Already registered?
+                            {isLoggingIn ? "Don't have an account?" : "Already registered?" }
                         </div>
-                        <a href="/" className="isLoginLink">Log In</a>
+                        <button className="isLoginLink" onClick={()=>useIsLoggingIn(!isLoggingIn)}>{isLoggingIn ? "Sign Up" : "Log In"}</button>
                     </div>
                 </div>
             </div>
