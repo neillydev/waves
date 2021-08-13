@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import LoginModal from './components/LoginModal/LoginModal';
 import Main from './components/Main/Main';
 import NavBar from './components/NavBar/NavBar';
 
@@ -21,16 +22,7 @@ const App = () => {
             </div>
             {
                 loginModalActive ?
-                    <div className="loginModalContainer">
-                        <div className="loginModalWrapper">
-                            <div>
-                                <img className="loginModalClose">
-
-                                </img>
-                            </div>
-                        </div>
-                        <div className="loginModalMask" onClick={()=>handleLoginBtn()}></div>
-                    </div>
+                    <LoginModal handleLoginBtn={handleLoginBtn} />
                     :
                     null
             }
