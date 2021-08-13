@@ -1,0 +1,45 @@
+.loginModalWrapper {
+    height: 1px;
+}
+
+.loginModalHeader {
+    height: 10%;
+}
+
+.loginModalBody {
+    height: 90%;
+    padding: 0 48px;
+}
+
+.loginBody {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+}
+
+.loginTitle {
+    font-size: 24px;
+    text-align: center;
+    line-height: 28px;
+    font-weight: bolder;
+}
+
+.loginModalFooter {
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+.loginModalFooterWrapper {
+    height: 60px;
+    padding: 0 24px;
+    align-items: center;
+    justify-content: flex-start;
+    font-weight: bold;
+}
+
+.isLoginLink { 
+    margin-left: .5rem;
+    color: rgb(18, 180, 255);
+}
