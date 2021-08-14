@@ -1,0 +1,18 @@
+.birthdaySelectorContainer {
+    width: 110px;
+    color: #161823;
+    background: rgba(22,24,35,.06);
+    border-radius: .3rem;
+}
+
+.birthdaySelector {
+    width: 110px;
+    height: 3rem;
+    padding: 0 1rem 0 .9rem;
+    line-height: 3rem;
+    font-size: 1rem;
+    color: rgba(34, 34, 34, 0.34);
+    border-radius: 4px;
+    cursor: pointer;
+    justify-content: space-between;
+}
