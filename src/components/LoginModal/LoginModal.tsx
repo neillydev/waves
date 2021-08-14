@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import LoginForm from '../LoginForm/LoginForm';
+import SignUpForm from '../SignUpForm/SignUpForm';
 
 require('./LoginModal.css');
 
@@ -11,7 +13,7 @@ const LoginModal = ({ handleLoginBtn }: LoginModalProps) => {
 
     return (
         <div className="loginModalContainer">
-            <div className="loginModalWrapper flex flex-col">
+            <div className={`loginModalWrapper ${ isLoggingIn ? '' : 'loginModalWrapper-signUp' } flex flex-col`}>
                 <div className="loginModalHeader w-full">
                     <img className="loginModalClose">
 
@@ -24,6 +26,11 @@ const LoginModal = ({ handleLoginBtn }: LoginModalProps) => {
                                 {isLoggingIn ? "Login to Waves" : "Sign up for Waves" }
                             </div>
                         </div>
+                        {isLoggingIn ? 
+                        <LoginForm></LoginForm>
+                        : 
+                        <SignUpForm></SignUpForm>
+                        }
                     </div>
                 </div>
                 <div className="loginModalFooter">
