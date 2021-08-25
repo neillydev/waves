@@ -5,35 +5,41 @@ require('./SignUpForm.css');
 const SignUpForm = () => {
 
     const [registerSuccessful, setRegisterSuccessful] = useState(false);
-    const [username, setUsername] = useState(null);
-    const [email, setEmail] = useState(null);
-    const [password, setPassword] = useState(null);
+    const [username, setUsername] = useState<string>();
+    const [email, setEmail] = useState<string>();
+    const [password, setPassword] = useState<string>();
     
     const onEmailInput = (event: React.FormEvent<HTMLInputElement>) => {
-        
+        console.log(event.currentTarget.value);
+        setEmail(event.currentTarget.value);
     };
 
     const onUsernameInput = (event: React.FormEvent<HTMLInputElement>) => {
-        
+        setUsername(event.currentTarget.value);
     };
 
     const onPasswordInput = (event: React.FormEvent<HTMLInputElement>) => {
-        
+        setPassword(event.currentTarget.value);
     };
 
-    const handleRegister = () => { 
-        fetch(`http://localhost:3000/register?${username}&${email}&${password}`)
-            .then(() => {
+    const handleRegister = (event: React.FormEvent<HTMLFormElement>) => { 
+        event.preventDefault()
+        fetch(`http://localhost:3000/register`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, username, password })
             })
-            .catch(() => {
-
-            })
+            .then(res => res.json())
+            .then(response => console.log('Success: ', response))
+            .catch(error => console.error('Error: ', error));
     };
 
 
     return (
         <div className="loginFormContainer">
-            <form onSubmit={() => handleRegister()}>
+            <form onSubmit={handleRegister}>
                 <div className="loginTitleContainer">
                     Birthday
                 </div>
@@ -61,7 +67,7 @@ const SignUpForm = () => {
                     <input 
                         type="text" 
                         placeholder="Username" 
-                        onChange={() => onUsernameInput}
+                        onChange={onUsernameInput}
                         required
                     />
                 </div>
@@ -72,7 +78,7 @@ const SignUpForm = () => {
                     <input 
                         type="text" 
                         placeholder="Email" 
-                        onChange={() => onEmailInput}
+                        onChange={onEmailInput}
                         required
                     />
                 </div>
@@ -83,7 +89,7 @@ const SignUpForm = () => {
                     <input 
                         type="text"
                         placeholder="Password"
-                        onChange={() => onPasswordInput}
+                        onChange={onPasswordInput}
                         required
                     />
                 </div>
