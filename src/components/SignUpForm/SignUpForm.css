@@ -6,6 +6,10 @@
     border-radius: .3rem;
 }
 
+.birthdaySelectorContainer:hover {
+    background: rgba(22,24,35,.09);
+}
+
 .birthdaySelector {
     display: flex;
     width: 110px;
@@ -25,7 +29,7 @@
     height: 20px;
     margin: 12px 0;
     display: block;
-    background-image: url(//sf16-scmcdn-va.ibytedtos.com/goofy/ies/tiktok_webapp_login/svgs/openSelector.3e786e4d.svg);
+    background-image: url();
     background-size: contain;
 }
 
@@ -51,6 +55,10 @@
     justify-content: space-between;
     cursor: pointer;
     font-size: 13px;
+}
+
+.birthdayListItem:hover {
+    background: rgba(22,24,35,.035);
 }
 
 .birthdayModalMask {
