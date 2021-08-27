@@ -40,6 +40,7 @@ const SignUpForm = () => {
     };
 
     const onPasswordConfirm = (event: React.FormEvent<HTMLInputElement>) => {
+        if(event.currentTarget.value === password) setMatchingPass(true);
         setPasswordConf(event.currentTarget.value);
     };
 
