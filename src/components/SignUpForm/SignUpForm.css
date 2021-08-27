@@ -29,6 +29,36 @@
     background-size: contain;
 }
 
+.birthdayListContainer {
+    margin-top: 4px;
+    width: inherit;
+    max-height: 286px;
+    display: block;
+    position: absolute;
+    overflow: scroll;
+    z-index: 11;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, .05);
+    border-radius: 4px;
+}
+
+.birthdayListItem {
+    display: flex;
+    padding: 0 12px;
+    height: 34px;
+    line-height: 34px;
+    color: #161823;
+    justify-content: space-between;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.birthdayModalMask {
+    position: absolute;
+    inset: 0px;
+    z-index: 10;
+}
+
 .confirmPass {
     color: #ef4444;
     font-size: .75rem;

@@ -3,14 +3,28 @@ import React, { useState }  from 'react';
 require('./SignUpForm.css');
 
 const SignUpForm = () => {
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const days = 31;
+    const years = new Date().getFullYear();
 
     const [registerSuccessful, setRegisterSuccessful] = useState(false);
+
+    const [monthSelected, setMonthSelected] = useState(false);
+    const [daySelected, setDaySelected] = useState(false);
+    const [yearSelected, setYearSelected] = useState(false);
+
     const [username, setUsername] = useState<string>();
     const [email, setEmail] = useState<string>();
     const [emailExists, setEmailExists] = useState<boolean>(false);
     const [password, setPassword] = useState<string>();
     const [passwordConf, setPasswordConf] = useState<string>();
     const [matchingPass, setMatchingPass] = useState<boolean>(true);
+
+    const handleBirthdayModal = () => {
+        setMonthSelected(false);
+        setDaySelected(false);
+        setYearSelected(false);
+    };
     
     const onEmailInput = (event: React.FormEvent<HTMLInputElement>) => {
         console.log(event.currentTarget.value);
@@ -63,20 +77,31 @@ const SignUpForm = () => {
                     Birthday
                 </div>
                 <div className="birthdayContainer w-full flex justify-between">
-                    <div className="birthdaySelectorContainer">
+                    <div className="birthdaySelectorContainer" onClick={() => setMonthSelected(true)}>
                         <div className="birthdaySelector">
                             Month
                         </div>
+                        {monthSelected ? <ul className="birthdayListContainer">
+                            {months.map(month => <li className="birthdayListItem">
+                                <span>{month}</span>
+                            </li>)}
+                        </ul> : null}
                     </div>
-                    <div className="birthdaySelectorContainer">
+                    <div className="birthdaySelectorContainer" onClick={() => setDaySelected(true)}>
                         <div className="birthdaySelector">
                             Day
                         </div>
+                        {daySelected ? <ul className="birthdayListContainer">
+                            {[...Array(days)].map((value, i) => <li className="birthdayListItem"><span>{i+1}</span></li>)}
+                        </ul> : null}
                     </div>
-                    <div className="birthdaySelectorContainer">
+                    <div className="birthdaySelectorContainer" onClick={() => setYearSelected(true)}>
                         <div className="birthdaySelector">
                             Year
                         </div>
+                        {yearSelected ? <ul className="birthdayListContainer">
+                            {[...Array(years)].map((value, i) => (years-i >= 1900) ? <li className="birthdayListItem"><span>{years-i}</span></li> : null)}
+                        </ul> : null}
                     </div>
                 </div>
                 <div className="loginTitleContainer">
@@ -126,6 +151,7 @@ const SignUpForm = () => {
                     Next
                 </button>
             </form>
+            {(monthSelected || daySelected || yearSelected) ? <div className="birthdayModalMask" onClick={() => handleBirthdayModal()}></div> : null}
         </div>
     )
 }
