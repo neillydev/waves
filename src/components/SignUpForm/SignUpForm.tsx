@@ -8,6 +8,7 @@ const SignUpForm = () => {
     const [username, setUsername] = useState<string>();
     const [email, setEmail] = useState<string>();
     const [password, setPassword] = useState<string>();
+    const [passwordConf, setPasswordConf] = useState<string>();
     const [matchingPass, setMatchingPass] = useState<boolean>(true);
     
     const onEmailInput = (event: React.FormEvent<HTMLInputElement>) => {
@@ -23,9 +24,13 @@ const SignUpForm = () => {
         setPassword(event.currentTarget.value);
     };
 
+    const onPasswordConfirm = (event: React.FormEvent<HTMLInputElement>) => {
+        setPasswordConf(event.currentTarget.value);
+    };
+
     const handleRegister = (event: React.FormEvent<HTMLFormElement>) => { 
         event.preventDefault();
-        if(event.currentTarget.value !== password){
+        if(password !== passwordConf) {
             setMatchingPass(false);
             return;
         }
@@ -103,6 +108,7 @@ const SignUpForm = () => {
                     <input 
                         type="text" 
                         placeholder="Confirm Password"
+                        onChange={onPasswordConfirm}
                         required
                     />
                     {matchingPass ? null : <h1 className="confirmPass">Passwords do not match!</h1>}
