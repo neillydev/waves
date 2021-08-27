@@ -7,6 +7,7 @@ const SignUpForm = () => {
     const [registerSuccessful, setRegisterSuccessful] = useState(false);
     const [username, setUsername] = useState<string>();
     const [email, setEmail] = useState<string>();
+    const [emailExists, setEmailExists] = useState<boolean>(false);
     const [password, setPassword] = useState<string>();
     const [passwordConf, setPasswordConf] = useState<string>();
     const [matchingPass, setMatchingPass] = useState<boolean>(true);
@@ -42,7 +43,14 @@ const SignUpForm = () => {
                 },
                 body: JSON.stringify({ email, username, password })
             })
-            .then(res => res.json())
+            .then(res => {
+                if(res.status == 201){
+
+                }
+                else if(res.status == 409){
+                    setEmailExists(true);
+                }
+            })
             .then(response => console.log('Success: ', response))
             .catch(error => console.error('Error: ', error));
     };
@@ -85,7 +93,7 @@ const SignUpForm = () => {
                 <div className="loginTitleContainer">
                     Email
                 </div>
-                <div className="loginFormWrapper">
+                <div className={`loginFormWrapper flex flex-col ${emailExists ? 'loginFormError' : ''}`}>
                     <input 
                         type="text" 
                         placeholder="Email" 
@@ -111,7 +119,8 @@ const SignUpForm = () => {
                         onChange={onPasswordConfirm}
                         required
                     />
-                    {matchingPass ? null : <h1 className="confirmPass">Passwords do not match!</h1>}
+                    {emailExists ? <h1 className="confirmPass">Email already registered</h1> : null}
+                    {matchingPass ? null : <h1 className="confirmPass">Passwords do not match</h1>}
                 </div>
                 <button type="submit" className="loginButton">
                     Next
