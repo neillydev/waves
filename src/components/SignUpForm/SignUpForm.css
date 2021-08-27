@@ -28,3 +28,9 @@
     background-image: url(//sf16-scmcdn-va.ibytedtos.com/goofy/ies/tiktok_webapp_login/svgs/openSelector.3e786e4d.svg);
     background-size: contain;
 }
+
+.confirmPass {
+    color: #ef4444;
+    font-size: .75rem;
+    font-weight: bold;
+}

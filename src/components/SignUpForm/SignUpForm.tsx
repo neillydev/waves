@@ -99,13 +99,13 @@ const SignUpForm = () => {
                         required
                     />
                 </div>
-                <div className="loginFormWrapper">
+                <div className={`loginFormWrapper flex flex-col ${matchingPass ? '' : 'loginFormError'}`}>
                     <input 
                         type="text" 
                         placeholder="Confirm Password"
                         required
                     />
-                    {matchingPass ? null : <h1>Password does not match!</h1>}
+                    {matchingPass ? null : <h1 className="confirmPass">Passwords do not match!</h1>}
                 </div>
                 <button type="submit" className="loginButton">
                     Next
