@@ -8,6 +8,7 @@ const SignUpForm = () => {
     const [username, setUsername] = useState<string>();
     const [email, setEmail] = useState<string>();
     const [password, setPassword] = useState<string>();
+    const [matchingPass, setMatchingPass] = useState<boolean>(true);
     
     const onEmailInput = (event: React.FormEvent<HTMLInputElement>) => {
         console.log(event.currentTarget.value);
@@ -23,7 +24,12 @@ const SignUpForm = () => {
     };
 
     const handleRegister = (event: React.FormEvent<HTMLFormElement>) => { 
-        event.preventDefault()
+        event.preventDefault();
+        if(event.currentTarget.value !== password){
+            setMatchingPass(false);
+            return;
+        }
+        setMatchingPass(true);
         fetch(`http://localhost:3000/register`, {
                 method: 'POST',
                 headers: {
@@ -94,7 +100,12 @@ const SignUpForm = () => {
                     />
                 </div>
                 <div className="loginFormWrapper">
-                    <input type="text" placeholder="Confirm Password" />
+                    <input 
+                        type="text" 
+                        placeholder="Confirm Password"
+                        required
+                    />
+                    {matchingPass ? null : <h1>Password does not match!</h1>}
                 </div>
                 <button type="submit" className="loginButton">
                     Next
