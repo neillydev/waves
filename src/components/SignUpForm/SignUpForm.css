@@ -23,6 +23,11 @@
     justify-content: space-between;
 }
 
+.birthdaySelected {
+    color: rgba(34, 34, 34, 1);
+    font-weight: bold;
+}
+
 .birthdaySelector::after {
     content: "";
     width: 20px;
@@ -67,7 +72,7 @@
     z-index: 10;
 }
 
-.confirmPass {
+.signUpError {
     color: #ef4444;
     font-size: .75rem;
     font-weight: bold;
