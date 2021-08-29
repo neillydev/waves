@@ -5,10 +5,10 @@ import SignUpForm from '../SignUpForm/SignUpForm';
 require('./LoginModal.css');
 
 type LoginModalProps = {
-    handleLoginBtn: () => void;
+    handleLoginModal: () => void;
 };
 
-const LoginModal = ({ handleLoginBtn }: LoginModalProps) => {
+const LoginModal = ({ handleLoginModal }: LoginModalProps) => {
     const [isLoggingIn, useIsLoggingIn] = useState(true);
 
     return (
@@ -42,7 +42,7 @@ const LoginModal = ({ handleLoginBtn }: LoginModalProps) => {
                     </div>
                 </div>
             </div>
-            <div className="loginModalMask" onClick={() => handleLoginBtn()}></div>
+            <div className="loginModalMask" onClick={() => handleLoginModal()}></div>
         </div>
     )
 }

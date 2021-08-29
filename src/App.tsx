@@ -9,20 +9,20 @@ require('./App.css');
 
 const App = () => {
     const [loginModalActive, setLoginModalActive] = useState(false);
-
-    const handleLoginBtn = () => {
+    
+    const handleLoginModal = () => {
         setLoginModalActive(!loginModalActive);
     };
 
     return (
         <div className="appContainer">
-            <NavBar isLoggedIn={false} handleLoginBtn={handleLoginBtn} />
+            <NavBar isLoggedIn={false} handleLoginModal={handleLoginModal} />
             <div className="mainWrapper">
                 <Main />
             </div>
             {
                 loginModalActive ?
-                    <LoginModal handleLoginBtn={handleLoginBtn} />
+                    <LoginModal handleLoginModal={handleLoginModal} />
                     :
                     null
             }
