@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+
+import {ModalContext} from '../contexts/ModalContext';
 
 require('./LoginForm.css');
 
 const LoginForm = () => {
-    
+    const { dispatch } = useContext(ModalContext);
+
     const [username, setUsername] = useState<string>();
     const [usernameExists, setUsernameExists] = useState<boolean>();
     const [password, setPassword] = useState<string>();
-
 
     const handleLogin = (event: React.FormEvent<HTMLFormElement>) => { 
         event.preventDefault();
@@ -20,7 +22,7 @@ const LoginForm = () => {
             })
             .then(res => {
                 if(res.status == 200){
-
+                    dispatch( { type: 'false' } );
                 }
                 else if(res.status == 409){
                     setUsernameExists(false);

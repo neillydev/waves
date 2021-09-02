@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useContext }  from 'react';
 import WaveSVG from '../../svg/wave.svg';
+
+import {ModalContext} from '../contexts/ModalContext';
 
 require('./NavBar.css');
 
 type NavProps = {
     isLoggedIn: boolean;
-    handleLoginModal: () => void;
 }
 
-function NavBar({ isLoggedIn = false, handleLoginModal }: NavProps) {
+function NavBar({ isLoggedIn = false }: NavProps) {
+    const { dispatch } = useContext(ModalContext);
     return (
         <div className='navContainer flex border-b border-gray-200 relative top-0 inset-x-0 z-100 h-16 items-center'>
             <div className="navbarWrapper w-full max-w-screen-xl relative">
@@ -30,11 +32,11 @@ function NavBar({ isLoggedIn = false, handleLoginModal }: NavProps) {
                     </div>
                     <div className="navRightBarContainer flex">
                         {
-                        isLoggedIn ? null : <button onClick={()=>handleLoginModal()} className="loginBtn rounded-sm border-none">
+                        isLoggedIn ? null : <button onClick={() => dispatch( { type: 'true' } )} className="loginBtn rounded-sm border-none">
                             Login
                         </button>
                         }
-                        <button onClick={isLoggedIn ? ()=>null : ()=>handleLoginModal()} className="uploadBtn border-none">
+                        <button onClick={isLoggedIn ? ()=>null : () => dispatch( { type: 'true' } )} className="uploadBtn border-none">
                             +
                         </button>
                     </div>

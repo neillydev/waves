@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import LoginForm from '../LoginForm/LoginForm';
 import SignUpForm from '../SignUpForm/SignUpForm';
 
+import {ModalContext} from '../contexts/ModalContext';
+
 require('./LoginModal.css');
 
-type LoginModalProps = {
-    handleLoginModal: () => void;
-};
+const LoginModal = () => {
+    const { dispatch } = useContext(ModalContext);
 
-const LoginModal = ({ handleLoginModal }: LoginModalProps) => {
     const [isLoggingIn, useIsLoggingIn] = useState(true);
 
     return (
@@ -42,7 +42,7 @@ const LoginModal = ({ handleLoginModal }: LoginModalProps) => {
                     </div>
                 </div>
             </div>
-            <div className="loginModalMask" onClick={() => handleLoginModal()}></div>
+            <div className="loginModalMask" onClick={() => dispatch( { type: 'false' } )}></div>
         </div>
     )
 }
