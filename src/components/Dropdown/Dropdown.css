@@ -9,14 +9,15 @@
     padding: 0;
     width: max-content;
     background: #2ba0ff;
+    z-index: 2;
 }
 
 .dropdownList {
-
+    padding: .5rem;
 }
 
-.dropdownList > li {
-    padding: .75rem;
+.dropHeader {
+    padding: .5rem;
 }
 
 .dropdownHeader {
@@ -37,4 +38,12 @@
     height: 1px;
     background: rgba(22, 24, 35, 0.12);
     margin-top: 1rem;
+}
+
+.dropdownItem {
+    margin-left: 1rem;
+    color: #fff;
+    font-weight: 500;
+    font-size: medium;
+    padding: .5rem;
 }
