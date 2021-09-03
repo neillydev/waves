@@ -72,7 +72,7 @@ const SignUpForm = () => {
                 headers: {
                   'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ email, username, password })
+                body: JSON.stringify({ email, username, password, birthday: `${month} ${day}, ${year}` })
             })
             .then(res => {
                 if(res.status == 201){
