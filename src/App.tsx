@@ -26,6 +26,10 @@ const App = () => {
             if (res.status == 200) {
                 authDispatch( { type: 'true' } );
             }
+            else if (res.status == 401) {
+                authDispatch( { type: 'false' } );
+                localStorage.removeItem('token');
+            }
         })
         .catch(error => {
             authDispatch( { type: 'false' } );
