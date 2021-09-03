@@ -1,10 +1,12 @@
 import React, { useState, useContext } from 'react';
 
+import { AuthContext } from '../contexts/AuthContext';
 import {ModalContext} from '../contexts/ModalContext';
 
 require('./LoginForm.css');
 
 const LoginForm = () => {
+    const { authDispatch } = useContext(AuthContext);
     const { dispatch } = useContext(ModalContext);
 
     const [username, setUsername] = useState<string>();
@@ -21,11 +23,15 @@ const LoginForm = () => {
                 body: JSON.stringify({ username, password })
             })
             .then(res => {
-                if(res.status == 200){
-                    dispatch( { type: 'false' } );
-                }
-                else if(res.status == 409){
-                    setUsernameExists(false);
+                if(res){
+                    if(res.status == 200){
+                        dispatch( { type: 'false' } );
+                        authDispatch( { type: 'true' } );
+                        res.json().then(json => localStorage.setItem('token', json.token)); //set token in localstorage
+                    }
+                    else if(res.status == 409){
+                        setUsernameExists(false);
+                    }
                 }
             })
             .then(response => console.log('Success: ', response))
