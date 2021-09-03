@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
+
+import { AuthContext, AuthProvider } from '../contexts/AuthContext';
 
 require('./Dropdown.css');
 
 const Dropdown = () => {
+    const { authDispatch } = useContext(AuthContext);
+
     return (
         <div className="dropdownContainer">
             <ul className="dropdownList">
@@ -25,7 +29,7 @@ const Dropdown = () => {
                         Settings
                     </a>
                 </li>
-                <li className="dropdownItem px-1">
+                <li className="dropdownItem px-1" onClick={() => { localStorage.removeItem('token'); authDispatch( { type: 'false' } ); } }>
                     <a href="/">
                         Sign Out
                     </a>
