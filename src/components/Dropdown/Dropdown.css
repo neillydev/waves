@@ -13,7 +13,7 @@
 }
 
 .dropdownList {
-    padding: .5rem;
+    padding: 1rem;
 }
 
 .dropHeader {
@@ -21,13 +21,11 @@
 }
 
 .dropdownHeader {
-    margin-left: .75rem;
     color: #fff;
     font-weight: 500;
 }
 
 .dropdownSubheader {
-    margin-left: .75rem;
     color: #fff;
     font-weight: 400;
     font-style: italic;
@@ -36,14 +34,18 @@
 .dropHeader::after {
     content: "";
     height: 1px;
-    background: rgba(22, 24, 35, 0.12);
+    background: rgba(255, 255, 255, 0.22);
     margin-top: 1rem;
 }
 
 .dropdownItem {
-    margin-left: 1rem;
     color: #fff;
     font-weight: 500;
     font-size: medium;
     padding: .5rem;
+    border-radius: 5px;
+}
+
+.dropdownItem:hover {
+    background-color: rgb(81, 177, 255);
 }
