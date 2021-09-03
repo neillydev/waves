@@ -1,0 +1,22 @@
+.avatarContainer {
+    position: relative;
+    cursor: pointer;
+    height: unset;
+    margin-left: 24px;
+}
+
+.avatarWrapper {
+    display: flex;
+    width: 32px;
+    height: 32px;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    color: #fff;
+    border-radius: 50%;
+    white-space: nowrap;
+    line-height: 32px;
+    text-align: center;
+}

@@ -1,5 +1,6 @@
 import React, { useContext }  from 'react';
 import WaveSVG from '../../svg/wave.svg';
+import Avatar from '../Avatar/Avatar';
 
 import {AuthContext} from '../contexts/AuthContext';
 import {ModalContext} from '../contexts/ModalContext';
@@ -30,7 +31,7 @@ function NavBar() {
                     </div>
                     <div className="navRightBarContainer flex">
                         {
-                        authState ? null : <button onClick={() => dispatch( { type: 'true' } )} className="loginBtn rounded-sm border-none">
+                        authState ? <Avatar /> : <button onClick={() => dispatch( { type: 'true' } )} className="loginBtn rounded-sm border-none">
                             Login
                         </button>
                         }
