@@ -1,0 +1,40 @@
+.dropdownContainer {
+    display: inline-block;
+    position: absolute;
+    border-radius: 5px;
+    max-width: 360px;
+    min-width: 250px;
+    left: auto;
+    right: 1rem;
+    padding: 0;
+    width: max-content;
+    background: #2ba0ff;
+}
+
+.dropdownList {
+
+}
+
+.dropdownList > li {
+    padding: .75rem;
+}
+
+.dropdownHeader {
+    margin-left: .75rem;
+    color: #fff;
+    font-weight: 500;
+}
+
+.dropdownSubheader {
+    margin-left: .75rem;
+    color: #fff;
+    font-weight: 400;
+    font-style: italic;
+}
+
+.dropHeader::after {
+    content: "";
+    height: 1px;
+    background: rgba(22, 24, 35, 0.12);
+    margin-top: 1rem;
+}
