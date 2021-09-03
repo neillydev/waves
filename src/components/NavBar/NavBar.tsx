@@ -1,15 +1,13 @@
 import React, { useContext }  from 'react';
 import WaveSVG from '../../svg/wave.svg';
 
+import {AuthContext} from '../contexts/AuthContext';
 import {ModalContext} from '../contexts/ModalContext';
 
 require('./NavBar.css');
 
-type NavProps = {
-    isLoggedIn: boolean;
-}
-
-function NavBar({ isLoggedIn = false }: NavProps) {
+function NavBar() {
+    const { authState } = useContext(AuthContext);
     const { dispatch } = useContext(ModalContext);
     return (
         <div className='navContainer flex border-b border-gray-200 relative top-0 inset-x-0 z-100 h-16 items-center'>
@@ -32,11 +30,11 @@ function NavBar({ isLoggedIn = false }: NavProps) {
                     </div>
                     <div className="navRightBarContainer flex">
                         {
-                        isLoggedIn ? null : <button onClick={() => dispatch( { type: 'true' } )} className="loginBtn rounded-sm border-none">
+                        authState ? null : <button onClick={() => dispatch( { type: 'true' } )} className="loginBtn rounded-sm border-none">
                             Login
                         </button>
                         }
-                        <button onClick={isLoggedIn ? ()=>null : () => dispatch( { type: 'true' } )} className="uploadBtn border-none">
+                        <button onClick={authState ? ()=>null : () => dispatch( { type: 'true' } )} className="uploadBtn border-none">
                             +
                         </button>
                     </div>
