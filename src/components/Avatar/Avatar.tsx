@@ -6,6 +6,8 @@ require('./Avatar.css');
 const Avatar = () => {
     const [dropdownSelected, setDropdownSelected] = useState(false);
 
+    const avatar = localStorage.getItem('avatar');
+
     return (
         <div className="avatarContainer" onMouseEnter={(event) => {
             setDropdownSelected(true);
@@ -15,7 +17,7 @@ const Avatar = () => {
             setDropdownSelected(false)
         }}>
             <span className="avatarWrapper">
-                <img src="https://avatars.githubusercontent.com/u/51303046?v=4" />
+                <img src={`${avatar}`} />
             </span>
             {dropdownSelected ? <Dropdown /> : null}
         </div>
