@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 require('./SearchDropdown.css');
 
-const SearchDropdown = () => {
+type SearchDropdownProps = {
+    username: string | undefined;
+    name: string | undefined;
+    avatar: string | undefined;
+};
+
+const SearchDropdown = ({ username, name, avatar }: SearchDropdownProps) => {
+
     return (
         <div className="searchDropdownContainer">
             <div className="searchDropdownTitle">
@@ -11,11 +18,11 @@ const SearchDropdown = () => {
             <ul className="searchDropdownList">
                 <li className="searchDropdownItem">
                     <span className="searchItemAvatar">
-                        <img src="" alt="" />
+                        <img src={avatar} alt="" />
                     </span>
                     <span className="searchItemContent">
-                        <p className="searchItemUsername">kidfoolish</p>
-                        <p className="searchItemName">fooli</p>
+                        <p className="searchItemUsername">{username}</p>
+                        <p className="searchItemName">{name}</p>
                     </span>
                 </li>
             </ul>
