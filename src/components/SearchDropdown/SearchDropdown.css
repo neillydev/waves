@@ -1,0 +1,79 @@
+.searchDropdownContainer {
+    z-index: 1;
+    overflow: hidden auto;
+    position: absolute;
+    margin-top: 10px;
+    padding-top: 8px;
+    width: 32rem;
+    max-height: 22rem;
+    background: #2ba0ff;
+    border-radius: 8px;
+    box-shadow: rgb(0 0 0 / 22%) 0px 2px 12px;
+}
+
+.searchDropdownTitle {
+    height: 30px;
+    padding: 5px 12px;
+    font-weight: bold;
+    color: #fff;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.searchDropdownList {
+    margin-top: 8px;
+}
+
+.searchDropdownItem {
+    padding: 10px 16px;
+    cursor: pointer;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.searchDropdownItem:hover {
+    background-color: rgb(81, 177, 255);
+}
+
+.searchItemAvatar {
+    display: inline-flex;    
+    display: -webkit-inline-box;
+    display: -webkit-inline-flex;
+    display: -ms-inline-flexbox;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    align-items: center;
+    text-align: center;
+    vertical-align: middle;
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    margin-right: 12px;
+    padding: 0;
+    line-height: 32px;
+    border-radius: 50%;
+    color: #fff;
+    white-space: nowrap;
+    width: 40px;
+    height: 40px;
+}
+
+.searchItemContent {
+    flex: 0 1 auto;
+    min-width: 0px;
+}
+
+.searchItemContent > p{
+    font-family: 'Montserrat', sans-serif;
+    color: #fff;
+    font-size: 14px;
+}
+
+.searchItemUsername {
+    font-weight: bold;
+}

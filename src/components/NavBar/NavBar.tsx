@@ -4,6 +4,7 @@ import Avatar from '../Avatar/Avatar';
 
 import {AuthContext} from '../contexts/AuthContext';
 import {ModalContext} from '../contexts/ModalContext';
+import SearchDropdown from '../SearchDropdown/SearchDropdown';
 
 require('./NavBar.css');
 
@@ -36,6 +37,7 @@ function NavBar() {
                                     setSearchValue(event.currentTarget.value);
                                 }
                                 else{
+                                    setSearchValue("");
                                     setSearchTyping(false);
                                 }
                             }} />
@@ -48,6 +50,10 @@ function NavBar() {
                                 : 
                                 null }
                         </form>
+                        { searchTyping ? 
+                            <SearchDropdown /> 
+                            :
+                            null }
                     </div>
                     <div className="navRightBarContainer flex">
                         {
