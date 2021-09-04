@@ -27,7 +27,14 @@ const LoginForm = () => {
                     if(res.status == 200){
                         dispatch( { type: 'false' } );
                         authDispatch( { type: 'true' } );
-                        res.json().then(json => localStorage.setItem('token', json.token)); //set token in localstorage
+                        res.json().then(json => {
+                            localStorage.setItem('token', json.token);
+                            localStorage.setItem('email_cache', json.user_profile.email);
+                            localStorage.setItem('username_cache', json.user_profile.username);
+                            localStorage.setItem('name_cache', json.user_profile.name);
+                            localStorage.setItem('avatar', json.user_profile.avatar);
+                            localStorage.setItem('birthday_cache', json.user_profile.birthday);
+                        });
                     }
                     else if(res.status == 409){
                         setUsernameExists(false);
