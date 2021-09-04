@@ -15,6 +15,33 @@ function NavBar() {
     const [searchTyping, setSearchTyping] = useState(false);
     const [searchValue, setSearchValue] = useState("");
 
+    const [username, setUsername] = useState<string>();
+    const [name, setName] = useState<string>();
+    const [avatar, setAvatar] = useState<string>();
+
+    const handleSearch = (usernameValue: string) => {
+        fetch(`http://localhost:3000/users`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username: usernameValue })
+        })
+            .then(res => {
+                if (res) {
+                    if (res.status == 200) {
+                        res.json().then(json => {
+                            setUsername(json.user_profile.username);
+                            setName(json.user_profile.name);
+                            setAvatar(json.user_profile.avatar);
+                        });
+                    }
+                }
+            })
+            .then(response => console.log('Success: ', response))
+            .catch(error => console.error('Error: ', error));
+    };
+
     return (
         <div className='navContainer flex border-b border-gray-200 relative top-0 inset-x-0 z-100 h-16 items-center'>
             <div className="navbarWrapper w-full max-w-screen-xl relative">
@@ -35,6 +62,8 @@ function NavBar() {
                                 if(event.currentTarget.value.length > 0) {
                                     setSearchTyping(true);
                                     setSearchValue(event.currentTarget.value);
+
+                                    handleSearch(event.currentTarget.value);
                                 }
                                 else{
                                     setSearchValue("");
@@ -51,7 +80,7 @@ function NavBar() {
                                 null }
                         </form>
                         { searchTyping ? 
-                            <SearchDropdown /> 
+                            <SearchDropdown username={username} name={name} avatar={avatar} /> 
                             :
                             null }
                     </div>
