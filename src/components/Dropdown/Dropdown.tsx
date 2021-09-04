@@ -7,12 +7,15 @@ require('./Dropdown.css');
 const Dropdown = () => {
     const { authDispatch } = useContext(AuthContext);
 
+    const username = localStorage.getItem('username_cache');
+    const name = localStorage.getItem('name_cache');
+
     return (
         <div className="dropdownContainer">
             <ul className="dropdownList">
                 <li className="dropHeader flex flex-col">
-                    <span className="dropdownHeader">fooli</span>
-                    <span className="dropdownSubheader">@kidfoolish</span>
+                    <span className="dropdownHeader">{name}</span>
+                    <span className="dropdownSubheader">@{username}</span>
                 </li>
                 <li className="dropdownItem px-1">
                     <a href="/">
