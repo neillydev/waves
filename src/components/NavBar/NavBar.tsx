@@ -15,9 +15,9 @@ function NavBar() {
     const [searchTyping, setSearchTyping] = useState(false);
     const [searchValue, setSearchValue] = useState("");
 
-    const [username, setUsername] = useState<string>();
-    const [name, setName] = useState<string>();
-    const [avatar, setAvatar] = useState<string>();
+    const [username, setUsername] = useState<string | null>(null);
+    const [name, setName] = useState<string | null>(null);
+    const [avatar, setAvatar] = useState<string | null>(null);
 
     const handleSearch = (usernameValue: string) => {
         fetch(`http://localhost:3000/users`, {
@@ -29,12 +29,17 @@ function NavBar() {
         })
             .then(res => {
                 if (res) {
-                    if (res.status == 200) {
+                    if (res.status === 200) {
                         res.json().then(json => {
                             setUsername(json.user_profile.username);
                             setName(json.user_profile.name);
                             setAvatar(json.user_profile.avatar);
                         });
+                    }
+                    else if (res.status === 404) {
+                        setUsername(null);
+                        setName(null);
+                        setAvatar(null);
                     }
                 }
             })
@@ -68,6 +73,9 @@ function NavBar() {
                                 else{
                                     setSearchValue("");
                                     setSearchTyping(false);
+                                    setUsername(null);
+                                    setName(null);
+                                    setAvatar(null);
                                 }
                             }} />
                             { searchTyping ? 
