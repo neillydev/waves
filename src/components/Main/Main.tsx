@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Explore from '../Explore/Explore';
 import Post from '../Post/Post';
 
@@ -15,6 +15,30 @@ mediaDescription="fooli"
 /> */
 
 const Main = () => {
+
+    const [posts, setPosts] = useState([]);
+
+    const handleFetchPosts = () => { 
+        fetch(`http://localhost:3000/posts`, {
+                method: 'GET'
+            })
+            .then(res => {
+                if(res){
+                    if(res.status == 200){
+                        res.json().then(json => {
+                            setPosts(json);
+                        });
+                    }
+                }
+            })
+            .then(response => console.log('Success: '))
+            .catch(error => console.error('Error: '));
+    };
+
+    useEffect(() => {
+        handleFetchPosts();
+    }, []);
+
     return (
         <div className="mainContainer flex justify-between">
             <div className="leftBarContainer">
@@ -44,7 +68,7 @@ const Main = () => {
                 </div>
             </div>
             <div className="mainContentContainer">
-                <h4>Nothing to see here</h4>
+                {posts.length !== 0 ? posts : <h4>Nothing to see here</h4>}
             </div>
         </div>
     )
