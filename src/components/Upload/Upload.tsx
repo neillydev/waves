@@ -9,7 +9,8 @@ enum AccessType {
 };
 
 const Upload = () => {
-    const [charCount, setCharCount] = useState(0);
+    const [caption, setCaption] = useState('');
+
     const [access, setAccess] = useState(AccessType.public);
 
     return (
@@ -25,11 +26,11 @@ const Upload = () => {
                                 Caption
                             </span>
                             <span className="captionLimit">
-                                {charCount} / 200
+                                {caption.length} / 200
                             </span>
                         </div>
                         <div className="captionFormContainer">
-                            <input type="text" className="captionForm" onChange={(event) => charCount < 200 ? setCharCount(event.currentTarget.value.length) : null} disabled={ charCount < 200 ? false : true } />
+                            <input type="text" className="captionForm" onChange={(event) => caption.length < 200 ? setCaption(event.currentTarget.value) : null} disabled={caption.length < 200 ? false : true} />
                         </div>
                     </div>
                     <div className="uploadSettingsContainer">
@@ -38,17 +39,17 @@ const Upload = () => {
                             <div className="uploadAccessRadio">
                                 <label className="uploadAccessLabel">
                                     <input type="radio" onClick={() => setAccess(AccessType.public)} />
-                                    <span className={`uploadAccessRadioBox ${access === AccessType.public ? 'checked' : '' }`}></span>
+                                    <span className={`uploadAccessRadioBox ${access === AccessType.public ? 'checked' : ''}`}></span>
                                     Public
                                 </label>
                                 <label className="uploadAccessLabel">
                                     <input type="radio" onClick={() => setAccess(AccessType.friends)} />
-                                    <span className={`uploadAccessRadioBox ${access === AccessType.friends ? 'checked' : '' }`}></span>
+                                    <span className={`uploadAccessRadioBox ${access === AccessType.friends ? 'checked' : ''}`}></span>
                                     Friends
                                 </label>
                                 <label className="uploadAccessLabel">
                                     <input type="radio" onClick={() => setAccess(AccessType.private)} />
-                                    <span className={`uploadAccessRadioBox ${access === AccessType.private ? 'checked' : '' }`}></span>
+                                    <span className={`uploadAccessRadioBox ${access === AccessType.private ? 'checked' : ''}`}></span>
                                     Private
                                 </label>
                             </div>
@@ -59,6 +60,14 @@ const Upload = () => {
                     <div className="uploadMediaWrapper">
                         <h4>Upload to Waves</h4>
                         <p>Click or drag and drop a file</p>
+                    </div>
+                    <div className="formBtnContainer">
+                        <button className={`postBtn draftBtn ${caption.length > 0 ? 'enabledBtn' : 'disabledBtn' }`} disabled={caption.length === 0 ? true : false }>
+                            Draft
+                        </button>
+                        <button className={`postBtn ${caption.length > 0 ? 'enabledBtn' : 'disabledBtn' }`} disabled={caption.length === 0 ? true : false }>
+                            Post
+                        </button>
                     </div>
                 </div>
             </div>
