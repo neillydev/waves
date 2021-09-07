@@ -2,8 +2,12 @@ import React, { useEffect, useContext } from 'react';
 import LoginModal from './components/LoginModal/LoginModal';
 import Main from './components/Main/Main';
 import NavBar from './components/NavBar/NavBar';
+import Upload from './components/Upload/Upload';
+
 import { AuthContext, AuthProvider } from './components/contexts/AuthContext';
 import { ModalContext, ModalProvider } from './components/contexts/ModalContext';
+
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import './styles.css';
 
@@ -22,18 +26,18 @@ const App = () => {
             },
             body: JSON.stringify({ token: token })
         })
-        .then(res => {
-            if (res.status == 200) {
-                authDispatch( { type: 'true' } );
-            }
-            else if (res.status == 401) {
-                authDispatch( { type: 'false' } );
-                localStorage.removeItem('token');
-            }
-        })
-        .catch(error => {
-            authDispatch( { type: 'false' } );
-        });
+            .then(res => {
+                if (res.status == 200) {
+                    authDispatch({ type: 'true' });
+                }
+                else if (res.status == 401) {
+                    authDispatch({ type: 'false' });
+                    localStorage.removeItem('token');
+                }
+            })
+            .catch(error => {
+                authDispatch({ type: 'false' });
+            });
     };
 
     const handleTokenCheck = () => {
@@ -42,26 +46,34 @@ const App = () => {
         if (token) {
             handleTokenVerify(token);
         }
-        else{
+        else {
             console.error('No token found!')
         }
     };
 
     useEffect(() => handleTokenCheck(), []);
-
     return (
-        <div className="appContainer">
-            <NavBar />
-            <div className="mainWrapper">
-                <Main />
+        <Router>
+            <div className="appContainer">
+                <NavBar />
+                <div className="mainWrapper">
+                    <Switch>
+                        <Route exact path="/">
+                            <Main />
+                        </Route>
+                        <Route path="/upload">
+                            <Upload />
+                        </Route>
+                    </Switch>
+                </div>
+                {
+                    state ?
+                        <LoginModal />
+                        :
+                        null
+                }
             </div>
-            {
-                state ?
-                    <LoginModal />
-                    :
-                    null
-            }
-        </div>
+        </Router>
     )
 }
 

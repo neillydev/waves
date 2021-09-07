@@ -6,6 +6,8 @@ import {AuthContext} from '../contexts/AuthContext';
 import {ModalContext} from '../contexts/ModalContext';
 import SearchDropdown from '../SearchDropdown/SearchDropdown';
 
+import { Link } from 'react-router-dom';
+
 require('./NavBar.css');
 
 function NavBar() {
@@ -98,9 +100,9 @@ function NavBar() {
                             Login
                         </button>
                         }
-                        <button onClick={authState ? ()=>null : () => dispatch( { type: 'true' } )} className="uploadBtn border-none">
+                        <Link to={authState ? "/upload" : "/"} onClick={authState ? ()=>null : () => dispatch( { type: 'true' } )} className="uploadBtn border-none">
                             +
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </div>
