@@ -81,7 +81,10 @@
 .uploadMediaContainer {
     height: 100%;
     width: 100%;
-    margin-left: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
 }
 
 .uploadMediaWrapper {
@@ -175,4 +178,61 @@
     margin-top: 2px;
     border-radius: 7px;
     background: #2ba0ff;
+}
+
+.formBtnContainer {
+    display: flex;
+    -webkit-box-pack: end;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin-top: 3rem;
+}
+
+.draftBtn {
+    margin-right: 3rem;
+}
+
+.postBtn {
+    min-width: 164px;
+    height: 46px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    background-color: transparent;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 22px;
+    background-color: #fff;
+    border: 1px solid rgba(82, 90, 136, 0.178);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border-radius: 4px;
+    cursor: pointer;
+    -webkit-transition: all 0.2s cubic-bezier(0.65,0,0.35,1);
+    transition: all 0.2s cubic-bezier(0.65,0,0.35,1);
+}
+
+.enabledBtn:hover {
+    background-color: rgb(247, 247, 247);
+    border-color: rgba(22, 24, 35, 0.267);
+}
+
+.disabledBtn {
+    opacity: 1;
+    background: rgba(22,24,35,0.06);
+    color: rgba(22,24,35,0.34);
 }
