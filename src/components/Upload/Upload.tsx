@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 require('./Upload.css');
 
@@ -11,7 +11,14 @@ enum AccessType {
 const Upload = () => {
     const [caption, setCaption] = useState('');
 
+    const mediaFile = useRef<HTMLInputElement>(null);
+
     const [access, setAccess] = useState(AccessType.public);
+
+
+    const handlePost = () => {
+        
+    };
 
     return (
         <div className="uploadContainer">
@@ -57,15 +64,22 @@ const Upload = () => {
                     </div>
                 </div>
                 <div className="uploadMediaContainer">
-                    <div className="uploadMediaWrapper">
+                    <div className="uploadMediaWrapper" 
+                            onClick={() => {
+                                if(mediaFile && mediaFile.current){
+                                    mediaFile.current.click();
+                                }
+                            }
+                            }>
                         <h4>Upload to Waves</h4>
                         <p>Click or drag and drop a file</p>
+                        <input ref={mediaFile} type="file" accept="video/mp4,video/x-m4v,video/*" className="uploadInput" />
                     </div>
                     <div className="formBtnContainer">
                         <button className={`postBtn draftBtn ${caption.length > 0 ? 'enabledBtn' : 'disabledBtn' }`} disabled={caption.length === 0 ? true : false }>
                             Draft
                         </button>
-                        <button className={`postBtn ${caption.length > 0 ? 'enabledBtn' : 'disabledBtn' }`} disabled={caption.length === 0 ? true : false }>
+                        <button className={`postBtn ${caption.length > 0 ? 'enabledBtn' : 'disabledBtn' }`} disabled={caption.length === 0 ? true : false } >
                             Post
                         </button>
                     </div>

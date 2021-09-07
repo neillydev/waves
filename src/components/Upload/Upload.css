@@ -122,6 +122,13 @@
     font-size: .95rem;
 }
 
+.uploadInput {
+    height: 0px;
+    width: 0px;
+    opacity: 0;
+    position: absolute;
+}
+
 .uploadSettingsContainer {
     margin-top: 4rem;
     display: flex;
