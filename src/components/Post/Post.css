@@ -87,10 +87,10 @@
 }
 
 .mediaDescription {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Bebas Neue', cursive;
+    font-style: italic;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 1.25rem;
     line-height: 24px;
-    color: rgb(18, 18, 18);
-    font-style: normal;
+    color: #00000033;
 }

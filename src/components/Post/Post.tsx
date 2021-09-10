@@ -45,7 +45,7 @@ const Post = ({ author, title, creatorAvatarImg, contentTitle, contentDescriptio
                         </div>
                         <div className="mediaDescription">
                             <h2 className="mediaDescriptionText">
-                                Posted on {mediaDescription}
+                                {mediaDescription}
                             </h2>
                         </div>
                     </div>
