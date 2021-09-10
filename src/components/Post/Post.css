@@ -42,14 +42,27 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    margin-bottom: .25rem;
 }
 
 .contentAuthorName {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 24px;
+    color: rgb(18, 18, 18);
+    font-style: normal;
     margin-right: 1rem;
     text-decoration: none;
 }
 
 .contentDescription {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 22px;
+    color: rgb(18, 18, 18);
+    font-style: normal;
     margin-bottom: 1.5rem;
 }
 
@@ -59,11 +72,25 @@
 
 .mediaWrapper {
     display: flex;
-    width: calc(0.56 * (450px + ((100vw - 768px) / 1152) * 100));
-    height: calc(450px + ((100vw - 768px) / 1152) * 100);
     overflow: hidden;
-    background: rgb(22,24,35);
     border-radius: 10px;
     -webkit-box-pack: center;
     justify-content: center;
+}
+
+.media {
+    height: 486px;
+    width: 259px;
+    background-color: rgb(0, 0, 0);
+    object-fit: cover;
+    border-radius: 0.5px;
+}
+
+.mediaDescription {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 24px;
+    color: rgb(18, 18, 18);
+    font-style: normal;
 }

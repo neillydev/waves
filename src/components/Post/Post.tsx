@@ -37,7 +37,7 @@ const Post = ({ author, title, creatorAvatarImg, contentTitle, contentDescriptio
                         <div className="mediaContainer">
                             <a href="/" className="mediaWrapper">
                                 <div className="mediaImg">
-                                    <video src={mediaURL.length > 0 ? mediaURL : ''} autoPlay preload="auto" playsInline loop className="mediaPreview"
+                                    <video src={mediaURL.length > 0 ? mediaURL : ''} autoPlay preload="auto" playsInline loop className="media"
                                         onLoadedData={(event) => event.currentTarget.play()}>
                                     </video>
                                 </div>
@@ -45,7 +45,7 @@ const Post = ({ author, title, creatorAvatarImg, contentTitle, contentDescriptio
                         </div>
                         <div className="mediaDescription">
                             <h2 className="mediaDescriptionText">
-                                {mediaDescription}
+                                Posted on {mediaDescription}
                             </h2>
                         </div>
                     </div>
