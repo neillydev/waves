@@ -122,6 +122,28 @@
     font-size: .95rem;
 }
 
+.uploadMediaMask {
+    position: relative;
+    background: rgb(255, 255, 255);
+    line-height: 0;
+    width: 284px;
+    height: 556px;
+}
+
+.mediaPreview {
+    height: 486px;
+    width: 259px;
+    background-color: rgb(0, 0, 0);
+    object-fit: contain;
+    margin-left: 12px;
+    margin-top: 13px;
+    border-radius: 0.5px;
+}
+
+.mediaDisabled {
+    display: none;
+}
+
 .uploadInput {
     height: 0px;
     width: 0px;
