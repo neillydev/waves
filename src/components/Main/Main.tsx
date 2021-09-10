@@ -76,7 +76,7 @@ const Main = () => {
                     </div>
                 </div>
             </div>
-            <div className="mainContentContainer">
+            <div className={`mainContentContainer ${posts && posts.length !== 0 ? 'mainContentSome' : 'mainContentNone'}`}>
                 {posts && posts.length !== 0 ? posts.map(post => <Post
                     author={post.username}
                     title=""
