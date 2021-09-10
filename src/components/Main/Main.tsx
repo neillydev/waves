@@ -14,17 +14,25 @@ mediaType="image"
 mediaDescription="fooli"
 /> */
 
+type PostType = {
+    userID: string;
+    username: string;
+    caption: string;
+    mediaType: "video" | "image";
+    media: string;
+};
+
 const Main = () => {
 
-    const [posts, setPosts] = useState([]);
+    const [posts, setPosts] = useState<PostType[]>();
 
-    const handleFetchPosts = () => { 
+    const handleFetchPosts = () => {
         fetch(`http://localhost:3000/posts`, {
-                method: 'GET'
-            })
+            method: 'GET'
+        })
             .then(res => {
-                if(res){
-                    if(res.status == 200){
+                if (res) {
+                    if (res.status == 200) {
                         res.json().then(json => {
                             setPosts(json);
                         });
@@ -68,7 +76,16 @@ const Main = () => {
                 </div>
             </div>
             <div className="mainContentContainer">
-                {posts.length !== 0 ? posts : <h4>Nothing to see here</h4>}
+                {posts && posts.length !== 0 ? posts.map(post => <Post
+                    author={post.username}
+                    title="Fooli"
+                    creatorAvatarImg="https://avatars.githubusercontent.com/u/51303046?v=4"
+                    contentTitle={post.caption}
+                    contentDescription={post.caption}
+                    mediaType={post.mediaType}
+                    mediaURL={post.media}
+                    mediaDescription={post.caption}
+                />) : <h4>Nothing to see here</h4>}
             </div>
         </div>
     )
