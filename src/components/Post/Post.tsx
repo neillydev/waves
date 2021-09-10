@@ -7,12 +7,13 @@ type PostProps = {
     title: string;
     creatorAvatarImg: string;
     contentTitle: string;
-    contentDescription: string; 
+    contentDescription: string;
     mediaType: "video" | "image";
+    mediaURL: string;
     mediaDescription: string;
 };
 
-const Post = ({ author, title, creatorAvatarImg, contentTitle, contentDescription, mediaType, mediaDescription }: PostProps) => {
+const Post = ({ author, title, creatorAvatarImg, contentTitle, contentDescription, mediaType, mediaURL, mediaDescription }: PostProps) => {
     return (
         <div className="postContainer">
             <span className="postWrapper">
@@ -36,7 +37,9 @@ const Post = ({ author, title, creatorAvatarImg, contentTitle, contentDescriptio
                         <div className="mediaContainer">
                             <a href="/" className="mediaWrapper">
                                 <div className="mediaImg">
-                                    <video src=""></video>
+                                    <video src={mediaURL.length > 0 ? mediaURL : ''} autoPlay preload="auto" playsInline loop className="mediaPreview"
+                                        onLoadedData={(event) => event.currentTarget.play()}>
+                                    </video>
                                 </div>
                             </a>
                         </div>
