@@ -60,18 +60,3 @@
     justify-content: center;
     align-items: center;
 }
-
-.mainContentContainer {
-    display: flex;
-    justify-content: center;
-    font-family: 'Bebas Neue', cursive;
-    font-style: italic;
-    font-size: xx-large;
-    font-weight: 500;
-    color: #00000033;
-    /*color: rgb(204, 204, 204);*/
-    padding: 24px 0px;
-    margin-right: 24px;
-    width: 692px;
-    max-width: 692px;
-}
