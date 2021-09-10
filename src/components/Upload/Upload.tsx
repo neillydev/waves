@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 
 require('./Upload.css');
 
@@ -11,15 +11,16 @@ enum AccessType {
 };
 
 const Upload = () => {
+    const history = useHistory();
+
     const [caption, setCaption] = useState('');
 
     const mediaInput = useRef<HTMLInputElement>(null);
     const [mediaPreview, setMediaPreview] = useState('');
     const [mediaFile, setMediaFile] = useState<File>();
     const [access, setAccess] = useState(AccessType.public);
-
     const handleSendPreview = () => {
-        if(mediaFile){
+        if (mediaFile) {
             const formData = new FormData();
             formData.append('file', mediaFile);
             fetch('http://localhost:3000/preview', {
@@ -27,55 +28,58 @@ const Upload = () => {
                 //add auth header here
                 body: formData
             })
-            .then(res => {
-                if (res) {
-                    if (res.status === 200) {
-                        res.json().then(json => {
-                            setMediaPreview(json.url);
-                        });
-                    }
-                    else if (res.status === 404) {
+                .then(res => {
+                    if (res) {
+                        if (res.status === 200) {
+                            res.json().then(json => {
+                                setMediaPreview(json.url);
+                            });
+                        }
+                        else if (res.status === 404) {
 
+                        }
                     }
-                }
-            })
-            .catch(error => console.error('Error: ', error));
+                })
+                .catch(error => console.error('Error: ', error));
         }
     };
 
     const handlePost = () => {
-        if(mediaFile){
-            const userID = localStorage.getItem('userid_cache');
-            const username = localStorage.getItem('username_cache');
-            const token = localStorage.getItem('token');
-            fetch('http://localhost:3000/post', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    file: mediaPreview,
-                    caption: caption,
-                    access: access,
-                    username: username,
-                    userID: userID,
-                    token: token
+        return new Promise((resolve, reject) => {
+            if (mediaFile) {
+                const userID = localStorage.getItem('userid_cache');
+                const username = localStorage.getItem('username_cache');
+                const token = localStorage.getItem('token');
+                fetch('http://localhost:3000/post', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        file: mediaPreview,
+                        caption: caption,
+                        access: access,
+                        username: username,
+                        userID: userID,
+                        token: token
+                    })
                 })
-            })
-            .then(res => {
-                if (res) {
-                    if (res.status === 201) {
-                        res.json().then(json => {
-                            return <Redirect to='/' />
-                        });
-                    }
-                    else if (res.status === 404) {
-
-                    }
-                }
-            })
-            .catch(error => console.error('Error: ', error));
-        }
+                    .then(res => {
+                        if (res) {
+                            if (res.status === 201) {
+                                resolve('');
+                            }
+                            else if (res.status === 404) {
+                                reject();
+                            }
+                            else{
+                                reject();
+                            }
+                        }
+                    })
+                    .catch(error => console.error('Error: ', error));
+            }
+        });
     };
 
     useEffect(() => {
@@ -126,34 +130,42 @@ const Upload = () => {
                     </div>
                 </div>
                 <div className="uploadMediaContainer">
-                    <div className={`uploadMediaMask ${ mediaFile ? '' : 'mediaDisabled' }`}>
+                    <div className={`uploadMediaMask ${mediaFile ? '' : 'mediaDisabled'}`}>
                         <video src={mediaPreview.length > 0 ? mediaPreview : ''} autoPlay preload="auto" playsInline loop className="mediaPreview"
                             onLoadedData={(event) => event.currentTarget.play()}>
                         </video>
                     </div>
-                    <div className={`uploadMediaWrapper ${ mediaFile ? 'mediaDisabled' : '' }`}
-                            onClick={() => {
-                                if(mediaInput && mediaInput.current){
-                                    mediaInput.current.click();
-                                }
+                    <div className={`uploadMediaWrapper ${mediaFile ? 'mediaDisabled' : ''}`}
+                        onClick={() => {
+                            if (mediaInput && mediaInput.current) {
+                                mediaInput.current.click();
                             }
-                            }>
+                        }
+                        }>
                         <h4>Upload to Waves</h4>
                         <p>Click or drag and drop a file</p>
-                        <input ref={mediaInput} type="file" accept="video/mp4,video/x-m4v,video/*" className="uploadInput" onChange={(event) => 
-                            {
-                                if(event && event.target && event.target.files){
-                                    console.log(event.target.files[0]);
-                                    setMediaFile(event.target.files[0]);
-                                }
-                            } 
+                        <input ref={mediaInput} type="file" accept="video/mp4,video/x-m4v,video/*" className="uploadInput" onChange={(event) => {
+                            if (event && event.target && event.target.files) {
+                                console.log(event.target.files[0]);
+                                setMediaFile(event.target.files[0]);
+                            }
+                        }
                         } />
                     </div>
                     <div className="formBtnContainer">
-                        <button className={`postBtn draftBtn ${caption.length > 0 ? 'enabledBtn' : 'disabledBtn' }`} disabled={caption.length === 0 ? true : false }>
+                        <button className={`postBtn draftBtn ${caption.length > 0 ? 'enabledBtn' : 'disabledBtn'}`} disabled={caption.length === 0 ? true : false}>
                             Draft
                         </button>
-                        <button className={`postBtn ${caption.length > 0 ? 'enabledBtn' : 'disabledBtn' }`} disabled={caption.length === 0 ? true : false } onClick={handlePost} >
+                        <button className={`postBtn ${caption.length > 0 ? 'enabledBtn' : 'disabledBtn'}`} disabled={caption.length === 0 ? true : false} onClick={() => {
+                            handlePost()
+                            .then(json => {
+                                console.log('test1');
+                                history.push('/');
+                            })
+                            .catch(error => {
+
+                            });
+                        }} >
                             Post
                         </button>
                     </div>
