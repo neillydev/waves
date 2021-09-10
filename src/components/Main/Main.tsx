@@ -20,6 +20,7 @@ type PostType = {
     caption: string;
     mediaType: "video" | "image";
     media: string;
+    date_posted: string;
 };
 
 const Main = () => {
@@ -78,13 +79,13 @@ const Main = () => {
             <div className="mainContentContainer">
                 {posts && posts.length !== 0 ? posts.map(post => <Post
                     author={post.username}
-                    title="Fooli"
+                    title=""
                     creatorAvatarImg="https://avatars.githubusercontent.com/u/51303046?v=4"
                     contentTitle={post.caption}
                     contentDescription={post.caption}
                     mediaType={post.mediaType}
                     mediaURL={post.media}
-                    mediaDescription={post.caption}
+                    mediaDescription={post.date_posted}
                 />) : <h4>Nothing to see here</h4>}
             </div>
         </div>
