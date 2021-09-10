@@ -31,6 +31,7 @@ const LoginForm = () => {
                             localStorage.setItem('token', json.token);
                             localStorage.setItem('email_cache', json.user_profile.email);
                             localStorage.setItem('username_cache', json.user_profile.username);
+                            localStorage.setItem('userid_cache', json.user_profile.id);
                             localStorage.setItem('name_cache', json.user_profile.name);
                             localStorage.setItem('avatar', json.user_profile.avatar);
                             localStorage.setItem('birthday_cache', json.user_profile.birthday);
