@@ -119,3 +119,16 @@
     cursor: pointer;
     margin: auto;
 }
+
+.settingsFormContainer {
+    padding: 0px 16px 12px;
+}
+
+.settingsInput {
+    outline: none;
+    background: rgba(22, 24, 35, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+    padding: 6px;
+    width: 100%;
+}
