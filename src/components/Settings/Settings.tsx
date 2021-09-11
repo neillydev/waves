@@ -28,6 +28,7 @@ const Settings = () => {
                                 <img src={`${localStorage.getItem('avatar')}`} />
                                 <EditAvatarSVG className="editAvatar" onClick={() => {
                                     if (avatarInput && avatarInput.current) {
+                                        setEditingType(undefined);
                                         avatarInput.current.click();
                                     }
                                 }} />
