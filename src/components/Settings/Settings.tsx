@@ -4,8 +4,13 @@ import EditAvatarSVG from '../../svg/edit_avatar.svg';
 
 require('./Settings.css');
 
+enum EditingType {
+    USERNAME,
+    NAME
+}
+
 const Settings = () => {
-    const [editingName, setEditingName] = useState(false);
+    const [editingType, setEditingType] = useState<EditingType>();
 
     const avatarInput = useRef<HTMLInputElement>(null);
     const [avatarFile, setAvatarFile] = useState();
@@ -40,10 +45,10 @@ const Settings = () => {
                                 Username
                             </div>
                             {
-                                editingName ?
+                                editingType == EditingType.USERNAME ?
                                     <div className="settingsFormContainer">
                                         <form action="" className="settingsForm">
-                                            <input placeholder={`${localStorage.getItem('username_cache')}`} autoComplete="off" className="nameInput" />
+                                            <input placeholder={`${localStorage.getItem('username_cache')}`} autoComplete="off" className="settingsInput" />
                                         </form>
                                     </div>
                                     :
@@ -51,7 +56,7 @@ const Settings = () => {
                                         <div className="settingsOption">
                                             {localStorage.getItem('username_cache')}
                                         </div>
-                                        <div className="manageOption">
+                                        <div className="manageOption" onClick={() => setEditingType(EditingType.USERNAME)}>
                                             Edit
                                         </div>
                                     </div>
@@ -62,10 +67,10 @@ const Settings = () => {
                                 Name
                             </div>
                             {
-                                editingName ?
+                                editingType == EditingType.NAME ?
                                     <div className="settingsFormContainer">
                                         <form action="" className="settingsForm">
-                                            <input placeholder={`${localStorage.getItem('name_cache')}`} autoComplete="off" className="nameInput" />
+                                            <input placeholder={`${localStorage.getItem('name_cache')}`} autoComplete="off" className="settingsInput" />
                                         </form>
                                     </div>
                                     :
@@ -73,7 +78,7 @@ const Settings = () => {
                                         <div className="settingsOption">
                                             {localStorage.getItem('name_cache')}
                                         </div>
-                                        <div className="manageOption">
+                                        <div className="manageOption" onClick={() => setEditingType(EditingType.NAME)}>
                                             Edit
                                         </div>
                                     </div>
