@@ -4,16 +4,6 @@ import Post from '../Post/Post';
 
 require('./Main.css');
 
-/* <Post 
-author="kidfoolish" 
-title="Fooli" 
-creatorAvatarImg="https://avatars.githubusercontent.com/u/51303046?v=4" 
-contentTitle="" 
-contentDescription="1st post" 
-mediaType="image"
-mediaDescription="fooli"
-/> */
-
 type PostType = {
     userID: string;
     username: string;
@@ -24,7 +14,13 @@ type PostType = {
     sounddescription: string;
 };
 
+enum ViewType {
+    TRENDING,
+    FOLLOWING
+};
+
 const Main = () => {
+    const [viewType, setViewType] = useState<ViewType>(ViewType.TRENDING);
 
     const [posts, setPosts] = useState<PostType[]>();
 
@@ -55,13 +51,13 @@ const Main = () => {
                 <div className="leftScrollContainer">
                     <div className="leftScrollWrapper">
                         <div className="navWrapper flex flex-col">
-                            <a href="/" className="navItem">
-                                <h2 className="navItemTitle">
+                            <a href="/" className="navItem" onClick={() => setViewType(ViewType.TRENDING)}>
+                                <h2 className={`navItemTitle ${viewType === ViewType.TRENDING ? 'tabSelected' : ''}`}>
                                     Trending
                                 </h2>
                             </a>
-                            <a href="/" className="navItem">
-                                <h2 className="navItemTitle">
+                            <a href="/" className="navItem" onClick={() => setViewType(ViewType.FOLLOWING)}>
+                                <h2 className={`navItemTitle ${viewType === ViewType.FOLLOWING ? 'tabSelected' : ''}`}>
                                     Following
                                 </h2>
                             </a>
