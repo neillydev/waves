@@ -1,3 +1,121 @@
 .settingsContainer {
-    
+    display: flex;
+    background-color: rgb(244, 244, 244);
+    width: 100%;
+}
+
+.innerSettingsWrapper {
+    max-width: 760px;
+    min-width: 760px;
+    -webkit-box-pack: center;
+    justify-content: center;
+    margin: auto;
+    min-height: calc(100vh - 64px);
+    display: flex;
+    flex-direction: row;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: stretch;
+    align-items: stretch;
+    box-sizing: border-box;
+    padding-top: 16px;
+}
+
+.innerSettingsContent {
+    background: rgb(255, 255, 255);
+    box-shadow: rgb(0 0 0 / 6%) 0px 2px 8px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    flex: 0 0 728px;
+    box-sizing: border-box;
+    padding: 16px 24px 24px;
+    z-index: 1;
+}
+
+.innerSettingsBlock {
+    padding-top: 8px;
+    padding-bottom: 16px;
+    word-break: break-all;
+}
+
+.innerSettingsItem {
+    margin-bottom: 2rem;
+}
+
+.innerSettingsTitle {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 32px;
+    color: rgb(0, 0, 0);
+    margin: 0px 8px 20px;
+}
+
+.innerSettingsSubtitle {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 24px;
+    color: rgb(22, 24, 35);
+    margin: 0px 16px 12px;
+}
+
+.settingsOptionContainer {
+    position: relative;
+}
+
+.settingsOption {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    font-style: italic;
+    line-height: 22px;
+    color: rgb(22, 24, 35);
+    margin: 0px 16px;
+}
+
+.manageOption {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 22px;
+    margin: 0px 16px;
+    color: #2ba0ff;
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    cursor: pointer;
+}
+
+.avatarSettingsContainer {
+    display: flex;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.avatarSettingsWrapper {
+    display: flex;
+    width: 128px;
+    height: 128px;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    color: #fff;
+    border-radius: 50%;
+    white-space: nowrap;
+    line-height: 32px;
+    text-align: center;
+}
+
+.editAvatar {
+    position: absolute;
+    height: 32px;
+    width: 32px;
+    fill: rgba(255, 255, 255, 0.911);
+    cursor: pointer;
+    margin: auto;
 }
