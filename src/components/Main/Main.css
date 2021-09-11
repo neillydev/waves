@@ -73,3 +73,7 @@
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
 }
+
+.tabSelected {
+    color: #2ba0ff;
+}
