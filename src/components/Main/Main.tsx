@@ -21,6 +21,7 @@ type PostType = {
     mediaType: "video" | "image";
     media: string;
     date_posted: string;
+    sounddescription: string;
 };
 
 const Main = () => {
@@ -85,6 +86,7 @@ const Main = () => {
                     contentDescription={post.caption}
                     mediaType={post.mediaType}
                     mediaURL={post.media}
+                    soundDescription={post.sounddescription}
                     mediaDescription={post.date_posted}
                 />) : <h4>Nothing to see here</h4>}
             </div>

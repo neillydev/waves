@@ -10,10 +10,11 @@ type PostProps = {
     contentDescription: string;
     mediaType: "video" | "image";
     mediaURL: string;
+    soundDescription: string;
     mediaDescription: string;
 };
 
-const Post = ({ author, title, creatorAvatarImg, contentTitle, contentDescription, mediaType, mediaURL, mediaDescription }: PostProps) => {
+const Post = ({ author, title, creatorAvatarImg, contentTitle, contentDescription, mediaType, mediaURL, soundDescription, mediaDescription }: PostProps) => {
     return (
         <div className="postContainer">
             <span className="postWrapper">
@@ -42,6 +43,11 @@ const Post = ({ author, title, creatorAvatarImg, contentTitle, contentDescriptio
                                     </video>
                                 </div>
                             </a>
+                        </div>
+                        <div className="soundDescription">
+                            <h2 className="soundDescriptionHeader">
+                                {soundDescription}
+                            </h2>
                         </div>
                         <div className="mediaDescription">
                             <h2 className="mediaDescriptionText">
