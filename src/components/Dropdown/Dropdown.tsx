@@ -1,11 +1,12 @@
 import React, { useContext } from 'react'
+import { Link } from 'react-router-dom';
 
 import { AuthContext, AuthProvider } from '../contexts/AuthContext';
 
 require('./Dropdown.css');
 
 const Dropdown = () => {
-    const { authDispatch } = useContext(AuthContext);
+    const { authState, authDispatch } = useContext(AuthContext);
 
     const username = localStorage.getItem('username_cache');
     const name = localStorage.getItem('name_cache');
@@ -27,12 +28,12 @@ const Dropdown = () => {
                         Inbox
                     </a>
                 </li>
-                <li className="dropdownItem px-1">
-                    <a href="/">
+                <Link to={`${authState ? '/settings' : ''}`}>
+                    <li className="dropdownItem px-1">
                         Settings
-                    </a>
-                </li>
-                <li className="dropdownItem px-1" onClick={() => { localStorage.removeItem('token'); authDispatch( { type: 'false' } ); } }>
+                    </li>
+                </Link>
+                <li className="dropdownItem px-1" onClick={() => { localStorage.removeItem('token'); authDispatch({ type: 'false' }); }}>
                     <a href="/">
                         Sign Out
                     </a>
