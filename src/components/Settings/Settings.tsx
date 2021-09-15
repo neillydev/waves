@@ -13,7 +13,7 @@ const Settings = () => {
     const [editingType, setEditingType] = useState<EditingType>();
 
     const avatarInput = useRef<HTMLInputElement>(null);
-    const [avatarFile, setAvatarFile] = useState('<none>');
+    const [avatarFile, setAvatarFile] = useState(localStorage.getItem('avatar') || '<none>');
 
     const usernameInput = useRef<HTMLInputElement>(null);
     const nameInput = useRef<HTMLInputElement>(null);
@@ -43,7 +43,7 @@ const Settings = () => {
                 .then(res => {
                     if (res) {
                         if (res.status === 200) {
-
+                            localStorage.setItem('avatar', avatarFile);
                         }
                         else {
 
@@ -64,7 +64,7 @@ const Settings = () => {
                         </div>
                         <div className="avatarSettingsContainer">
                             <span className="avatarSettingsWrapper">
-                                <img src={`${localStorage.getItem('avatar')}`} />
+                                <img src={`${avatarFile}`} />
                                 <EditAvatarSVG className="editAvatar" onClick={() => {
                                     if (avatarInput && avatarInput.current) {
                                         setEditingType(undefined);
@@ -83,7 +83,6 @@ const Settings = () => {
                                                     setAvatarFile(reader.result.toString());
                                                 }
                                             }
-                                            reader.readAsBinaryString(file);
                                         }
 
                                     }
