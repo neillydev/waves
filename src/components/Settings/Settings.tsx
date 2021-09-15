@@ -18,8 +18,7 @@ const Settings = () => {
     const usernameInput = useRef<HTMLInputElement>(null);
     const nameInput = useRef<HTMLInputElement>(null);
 
-    const handleFormSubmit = (e: HTMLFormElement) => {
-        e.preventDefault();
+    const handleFormSubmit = () => {
         setEditingType(undefined);
         const username = usernameInput?.current?.value || localStorage.getItem('username_cache');
         const name = nameInput?.current?.value || localStorage.getItem('name_cache');
