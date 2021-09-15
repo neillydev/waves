@@ -13,39 +13,46 @@ const Settings = () => {
     const [editingType, setEditingType] = useState<EditingType>();
 
     const avatarInput = useRef<HTMLInputElement>(null);
-    const [avatarFile, setAvatarFile] = useState('');
+    const [avatarFile, setAvatarFile] = useState('<none>');
 
     const usernameInput = useRef<HTMLInputElement>(null);
     const nameInput = useRef<HTMLInputElement>(null);
 
-    const handleFormSubmit = () => {
-        const username = usernameInput?.current?.value;
-        const name = nameInput?.current?.value;
+    const handleFormSubmit = (e: HTMLFormElement) => {
+        e.preventDefault();
+        setEditingType(undefined);
+        const username = usernameInput?.current?.value || localStorage.getItem('username_cache');
+        const name = nameInput?.current?.value || localStorage.getItem('name_cache');
+        const oldUsername = localStorage.getItem('username_cache');
         const token = localStorage.getItem('token');
 
-        fetch('http://localhost:3000/profile', {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                token: token,
-                avatarFile: avatarFile,
-                username: username,
-                name: name,
+        
+        if (oldUsername && token && username && name && avatarFile) {
+            fetch('http://localhost:3000/profile', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    token: token,
+                    avatar: avatarFile,
+                    username: username,
+                    oldUsername: localStorage.getItem('username_cache'),
+                    name: name,
+                })
             })
-        })
-            .then(res => {
-                if (res) {
-                    if (res.status === 200) {
+                .then(res => {
+                    if (res) {
+                        if (res.status === 200) {
 
-                    }
-                    else{
+                        }
+                        else {
 
+                        }
                     }
-                }
-            })
-            .catch(error => console.error('Error: ', error));
+                })
+                .catch(error => console.error('Error: ', error));
+        }
     };
 
     return (
@@ -69,11 +76,11 @@ const Settings = () => {
                                     if (event && event.target && event.target.files) {
                                         let file = event.target.files[0];
 
-                                        if(file) {
+                                        if (file) {
                                             const reader = new FileReader();
                                             reader.readAsDataURL(file);
                                             reader.onload = (event) => {
-                                                if(reader?.result){
+                                                if (reader?.result) {
                                                     setAvatarFile(reader.result.toString());
                                                 }
                                             }
