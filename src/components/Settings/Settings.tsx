@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, FormEventHandler } from 'react';
 
 import EditAvatarSVG from '../../svg/edit_avatar.svg';
 
@@ -13,7 +13,40 @@ const Settings = () => {
     const [editingType, setEditingType] = useState<EditingType>();
 
     const avatarInput = useRef<HTMLInputElement>(null);
-    const [avatarFile, setAvatarFile] = useState();
+    const [avatarFile, setAvatarFile] = useState('');
+
+    const usernameInput = useRef<HTMLInputElement>(null);
+    const nameInput = useRef<HTMLInputElement>(null);
+
+    const handleFormSubmit = () => {
+        const username = usernameInput?.current?.value;
+        const name = nameInput?.current?.value;
+        const token = localStorage.getItem('token');
+
+        fetch('http://localhost:3000/profile', {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                token: token,
+                avatarFile: avatarFile,
+                username: username,
+                name: name,
+            })
+        })
+            .then(res => {
+                if (res) {
+                    if (res.status === 200) {
+
+                    }
+                    else{
+
+                    }
+                }
+            })
+            .catch(error => console.error('Error: ', error));
+    };
 
     return (
         <div className="settingsContainer">
@@ -34,6 +67,18 @@ const Settings = () => {
                                 }} />
                                 <input ref={avatarInput} type="file" accept={`accept="image/*"`} className="uploadInput" onChange={(event) => {
                                     if (event && event.target && event.target.files) {
+                                        let file = event.target.files[0];
+
+                                        if(file) {
+                                            const reader = new FileReader();
+                                            reader.readAsDataURL(file);
+                                            reader.onload = (event) => {
+                                                if(reader?.result){
+                                                    setAvatarFile(reader.result.toString());
+                                                }
+                                            }
+                                            reader.readAsBinaryString(file);
+                                        }
 
                                     }
                                 }
@@ -48,8 +93,8 @@ const Settings = () => {
                             {
                                 editingType == EditingType.USERNAME ?
                                     <div className="settingsFormContainer">
-                                        <form action="" className="settingsForm">
-                                            <input placeholder={`${localStorage.getItem('username_cache')}`} autoComplete="off" className="settingsInput" />
+                                        <form action="" className="settingsForm" onSubmit={handleFormSubmit}>
+                                            <input ref={usernameInput} placeholder={`${localStorage.getItem('username_cache')}`} autoComplete="off" className="settingsInput" />
                                         </form>
                                     </div>
                                     :
@@ -70,8 +115,8 @@ const Settings = () => {
                             {
                                 editingType == EditingType.NAME ?
                                     <div className="settingsFormContainer">
-                                        <form action="" className="settingsForm">
-                                            <input placeholder={`${localStorage.getItem('name_cache')}`} autoComplete="off" className="settingsInput" />
+                                        <form action="" className="settingsForm" onSubmit={handleFormSubmit}>
+                                            <input ref={nameInput} placeholder={`${localStorage.getItem('name_cache')}`} autoComplete="off" className="settingsInput" />
                                         </form>
                                     </div>
                                     :
