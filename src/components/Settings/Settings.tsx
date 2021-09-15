@@ -25,7 +25,6 @@ const Settings = () => {
         const oldUsername = localStorage.getItem('username_cache');
         const token = localStorage.getItem('token');
 
-        
         if (oldUsername && token && username && name && avatarFile) {
             fetch('http://localhost:3000/profile', {
                 method: 'PATCH',
@@ -43,7 +42,11 @@ const Settings = () => {
                 .then(res => {
                     if (res) {
                         if (res.status === 200) {
-                            localStorage.setItem('avatar', avatarFile);
+                            localStorage.setItem('avatar', atob(avatarFile));
+                            //use json response for these
+                            localStorage.setItem('username_cache', username);
+                            localStorage.setItem('name_cache', name);
+                            window.location.reload(false);
                         }
                         else {
 
@@ -80,7 +83,8 @@ const Settings = () => {
                                             reader.readAsDataURL(file);
                                             reader.onload = (event) => {
                                                 if (reader?.result) {
-                                                    setAvatarFile(reader.result.toString());
+                                                    var encodedString = btoa(reader?.result.toString());
+                                                    setAvatarFile(encodedString);
                                                 }
                                             }
                                         }
