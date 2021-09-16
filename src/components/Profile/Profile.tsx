@@ -33,10 +33,19 @@ const Profile = () => {
                             </li>
                         </ul>
                         <div className="userBio">
-
+                            <h1>fooli</h1>
+                            <h2>*+!:) !!🖤& * ^ 🌙* !+ ! * +</h2>
                         </div>
                     </div>
                 </header>
+                <ul className="profileTabs">
+                    <li className="profileTab postsTab profileTabSelected">
+                        <span>Posts</span>
+                    </li>
+                    <li className="profileTab taggedTab">
+                        <span>Tagged</span>
+                    </li>
+                </ul>
             </div>
         </div>
     )
