@@ -1,6 +1,5 @@
 .profileContainer {
     display: flex;
-    background-color: rgb(244, 244, 244);
     width: 100%;
 }
 
@@ -121,4 +120,85 @@
 
 .postsTab {
     margin-right: 3rem;
+}
+
+.postsFeed {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.postsItem {
+    display: flex;
+    flex-direction: column;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+    width: 190px;
+}
+
+.postsItemContent {
+    padding-top: 132.653%;
+    position: relative;
+}
+
+.postsItemCardWrapper {
+    position: absolute;
+    inset: 0px;
+}
+
+.postsItemCard {    
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    background-color: rgba(22, 24, 35, 0.06);
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 0px;
+    background-image: url(https://i.imgur.com/UwYBSE7.jpeg);
+    border-radius: 10px;
+}
+
+.postsItemData {
+    padding-top: 4px;
+    padding-bottom: 10px;
+}
+
+.postsItemCaption {
+    display: -webkit-box;   
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+
+    margin-top: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    font-size: 16px;
+    line-height: 22px;
+    color: rgba(38,38,38,1);
+    flex: 0 0 auto;
+    font-weight: 500;
+    word-break: break-word;
+}
+
+.postsItemViews {
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    align-items: center;
+    margin-top: 6px;
+    font-size: 16px;
+    line-height: 22px;
+    color: rgba(22, 24, 35, 0.75);
+}
+
+.viewsIcon {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    
+    font-size: 16px;
+    line-height: 22px;
+    color: rgba(22, 24, 35, 0.75);
 }
