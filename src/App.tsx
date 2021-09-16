@@ -69,7 +69,7 @@ const App = () => {
                         <Route path="/settings">
                             <Settings />
                         </Route>
-                        <Route path="/profile">
+                        <Route path='/@:username' component={Profile}>
                             <Profile />
                         </Route>
                     </Switch>
