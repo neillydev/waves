@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { useLocation } from 'react-router-dom';
 
-import BWWaveSVG from '../../svg/bw_wave.svg'; 
+import BWWaveSVG from '../../svg/bw_wave.svg';
 
 require('./Profile.css');
 
@@ -51,7 +51,6 @@ const Profile = () => {
     };
 
     useEffect(() => {
-        console.log(location.pathname.split('@')[1])
         handleFetchProfile();
     }, []);
 
@@ -96,29 +95,31 @@ const Profile = () => {
                 </ul>
                 <div className="postsContainer">
                     <div className="postsFeed">
-                        <div className="postsItem">
-                            <div className="postsItemContent">
-                                <div className="postsItemCardWrapper">
-                                    <div className="postsItemCard">
-
+                        {profile?.posts.map(post => (
+                            <div className="postsItem">
+                                <div className="postsItemContent">
+                                    <div className="postsItemCardWrapper">
+                                        <div className="postsItemCard">
+                                            <video src={post.media} autoPlay preload="auto" playsInline loop className="postsItemVideo"></video>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="postsItemData">
+                                    <div className="postsItemCaption">
+                                        <h3>{post.caption}</h3>
+                                    </div>
+                                    <div className="postsItemViews">
+                                        <div className="viewsIcon">
+                                            <BWWaveSVG />
+                                            <h3>
+                                                729
+                                            </h3>
+                                        </div>
+                                        <h3>{post.date_posted}</h3>
                                     </div>
                                 </div>
                             </div>
-                            <div className="postsItemData">
-                                <div className="postsItemCaption">
-                                    <h3>we outchea frrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr</h3>
-                                </div>
-                                <div className="postsItemViews">
-                                    <div className="viewsIcon">
-                                        <BWWaveSVG />
-                                        <h3>
-                                            729
-                                        </h3>
-                                    </div>
-                                    <h3>9-15-21</h3>
-                                </div>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </div>
