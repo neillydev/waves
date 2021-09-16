@@ -49,6 +49,11 @@ function NavBar() {
             .catch(error => console.error('Error: ', error));
     };
 
+    const handleSearchTyping = (searchTyping: boolean) => {
+        setSearchValue("");
+        setSearchTyping(searchTyping);
+    };
+
     return (
         <div className='navContainer flex border-b border-gray-200 top-0 inset-x-0 z-100 h-16 items-center'>
             <div className="navbarWrapper w-full max-w-screen-xl relative">
@@ -90,7 +95,7 @@ function NavBar() {
                                 null }
                         </form>
                         { searchTyping ? 
-                            <SearchDropdown username={username} name={name} avatar={avatar} /> 
+                            <SearchDropdown username={username} name={name} avatar={avatar} handleSearchTyping={handleSearchTyping} /> 
                             :
                             null }
                     </div>

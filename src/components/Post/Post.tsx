@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Link } from 'react-router-dom';
+
 require('./Post.css');
 
 type PostProps = {
@@ -20,11 +22,11 @@ const Post = ({ author, nickname, title, creatorAvatarImg, contentTitle, content
         <div className="postContainer">
             <span className="postWrapper">
                 <div className="post">
-                    <a href="/" className="creatorAvatar">
-                        <span className="creatorAvatarImg">
+                    <Link to={`/@${author}`}>
+                        <span className="creatorAvatar creatorAvatarImg">
                             <img src={creatorAvatarImg} />
                         </span>
-                    </a>
+                    </Link>
                     <div className="content">
                         <div className="contentAuthorTitle">
                             <h2 className="contentAuthorName">
