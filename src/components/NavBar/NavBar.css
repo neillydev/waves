@@ -1,3 +1,8 @@
+.navContainer {
+    position: fixed;
+    background-color: #fff;
+}
+
 .navbarWrapper {
     margin-left: 25rem;
     margin-right: 25rem;
@@ -28,6 +33,7 @@
     padding: 0;
     caret-color: #2ba0ff;
     appearance: textfield;
+    z-index: 10;
 }
 .waveSearch[type=search]::-ms-clear { display: none; width : 0; height: 0; }
 .waveSearch[type=search]::-ms-reveal { display: none; width : 0; height: 0; }
