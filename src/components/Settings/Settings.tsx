@@ -42,7 +42,7 @@ const Settings = () => {
                 .then(res => {
                     if (res) {
                         if (res.status === 200) {
-                            localStorage.setItem('avatar', atob(avatarFile));
+                            localStorage.setItem('avatar', avatarFile);
                             //use json response for these
                             localStorage.setItem('username_cache', username);
                             localStorage.setItem('name_cache', name);
@@ -67,7 +67,7 @@ const Settings = () => {
                         </div>
                         <div className="avatarSettingsContainer">
                             <span className="avatarSettingsWrapper">
-                                <img src={`${avatarFile}`} />
+                                <img src={`${atob(avatarFile)}`} />
                                 <EditAvatarSVG className="editAvatar" onClick={() => {
                                     if (avatarInput && avatarInput.current) {
                                         setEditingType(undefined);

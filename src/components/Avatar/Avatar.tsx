@@ -6,7 +6,7 @@ require('./Avatar.css');
 const Avatar = () => {
     const [dropdownSelected, setDropdownSelected] = useState(false);
 
-    const avatar = localStorage.getItem('avatar');
+    const avatar = atob(localStorage.getItem('avatar') || '<none>');
 
     return (
         <div className="avatarContainer" onMouseEnter={(event) => {
