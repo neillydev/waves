@@ -29,9 +29,11 @@ const Post = ({ author, nickname, title, creatorAvatarImg, contentTitle, content
                     </Link>
                     <div className="content">
                         <div className="contentAuthorTitle">
-                            <h2 className="contentAuthorName">
-                                {author}
-                            </h2>
+                            <Link to={`/@${author}`}>
+                                <h2 className="contentAuthorName">
+                                    {author}
+                                </h2>
+                            </Link>
                             <h3 className="contentAuthorNickname">{nickname}</h3>
                         </div>
                         <div className="contentDescription">
