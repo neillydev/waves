@@ -4,6 +4,7 @@ import Main from './components/Main/Main';
 import NavBar from './components/NavBar/NavBar';
 import Upload from './components/Upload/Upload';
 import Settings from './components/Settings/Settings';
+import Profile from './components/Profile/Profile';
 
 import { AuthContext, AuthProvider } from './components/contexts/AuthContext';
 import { ModalContext, ModalProvider } from './components/contexts/ModalContext';
@@ -67,6 +68,9 @@ const App = () => {
                         </Route>
                         <Route path="/settings">
                             <Settings />
+                        </Route>
+                        <Route path="/profile">
+                            <Profile />
                         </Route>
                     </Switch>
                 </div>

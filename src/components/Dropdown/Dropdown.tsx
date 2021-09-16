@@ -18,11 +18,11 @@ const Dropdown = () => {
                     <span className="dropdownHeader">{name}</span>
                     <span className="dropdownSubheader">@{username}</span>
                 </li>
-                <li className="dropdownItem px-1">
-                    <a href="/">
+                <Link to={`${authState ? '/profile' : ''}`}>
+                    <li className="dropdownItem px-1">
                         Profile
-                    </a>
-                </li>
+                    </li>
+                </Link>
                 <li className="dropdownItem px-1">
                     <a href="/">
                         Inbox
