@@ -1,0 +1,21 @@
+.profileContainer {
+    display: flex;
+    background-color: rgb(244, 244, 244);
+    width: 100%;
+}
+
+.profileWrapper {
+    padding: 30px 20px 0;
+    margin: 0 auto 30px;
+}
+
+.profileHeader {
+    margin-bottom: 4rem;
+}
+
+.profileAvatar {
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+}
