@@ -6,6 +6,7 @@ require('./Main.css');
 
 type PostType = {
     avatar: string;
+    name: string;
     userID: string;
     username: string;
     caption: string;
@@ -71,6 +72,7 @@ const Main = () => {
             <div className={`mainContentContainer ${posts && posts.length !== 0 ? 'mainContentSome' : 'mainContentNone'}`}>
                 {posts && posts.length !== 0 ? posts.map(post => <Post
                     author={post.username}
+                    nickname={post.name}
                     title=""
                     creatorAvatarImg={atob(post.avatar)}
                     contentTitle={post.caption}

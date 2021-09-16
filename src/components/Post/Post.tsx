@@ -4,6 +4,7 @@ require('./Post.css');
 
 type PostProps = {
     author: string;
+    nickname: string;
     title: string;
     creatorAvatarImg: string;
     contentTitle: string;
@@ -14,7 +15,7 @@ type PostProps = {
     mediaDescription: string;
 };
 
-const Post = ({ author, title, creatorAvatarImg, contentTitle, contentDescription, mediaType, mediaURL, soundDescription, mediaDescription }: PostProps) => {
+const Post = ({ author, nickname, title, creatorAvatarImg, contentTitle, contentDescription, mediaType, mediaURL, soundDescription, mediaDescription }: PostProps) => {
     return (
         <div className="postContainer">
             <span className="postWrapper">
@@ -29,6 +30,7 @@ const Post = ({ author, title, creatorAvatarImg, contentTitle, contentDescriptio
                             <h2 className="contentAuthorName">
                                 {author}
                             </h2>
+                            <h3 className="contentAuthorNickname">{nickname}</h3>
                         </div>
                         <div className="contentDescription">
                             <h2 className="contentDescriptionText">
