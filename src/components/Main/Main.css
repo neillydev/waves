@@ -5,7 +5,6 @@
     max-width: 1100px;
     justify-content: space-between;
     width: 100%;
-    z-index: -1;
 }
 
 .mainContentContainer {
@@ -21,6 +20,7 @@
     margin-right: 24px;
     width: 692px;
     max-width: 692px;
+    z-index: 1;
 }
 
 .mainContentNone {

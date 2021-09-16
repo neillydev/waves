@@ -161,6 +161,7 @@
     cursor: pointer;
     overflow: hidden;
     border-radius: 10px;
+    border: 1px solid rgba(35, 35, 35, 0.1);
 }
 
 .postsItemVideo {
