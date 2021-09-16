@@ -16,11 +16,17 @@
 }
 
 .profileAvatar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 150px;
     width: 150px;
     border-radius: 50%;
     overflow: hidden;
     margin-right: 7rem;
+    color: #fff;
+    white-space: nowrap;
+    text-align: center;
 }
 
 .profileDetails {
