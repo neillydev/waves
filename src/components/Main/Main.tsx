@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import Explore from '../Explore/Explore';
 import Post from '../Post/Post';
 
 require('./Main.css');
 
 type PostType = {
+    avatar: string;
     userID: string;
     username: string;
     caption: string;
@@ -28,19 +29,13 @@ const Main = () => {
         fetch(`http://localhost:3000/posts`, {
             method: 'GET'
         })
-            .then(res => {
-                if (res) {
-                    if (res.status == 200) {
-                        res.json().then(json => {
-                            setPosts(json);
-                        });
-                    }
-                }
+            .then(res => res.json())
+            .then((json: any) => {
+                setPosts(json);
             })
-            .then(response => console.log('Success: '))
-            .catch(error => console.error('Error: '));
+            .catch(error => console.error('Error: ' + error));
     };
-
+    
     useEffect(() => {
         handleFetchPosts();
     }, []);
@@ -77,7 +72,7 @@ const Main = () => {
                 {posts && posts.length !== 0 ? posts.map(post => <Post
                     author={post.username}
                     title=""
-                    creatorAvatarImg="https://avatars.githubusercontent.com/u/51303046?v=4"
+                    creatorAvatarImg={atob(post.avatar)}
                     contentTitle={post.caption}
                     contentDescription={post.caption}
                     mediaType={post.mediaType}
