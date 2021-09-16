@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+import { useLocation } from 'react-router-dom';
+
 import BWWaveSVG from '../../svg/bw_wave.svg'; 
 
 require('./Profile.css');
@@ -16,7 +18,7 @@ type PostType = {
 };
 
 type ProfileType = {
-    avatar: string;
+    avatar: string | undefined;
     username: string;
     name: string;
     followers: number;
@@ -24,7 +26,8 @@ type ProfileType = {
     posts: PostType[];
 };
 
-const Profile = ({ profileUsername }: ProfileProps) => {
+const Profile = () => {
+    const location = useLocation();
 
     const [profile, setProfile] = useState<ProfileType>();
 
@@ -37,7 +40,7 @@ const Profile = ({ profileUsername }: ProfileProps) => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                username: profileUsername
+                username: location.pathname.split('@')[1]
             })
         })
             .then(res => res.json())
@@ -48,7 +51,7 @@ const Profile = ({ profileUsername }: ProfileProps) => {
     };
 
     useEffect(() => {
-        console.log(profileUsername)
+        console.log(location.pathname.split('@')[1])
         handleFetchProfile();
     }, []);
 
@@ -57,7 +60,7 @@ const Profile = ({ profileUsername }: ProfileProps) => {
             <div className="profileWrapper">
                 <header className="profileHeader">
                     <div className="profileAvatar">
-                        <img src="https://avatars.githubusercontent.com/u/51303046?v=4" />
+                        <img src={profile?.avatar ? atob(profile?.avatar) : '<none>'} />
                     </div>
                     <div className="profileDetails">
                         <div className="userControls">
