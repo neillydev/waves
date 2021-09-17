@@ -52,7 +52,7 @@ const Profile = () => {
 
     useEffect(() => {
         handleFetchProfile();
-    }, []);
+    }, [location.pathname]);
 
     return (
         <div className="profileContainer">
