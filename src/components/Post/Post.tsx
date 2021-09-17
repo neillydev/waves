@@ -39,6 +39,27 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
 
     const [liked, setLiked] = useState(false);
 
+    const [followed, setFollowed] = useState(false);
+
+    const handleFetchFollow = () => {
+        fetch(`http://localhost:3000/follow`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ token: localStorage.getItem('token'), user_id: localStorage.getItem("userid_cache"), username: localStorage.getItem("username_cache"), following_username: author })
+        })
+            .then(res => {
+                if (res.status == 200) {
+                    setFollowed(followed ? false : true);
+                }
+                else if (res.status == 409) {
+                    window.location.reload(false);
+                }
+            })
+            .catch(error => console.error('Error: ' + error));
+    };
+
     const handleFetchLike = () => {
         fetch(`http://localhost:3000/like`, {
             method: 'POST',
@@ -59,6 +80,28 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
             .catch(error => console.error('Error: ' + error));
     };
 
+    const handleCheckIfFollowing = () => {
+        fetch(`http://localhost:3000/following`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ token: localStorage.getItem('token'), user_id: localStorage.getItem("userid_cache"), following_username: author })
+        })
+            .then(res => {
+                if (res.status == 200) {
+                    res.json().then((json: any) => {
+                        console.log(json.following)
+                        setFollowed(json.following);
+                    });
+                }
+                else if (res.status == 409) {
+                    window.location.reload(false);
+                }
+            })
+            
+            .catch(error => console.error('Error: ' + error));
+    };
 
     const handleCheckIfLiked = () => {
         fetch(`http://localhost:3000/liked`, {
@@ -78,6 +121,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
     useEffect(() => {
         if (authState) {
             handleCheckIfLiked();
+            handleCheckIfFollowing();
         }
     }, [])
 
@@ -106,8 +150,8 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                                         null
                                         :
                                         <div className="followBtnWrapper">
-                                            <button className="followBtn">
-                                                Follow
+                                            <button className="followBtn" onClick={authState ? () => handleFetchFollow() : () => dispatch({ type: 'true' })}>
+                                                {followed ? "Following" : "Follow"}
                                             </button>
                                         </div>
                                 }
