@@ -226,3 +226,7 @@
 .socialWaveIcon:hover {
     background-color: rgba(22, 24, 35, 0.1);
 }
+
+.socialWaveIcon:active {
+    background-color: rgba(22, 24, 35, 0.15);
+}
