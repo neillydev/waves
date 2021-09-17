@@ -67,7 +67,7 @@ const Settings = () => {
                         </div>
                         <div className="avatarSettingsContainer">
                             <span className="avatarSettingsWrapper">
-                                <img src={`${atob(avatarFile)}`} />
+                                <img src={`${avatarFile}`} />
                                 <EditAvatarSVG className="editAvatar" onClick={() => {
                                     if (avatarInput && avatarInput.current) {
                                         setEditingType(undefined);
@@ -83,8 +83,7 @@ const Settings = () => {
                                             reader.readAsDataURL(file);
                                             reader.onload = (event) => {
                                                 if (reader?.result) {
-                                                    var encodedString = btoa(reader?.result.toString());
-                                                    setAvatarFile(encodedString);
+                                                    setAvatarFile(reader?.result.toString());
                                                 }
                                             }
                                         }

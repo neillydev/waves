@@ -74,7 +74,7 @@ const Main = () => {
                     author={post.username}
                     nickname={post.name}
                     title=""
-                    creatorAvatarImg={atob(post.avatar)}
+                    creatorAvatarImg={post.avatar}
                     contentTitle={post.caption}
                     contentDescription={post.caption}
                     mediaType={post.mediaType}

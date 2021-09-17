@@ -35,7 +35,7 @@ function NavBar() {
                         res.json().then(json => {
                             setUsername(json.user_profile.username);
                             setName(json.user_profile.name);
-                            setAvatar(atob(json.user_profile.avatar));
+                            setAvatar(json.user_profile.avatar);
                         });
                     }
                     else if (res.status === 404) {

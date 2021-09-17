@@ -59,7 +59,7 @@ const Profile = () => {
             <div className="profileWrapper">
                 <header className="profileHeader">
                     <div className="profileAvatar">
-                        <img src={profile?.avatar ? atob(profile?.avatar) : '<none>'} />
+                        <img src={profile?.avatar ? profile?.avatar : '<none>'} />
                     </div>
                     <div className="profileDetails">
                         <div className="userControls">
