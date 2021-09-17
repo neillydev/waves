@@ -2,6 +2,10 @@ import React from 'react';
 
 import { Link } from 'react-router-dom';
 
+import BWWaveSVG from '../../svg/bw_wave.svg';
+import CommentSVG from '../../svg/comment.svg';
+import ShareSVG from '../../svg/share.svg';
+
 require('./Post.css');
 
 type PostProps = {
@@ -28,13 +32,22 @@ const Post = ({ author, nickname, title, creatorAvatarImg, contentTitle, content
                         </span>
                     </Link>
                     <div className="content">
-                        <div className="contentAuthorTitle">
-                            <Link to={`/@${author}`}>
-                                <h2 className="contentAuthorName">
-                                    {author}
-                                </h2>
-                            </Link>
-                            <h3 className="contentAuthorNickname">{nickname}</h3>
+                        <div className="contentAuthorHeader">
+                            <div className="contentHeader">
+                                <div className="contentAuthorTitle">
+                                    <Link to={`/@${author}`}>
+                                        <h2 className="contentAuthorName">
+                                            {author}
+                                        </h2>
+                                    </Link>
+                                    <h3 className="contentAuthorNickname">{nickname}</h3>
+                                </div>
+                                <div className="followBtnWrapper">
+                                    <button className="followBtn">
+                                        Follow
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                         <div className="contentDescription">
                             <h2 className="contentDescriptionText">
@@ -49,6 +62,30 @@ const Post = ({ author, nickname, title, creatorAvatarImg, contentTitle, content
                                     </video>
                                 </div>
                             </a>
+                            <div className="socialControls">
+                                <ul className="socialControlList">
+                                    <li className="socialControlItem">
+                                        <div className="socialWaveIcon">
+                                            <BWWaveSVG />
+                                        </div>
+                                        <h3 className="socialStats">0</h3>
+                                    </li>
+                                    <li className="socialControlItem">
+                                        <div className="socialWaveIcon">
+                                            <CommentSVG />
+                                        </div>
+                                        <h3 className="socialStats">0</h3>
+                                    </li>
+                                    <li className="socialControlItem">
+                                        <div className="socialControlItemWrapper">
+                                            <div className="socialWaveIcon">
+                                                <ShareSVG />
+                                            </div>
+                                        </div>
+                                        <h3 className="socialStats">0</h3>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                         <div className="soundDescription">
                             <h2 className="soundDescriptionHeader">

@@ -84,7 +84,7 @@
 }
 
 .mediaContainer {
-    display: inline-block;
+    display: flex;
 }
 
 .mediaWrapper {
@@ -131,4 +131,98 @@
 .soundDescriptionHeader:hover {
     cursor: pointer;
     text-decoration: underline;
+}
+
+.contentHeader {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.followBtnWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden;
+}
+
+.followBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+    position: relative;
+    overflow: hidden;
+
+    min-width: 88px;
+    height: 28px;
+    padding: 0px 10px;
+
+    border: 1px solid #2ba0ff;
+    border-radius: 4px;
+    color: #2ba0ff;
+    background: #fff;
+    
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+
+    -webkit-transition: all 0.2s cubic-bezier(0.65,0,0.35,1);
+    transition: all 0.2s cubic-bezier(0.65,0,0.35,1);
+}
+
+.followBtn:hover {
+    background-color: #2ba0ff27;
+}
+
+.socialControls {
+    display: flex;
+}
+
+.socialControlList {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: flex-end;
+}
+
+.socialControlItemWrapper {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    width: 46px;
+    font-size: 14px;
+}
+
+.socialControlItem {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.socialWaveIcon {
+    background-color: rgba(22, 24, 35, 0.06);
+    padding: 14px;
+    border-radius: 100%;
+    margin-left: 0px;
+    cursor: pointer;
+    transition: all 150ms ease-in-out 0s;
+}
+
+.socialStats {
+    margin-top: .5rem;
+    color: rgba(22, 24, 35, 0.8);
+    
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.socialWaveIcon:hover {
+    background-color: rgba(22, 24, 35, 0.1);
 }
