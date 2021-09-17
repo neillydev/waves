@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 
 import { Link } from 'react-router-dom';
+
+import { AuthContext } from '../contexts/AuthContext';
+import { ModalContext } from '../contexts/ModalContext';
 
 import WaveSVG from '../../svg/wave.svg';
 import BWWaveSVG from '../../svg/bw_wave.svg';
@@ -27,6 +30,9 @@ type PostProps = {
 
 const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle, contentDescription, mediaType, mediaURL, soundDescription, mediaDescription, likes, comments }: PostProps) => {
 
+    const { authState } = useContext(AuthContext);
+    const { dispatch } = useContext(ModalContext);
+
     const [postID, setPostID] = useState(post_id);
 
     const [postLikes, setPostLikes] = useState(Number(likes));
@@ -41,7 +47,15 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
             },
             body: JSON.stringify({ token: localStorage.getItem('token'), user_id: localStorage.getItem("userid_cache"), post_id: postID })
         })
-            .then(res => res.status == 200 ? setPostLikes(Number(postLikes) + 1) : null)
+            .then(res => {
+                if (res.status == 200) {
+                    setPostLikes(Number(postLikes) + 1);
+                    setLiked(true);
+                }
+                else if (res.status == 409) {
+                    window.location.reload(false);
+                }
+            })
             .catch(error => console.error('Error: ' + error));
     };
 
@@ -62,7 +76,9 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
     };
 
     useEffect(() => {
-        handleCheckIfLiked();
+        if (authState) {
+            handleCheckIfLiked();
+        }
     }, [])
 
     return (
@@ -113,7 +129,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                             <div className="socialControls">
                                 <ul className="socialControlList">
                                     <li className="socialControlItem">
-                                        <div className="socialWaveIcon" onClick={() => handleFetchLike()}>
+                                        <div className="socialWaveIcon" onClick={() => authState ? handleFetchLike() : dispatch({ type: 'true' })}>
                                             {
                                                 liked ?
                                                     <WaveSVG />
