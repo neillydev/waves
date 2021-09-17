@@ -112,7 +112,7 @@ const Profile = () => {
                                         <div className="viewsIcon">
                                             <BWWaveSVG />
                                             <h3>
-                                                729
+                                                {post.likes}
                                             </h3>
                                         </div>
                                         <h3>{post.date_posted}</h3>
