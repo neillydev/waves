@@ -39,6 +39,13 @@ const App = () => {
             })
             .catch(error => {
                 authDispatch({ type: 'false' });
+                localStorage.removeItem('token');
+                localStorage.removeItem('username_cache');
+                localStorage.removeItem('userid_cache');
+                localStorage.removeItem('name_cache');
+                localStorage.removeItem('avatar');
+                localStorage.removeItem('birthday_cache');
+                window.location.reload(false);
             });
     };
 
@@ -49,7 +56,13 @@ const App = () => {
             handleTokenVerify(token);
         }
         else {
-            console.error('No token found!')
+            console.error('No token found!');
+            localStorage.removeItem('token');
+            localStorage.removeItem('username_cache');
+            localStorage.removeItem('userid_cache');
+            localStorage.removeItem('name_cache');
+            localStorage.removeItem('avatar');
+            localStorage.removeItem('birthday_cache');
         }
     };
 

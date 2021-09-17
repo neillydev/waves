@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 
 import { AuthContext } from '../contexts/AuthContext';
-import {ModalContext} from '../contexts/ModalContext';
+import { ModalContext } from '../contexts/ModalContext';
 
 require('./LoginForm.css');
 
@@ -13,20 +13,20 @@ const LoginForm = () => {
     const [usernameExists, setUsernameExists] = useState<boolean>();
     const [password, setPassword] = useState<string>();
 
-    const handleLogin = (event: React.FormEvent<HTMLFormElement>) => { 
+    const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         fetch(`http://localhost:3000/login`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username, password })
-            })
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password })
+        })
             .then(res => {
-                if(res){
-                    if(res.status == 200){
-                        dispatch( { type: 'false' } );
-                        authDispatch( { type: 'true' } );
+                if (res) {
+                    if (res.status == 200) {
+                        dispatch({ type: 'false' });
+                        authDispatch({ type: 'true' });
                         res.json().then(json => {
                             localStorage.setItem('token', json.token);
                             localStorage.setItem('email_cache', json.user_profile.email);
@@ -35,9 +35,11 @@ const LoginForm = () => {
                             localStorage.setItem('name_cache', json.user_profile.name);
                             localStorage.setItem('avatar', json.user_profile.avatar);
                             localStorage.setItem('birthday_cache', json.user_profile.birthday);
+
+                            window.location.reload(false);
                         });
                     }
-                    else if(res.status == 409){
+                    else if (res.status == 409) {
                         setUsernameExists(false);
                     }
                 }
@@ -45,7 +47,7 @@ const LoginForm = () => {
             .then(response => console.log('Success: ', response))
             .catch(error => console.error('Error: ', error));
     };
-    
+
     return (
         <div className="loginFormContainer">
             <form onSubmit={handleLogin}>

@@ -33,7 +33,7 @@ const Dropdown = () => {
                         Settings
                     </li>
                 </Link>
-                <li className="dropdownItem px-1" onClick={() => { localStorage.removeItem('token'); authDispatch({ type: 'false' }); }}>
+                <li className="dropdownItem px-1" onClick={() => { localStorage.removeItem('token'); authDispatch({ type: 'false' }); window.location.reload(false); }}>
                     <a href="/">
                         Sign Out
                     </a>
