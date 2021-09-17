@@ -73,6 +73,7 @@ const Main = () => {
                 </div>
             </div>
             <div className={`mainContentContainer ${posts && posts.length !== 0 ? 'mainContentSome' : 'mainContentNone'}`}>
+                
                 {posts && posts.length !== 0 ? posts.map(post => <Post
                     post_id={post.post_id}
                     author={post.username}
@@ -87,7 +88,7 @@ const Main = () => {
                     mediaDescription={post.date_posted}
                     likes={post.likes}
                     comments={post.comments}
-                />) : <h4>Nothing to see here</h4>}
+                    /> ) : <h4>Nothing to see here</h4>}
             </div>
         </div>
     )

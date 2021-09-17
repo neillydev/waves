@@ -41,6 +41,8 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
 
     const [followed, setFollowed] = useState(false);
 
+    const [postClicked, setPostClicked] = useState<Number>();
+
     const handleFetchFollow = () => {
         fetch(`http://localhost:3000/follow`, {
             method: 'POST',
@@ -99,7 +101,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                     window.location.reload(false);
                 }
             })
-            
+
             .catch(error => console.error('Error: ' + error));
     };
 
@@ -126,7 +128,84 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
     }, [])
 
     return (
-        <div className="postContainer">
+        <div className="postContainer" onClick={() => setPostClicked(postID)}>
+            {
+                postClicked ?
+                    <div className="postLargeContainer">
+                        <div className="postLargeVideoContainer">
+                            <div className="postLargeVideoWrapper">
+                                <video src={mediaURL} autoPlay preload="auto" playsInline loop className="largeMedia"></video>
+                            </div>
+                        </div>
+                        <div className="postLargeSocialContainer">
+                            <div className="postLargeAuthor">
+                                <div className="postLargeAuthorWrapper">
+                                    <div className="postLargeAuthorInfo">
+                                        <Link to={`/@${author}`}>
+                                            <span className="creatorAvatar creatorAvatarImg">
+                                                <img src={creatorAvatarImg} />
+                                            </span>
+                                        </Link>
+                                        <div className="contentAuthorTitle contentAuthorLarge">
+                                            <Link to={`/@${author}`}>
+                                                <h2 className="contentAuthorName">
+                                                    {author}
+                                                </h2>
+                                            </Link>
+                                            <h3 className="contentAuthorNickname">{nickname}</h3>
+                                        </div>
+                                    </div>
+                                    {
+                                        localStorage.getItem('username_cache') && author === localStorage.getItem('username_cache') ?
+                                            null
+                                            :
+                                            <div className="followBtnWrapper">
+                                                <button className="followBtn" onClick={authState ? () => handleFetchFollow() : () => dispatch({ type: 'true' })}>
+                                                    {followed ? "Following" : "Follow"}
+                                                </button>
+                                            </div>
+                                    }
+                                </div>
+                            </div>
+                            <div className="postLargeDesc">
+                                <h1 className="postLargeCaption">{contentDescription}</h1>
+                                <h1 className="postLargeSoundDesc">{soundDescription}</h1>
+                                <div className="postSocialControls">
+                                    <div className="leftControls">
+                                        <div className="controlItem">
+                                            <span className="socialWaveIcon controlIcon likeIcon">
+                                                {
+                                                    liked ?
+                                                        <WaveSVG />
+                                                        :
+                                                        <BWWaveSVG />
+                                                }
+                                            </span>
+                                            <h3 className="socialStats controlStats">{postLikes}</h3>
+                                        </div>
+                                        <div className="controlItem">
+                                            <span className="socialWaveIcon controlIcon likeIcon">
+                                                <CommentSVG />
+                                            </span>
+                                            <h3 className="socialStats controlStats">0</h3>
+                                        </div>
+                                    </div>
+                                    <div className="rightControls">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="postLargeCommentContainer">
+
+                            </div>
+                            <div className="postLargeCommentingContainer">
+
+                            </div>
+                        </div>
+                    </div>
+                    :
+                    null
+            }
             <span className="postWrapper">
                 <div className="post">
                     <Link to={`/@${author}`}>

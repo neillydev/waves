@@ -46,6 +46,12 @@
     margin-bottom: .25rem;
 }
 
+.contentAuthorLarge {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
+}
+
 .contentAuthorName {
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
@@ -229,4 +235,139 @@
 
 .socialWaveIcon:active {
     background-color: rgba(22, 24, 35, 0.15);
+}
+
+.postLargeContainer {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    background: rgb(255, 255, 255);
+    z-index: 1000;
+}
+
+.postLargeVideoContainer {
+    flex: 1 1 896px;
+    position: relative;
+    overflow: hidden;
+    background: black;
+    padding: 0px 80px;
+}
+
+.postLargeVideoWrapper{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background: center center / contain no-repeat;
+}
+
+.largeMedia {
+    display: block;
+    position: absolute;
+    inset: 0px;
+    transform: none;
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+}
+
+.postLargeSocialContainer {
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 544px;
+    width: 544px;
+}
+
+.postLargeAuthor {
+    padding: 32px 32px 0px;
+}
+
+.postLargeAuthorInfo {
+    display: flex;
+}
+
+.postLargeAuthorWrapper {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    flex: 0 0 auto;
+    -webkit-box-align: center;
+    align-items: center;
+    padding: 22px 0px 15px;
+    color: rgb(22, 24, 35);
+}
+
+.postLargeDesc {
+    display: flex;
+    flex-direction: column;
+    padding: 0px 32px;
+    overflow: hidden;
+    flex-shrink: 0;
+    margin-top: .5rem;
+}
+
+.postLargeCaption {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    color: rgb(18, 18, 18);
+    flex: 0 0 auto;
+    font-weight: normal;
+    margin-bottom: 0px;
+    word-break: break-word;
+}
+
+.postLargeSoundDesc {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 22px;
+    color: rgb(18, 18, 18);
+    position: relative;
+    margin-bottom: 16px;
+    flex: 0 0 auto;
+    margin-top: 1rem;
+}
+
+.postSocialControls {
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    align-items: center;
+    padding: 16px 0px;
+    position: relative;
+    flex: 0 0 auto;
+}
+
+.leftControls {
+    display: flex;
+    flex: 0 0 auto;
+    font-weight: 600;
+    font-size: 16px;
+    height: 40px;
+    line-height: 40px;
+}
+
+.controlItem {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+    margin-right: 2rem;
+}
+
+.controlIcon {
+    padding: 6px;
+    margin-right: .5rem;
+}
+
+.controlStats {
+    margin-top: 0px;
+}
+
+.likeIcon {
+    cursor: pointer;
 }
