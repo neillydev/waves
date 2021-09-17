@@ -127,3 +127,8 @@
     overflow: hidden;
     color: rgb(18, 18, 18);
 }
+
+.soundDescriptionHeader:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}

@@ -67,3 +67,7 @@
     justify-content: center;
     align-items: center;
 }
+
+.avatarWrapper {
+    border: 1px solid rgba(35, 35, 35, 1);
+}
