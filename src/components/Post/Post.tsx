@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Link } from 'react-router-dom';
 
+import WaveSVG from '../../svg/wave.svg';
 import BWWaveSVG from '../../svg/bw_wave.svg';
 import CommentSVG from '../../svg/comment.svg';
 import ShareSVG from '../../svg/share.svg';
@@ -9,6 +10,7 @@ import ShareSVG from '../../svg/share.svg';
 require('./Post.css');
 
 type PostProps = {
+    post_id: number;
     author: string;
     nickname: string;
     title: string;
@@ -19,9 +21,50 @@ type PostProps = {
     mediaURL: string;
     soundDescription: string;
     mediaDescription: string;
+    likes: number;
+    comments: number;
 };
 
-const Post = ({ author, nickname, title, creatorAvatarImg, contentTitle, contentDescription, mediaType, mediaURL, soundDescription, mediaDescription }: PostProps) => {
+const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle, contentDescription, mediaType, mediaURL, soundDescription, mediaDescription, likes, comments }: PostProps) => {
+
+    const [postID, setPostID] = useState(post_id);
+
+    const [postLikes, setPostLikes] = useState(Number(likes));
+
+    const [liked, setLiked] = useState(false);
+
+    const handleFetchLike = () => {
+        fetch(`http://localhost:3000/like`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ token: localStorage.getItem('token'), user_id: localStorage.getItem("userid_cache"), post_id: postID })
+        })
+            .then(res => res.status == 200 ? setPostLikes(Number(postLikes) + 1) : null)
+            .catch(error => console.error('Error: ' + error));
+    };
+
+
+    const handleCheckIfLiked = () => {
+        fetch(`http://localhost:3000/liked`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ token: localStorage.getItem('token'), user_id: localStorage.getItem("userid_cache"), post_id: postID })
+        })
+            .then(res => res.json())
+            .then((json: any) => {
+                setLiked(json.liked);
+            })
+            .catch(error => console.error('Error: ' + error));
+    };
+
+    useEffect(() => {
+        handleCheckIfLiked();
+    }, [])
+
     return (
         <div className="postContainer">
             <span className="postWrapper">
@@ -42,11 +85,16 @@ const Post = ({ author, nickname, title, creatorAvatarImg, contentTitle, content
                                     </Link>
                                     <h3 className="contentAuthorNickname">{nickname}</h3>
                                 </div>
-                                <div className="followBtnWrapper">
-                                    <button className="followBtn">
-                                        Follow
-                                    </button>
-                                </div>
+                                {
+                                    localStorage.getItem('username_cache') && author === localStorage.getItem('username_cache') ?
+                                        null
+                                        :
+                                        <div className="followBtnWrapper">
+                                            <button className="followBtn">
+                                                Follow
+                                            </button>
+                                        </div>
+                                }
                             </div>
                         </div>
                         <div className="contentDescription">
@@ -65,16 +113,21 @@ const Post = ({ author, nickname, title, creatorAvatarImg, contentTitle, content
                             <div className="socialControls">
                                 <ul className="socialControlList">
                                     <li className="socialControlItem">
-                                        <div className="socialWaveIcon">
-                                            <BWWaveSVG />
+                                        <div className="socialWaveIcon" onClick={() => handleFetchLike()}>
+                                            {
+                                                liked ?
+                                                    <WaveSVG />
+                                                    :
+                                                    <BWWaveSVG />
+                                            }
                                         </div>
-                                        <h3 className="socialStats">0</h3>
+                                        <h3 className="socialStats">{postLikes}</h3>
                                     </li>
                                     <li className="socialControlItem">
                                         <div className="socialWaveIcon">
                                             <CommentSVG />
                                         </div>
-                                        <h3 className="socialStats">0</h3>
+                                        <h3 className="socialStats">{comments}</h3>
                                     </li>
                                     <li className="socialControlItem">
                                         <div className="socialControlItemWrapper">

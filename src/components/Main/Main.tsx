@@ -5,6 +5,7 @@ import Post from '../Post/Post';
 require('./Main.css');
 
 type PostType = {
+    post_id: number;
     avatar: string;
     name: string;
     userID: string;
@@ -14,6 +15,8 @@ type PostType = {
     media: string;
     date_posted: string;
     sounddescription: string;
+    likes: number;
+    comments: number;
 };
 
 enum ViewType {
@@ -71,6 +74,7 @@ const Main = () => {
             </div>
             <div className={`mainContentContainer ${posts && posts.length !== 0 ? 'mainContentSome' : 'mainContentNone'}`}>
                 {posts && posts.length !== 0 ? posts.map(post => <Post
+                    post_id={post.post_id}
                     author={post.username}
                     nickname={post.name}
                     title=""
@@ -81,6 +85,8 @@ const Main = () => {
                     mediaURL={post.media}
                     soundDescription={post.sounddescription}
                     mediaDescription={post.date_posted}
+                    likes={post.likes}
+                    comments={post.comments}
                 />) : <h4>Nothing to see here</h4>}
             </div>
         </div>
