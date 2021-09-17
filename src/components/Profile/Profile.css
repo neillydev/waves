@@ -214,3 +214,9 @@
     line-height: 22px;
     color: rgba(22, 24, 35, 0.75);
 }
+
+.viewsIcon > svg { 
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
