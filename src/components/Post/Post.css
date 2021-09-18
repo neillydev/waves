@@ -25,6 +25,8 @@
     width: 54px;
     height: 54px;
     border-radius: 50%;
+    border-width: 0.5px;
+    border-color: rgba(22, 24, 35, 0.12);
 }
 
 .creatorAvatarImg > img {
@@ -420,6 +422,7 @@
     background: rgba(22, 24, 35, 0.06);
     outline: none;
     caret-color: #2ba0ff;
+    color:rgb(0, 0, 0);
 
     font-family: 'Montserrat', sans-serif;
     font-weight: 500;
@@ -436,4 +439,90 @@
     align-items: center;
     padding-left: 10px;
     cursor: pointer;
+}
+
+.commentItem {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.commentItemContent {
+    display: flex;
+    user-select: none;
+    position: relative;
+    padding: 0px;
+    margin-bottom: 1rem;
+}
+
+.commentAvatar {
+    width: 40px;
+    height: 40px;
+    border-width: 0.5px;
+    border-color: rgba(22, 24, 35, 0.12);
+    margin-right: 1rem;
+}
+
+.commentText {
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 22px;
+    color:rgb(38, 38, 38);
+
+    padding-top: 4px;
+    padding-right: 40px;
+    word-break: break-word;
+    white-space: pre-line;
+    user-select: none;
+}
+
+.commentFooter {
+    display: flex;
+}
+
+.commentTime {
+    display: block;
+    font-size: 14px;
+    line-height: 20px;
+    margin: 6px 0px 0px;
+    color: rgba(18, 18, 18, 0.5);
+    user-select: none;
+}
+
+.commentReplyBtn {
+    margin: 6px 0px 0px 24px;
+    cursor: pointer;
+    color: #2ba0ff;
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.commentLikesContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 1.25rem;
+    position: absolute;
+    top: 24px;
+    right: 2px;
+}
+
+.commentLikesContainer > svg {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.commentLikes {
+    display: block;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+    text-align: center;
+    color: rgba(22, 24, 35, 0.671);
+    margin-top: 4px;
 }

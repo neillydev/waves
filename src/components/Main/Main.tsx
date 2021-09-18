@@ -16,7 +16,7 @@ type PostType = {
     date_posted: string;
     sounddescription: string;
     likes: number;
-    comments: number;
+    comments: any;
 };
 
 enum ViewType {
@@ -28,6 +28,7 @@ const Main = () => {
     const [viewType, setViewType] = useState<ViewType>(ViewType.TRENDING);
 
     const [posts, setPosts] = useState<PostType[]>();
+    const [postComments, setPostComments] = useState<string[]>();
 
     const handleFetchPosts = () => {
         fetch(`http://localhost:3000/posts`, {

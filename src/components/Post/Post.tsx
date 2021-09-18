@@ -1,10 +1,10 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 
 import { Link } from 'react-router-dom';
 
 import { AuthContext } from '../contexts/AuthContext';
 import { ModalContext } from '../contexts/ModalContext';
-import {EnlargedContext} from '../contexts/EnlargedContext';
+import { EnlargedContext } from '../contexts/EnlargedContext';
 
 import WaveSVG from '../../svg/wave.svg';
 import BWWaveSVG from '../../svg/bw_wave.svg';
@@ -26,7 +26,7 @@ type PostProps = {
     soundDescription: string;
     mediaDescription: string;
     likes: number;
-    comments: number;
+    comments: any;
 };
 
 const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle, contentDescription, mediaType, mediaURL, soundDescription, mediaDescription, likes, comments }: PostProps) => {
@@ -44,6 +44,9 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
     const [followed, setFollowed] = useState(false);
 
     const [postClicked, setPostClicked] = useState<Number>();
+
+    const [comment, setComment] = useState<string>('');
+    const [postComments, setPostComments] = useState<any>(comments);
 
     const handleFetchFollow = () => {
         fetch(`http://localhost:3000/follow`, {
@@ -82,6 +85,33 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                 }
             })
             .catch(error => console.error('Error: ' + error));
+    };
+
+    const handlePostComment = () => {
+        if (comment) {
+            const saveComment = comment;
+
+            setComment('');
+
+            fetch(`http://localhost:3000/comment`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ token: localStorage.getItem('token'), user_id: localStorage.getItem("userid_cache"), post_id: postID, comment: saveComment })
+            })
+                .then(res => {
+                    if (res.status == 200) {
+                        res.json().then((json: any) => {
+                            setPostComments([...postComments, json]);
+                        });
+                    }
+                    else if (res.status == 409) {
+                        window.location.reload(false);
+                    }
+                })
+                .catch(error => console.error('Error: ' + error));
+        }
     };
 
     const handleCheckIfFollowing = () => {
@@ -130,10 +160,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
     }, [])
 
     return (
-        <div className="postContainer" onClick={() => {
-            setPostClicked(postID);
-            enlarge_dispatch({ type: 'true' });
-        }}>
+        <div className="postContainer">
             {
                 postClicked ?
                     <div className="postLargeContainer">
@@ -192,7 +219,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                                             <span className="socialWaveIcon controlIcon likeIcon">
                                                 <CommentSVG />
                                             </span>
-                                            <h3 className="socialStats controlStats">0</h3>
+                                            <h3 className="socialStats controlStats">{postComments.length}</h3>
                                         </div>
                                     </div>
                                     <div className="rightControls">
@@ -202,14 +229,54 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                             </div>
                             <div className="postLargeCommentContainer">
                                 <div className="enlargedComments">
-                                    
+
+                                    {postComments ? postComments.map((comment: any) =>
+
+                                        <div className="commentItem">
+                                            <div className="commentItemContent">
+                                                <Link to={`/@${comment.user_profile.username}`}>
+                                                    <span className="creatorAvatar creatorAvatarImg commentAvatar">
+                                                        <img src={comment.user_profile.avatar} />
+                                                    </span>
+                                                </Link>
+                                                <div className="commentItemContentContainer">
+                                                    <Link to={`/@${comment.user_profile.username}`}>
+                                                        <h2 className="contentAuthorName">
+                                                            {comment.user_profile.username}
+                                                        </h2>
+                                                    </Link>
+                                                    <p className="commentText">
+                                                        <span>{comment.comment}</span>
+                                                        <div className="commentFooter">
+                                                            <span className="commentTime">
+                                                                3d ago
+                                                            </span>
+                                                            <span className="commentReplyBtn">
+                                                                Reply
+                                                            </span>
+                                                        </div>
+                                                    </p>
+                                                </div>
+                                                <div className="commentLikesContainer">
+                                                    {
+                                                        liked ?
+                                                            <WaveSVG />
+                                                            :
+                                                            <BWWaveSVG />
+                                                    }
+                                                    <span className="commentLikes">
+                                                        {comment.likes}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>) : null}
                                 </div>
                             </div>
                             <div className="postLargeFormContainer">
                                 <div className="postLargeFormWrapper">
-                                    <input type="text" className="enlargedInputForm" placeholder="Post a comment..." />
+                                    <input value={comment} type="text" className="enlargedInputForm" placeholder="Post a comment..." onChange={(event) => setComment(event.currentTarget.value)} />
                                 </div>
-                                <div className="postCommentBtn">
+                                <div className="postCommentBtn" onClick={() => handlePostComment()}>
                                     Post
                                 </div>
                             </div>
@@ -257,7 +324,11 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                             <a href="/" className="mediaWrapper">
                                 <div className="mediaImg">
                                     <video src={mediaURL.length > 0 ? mediaURL : ''} autoPlay preload="auto" playsInline loop className="media"
-                                        onLoadedData={(event) => event.currentTarget.play()}>
+                                        onLoadedData={(event) => event.currentTarget.play()} onClick={(event) => {
+                                            event.preventDefault();
+                                            setPostClicked(postID);
+                                            enlarge_dispatch({ type: 'true' });
+                                        }}>
                                     </video>
                                 </div>
                             </a>
@@ -275,10 +346,13 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                                         <h3 className="socialStats">{postLikes}</h3>
                                     </li>
                                     <li className="socialControlItem">
-                                        <div className="socialWaveIcon">
+                                        <div className="socialWaveIcon" onClick={() => {
+                                            setPostClicked(postID);
+                                            enlarge_dispatch({ type: 'true' });
+                                        }}>
                                             <CommentSVG />
                                         </div>
-                                        <h3 className="socialStats">{comments}</h3>
+                                        <h3 className="socialStats">{comments.length}</h3>
                                     </li>
                                     <li className="socialControlItem">
                                         <div className="socialControlItemWrapper">
