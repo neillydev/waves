@@ -371,3 +371,69 @@
 .likeIcon {
     cursor: pointer;
 }
+
+.postLargeCommentContainer {
+    width: 100%;
+    flex: 1 1 auto;
+    position: relative;
+    display: flex;
+    background-color: rgb(248, 248, 248);
+    padding: 0px 32px;
+    border-top: 0.5px solid rgba(18, 18, 18, 0.12);
+    border-bottom: 0.5px solid rgba(18, 18, 18, 0.12);
+    box-sizing: border-box;
+    overflow-y: overlay;
+}
+
+.enlargedComments {
+    padding-top: 16px;
+    width: 100%;
+}
+
+.postLargeFormContainer {
+    display: flex;
+    margin: 0px 28px;
+    padding: 21px 0px;
+    background-color: rgb(255, 255, 255);
+    justify-content: center;
+    align-items: center;
+}
+
+.postLargeFormWrapper {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: flex-end;
+    flex: 1 1 0%;
+
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.enlargedInputForm {
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid rgb(22 24 35 / 26%);
+    padding: 10px;
+    background: rgba(22, 24, 35, 0.06);
+    outline: none;
+    caret-color: #2ba0ff;
+
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.postCommentBtn {
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 12px;
+    color: #2ba0ff;
+    justify-content: center;
+    align-items: center;
+    padding-left: 10px;
+    cursor: pointer;
+}

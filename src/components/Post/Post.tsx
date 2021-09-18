@@ -196,10 +196,17 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                                 </div>
                             </div>
                             <div className="postLargeCommentContainer">
-
+                                <div className="enlargedComments">
+                                    
+                                </div>
                             </div>
-                            <div className="postLargeCommentingContainer">
-
+                            <div className="postLargeFormContainer">
+                                <div className="postLargeFormWrapper">
+                                    <input type="text" className="enlargedInputForm" placeholder="Post a comment..." />
+                                </div>
+                                <div className="postCommentBtn">
+                                    Post
+                                </div>
                             </div>
                         </div>
                     </div>
