@@ -77,8 +77,11 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
         })
             .then(res => {
                 if (res.status == 200) {
-                    setPostLikes(Number(postLikes) + 1);
-                    setLiked(true);
+                    
+                    res.json().then((json: any) => {
+                        setPostLikes(json.likes);
+                        setLiked(!liked);
+                    });
                 }
                 else if (res.status == 409) {
                     window.location.reload(false);
