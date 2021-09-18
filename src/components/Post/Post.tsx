@@ -273,9 +273,13 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                                 </div>
                             </div>
                             <div className="postLargeFormContainer">
-                                <div className="postLargeFormWrapper">
+                                <form className="postLargeFormWrapper" action="" onSubmit={(event) => {
+                                    event.preventDefault();
+                                    handlePostComment()
+                                }
+                                }>
                                     <input value={comment} type="text" className="enlargedInputForm" placeholder="Post a comment..." onChange={(event) => setComment(event.currentTarget.value)} />
-                                </div>
+                                </form>
                                 <div className="postCommentBtn" onClick={() => handlePostComment()}>
                                     Post
                                 </div>
