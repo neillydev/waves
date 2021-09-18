@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { AuthContext } from '../contexts/AuthContext';
 import { ModalContext } from '../contexts/ModalContext';
+import {EnlargedContext} from '../contexts/EnlargedContext';
 
 import WaveSVG from '../../svg/wave.svg';
 import BWWaveSVG from '../../svg/bw_wave.svg';
@@ -32,6 +33,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
 
     const { authState } = useContext(AuthContext);
     const { dispatch } = useContext(ModalContext);
+    const { enlarge_dispatch } = useContext(EnlargedContext);
 
     const [postID, setPostID] = useState(post_id);
 
@@ -128,7 +130,10 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
     }, [])
 
     return (
-        <div className="postContainer" onClick={() => setPostClicked(postID)}>
+        <div className="postContainer" onClick={() => {
+            setPostClicked(postID);
+            enlarge_dispatch({ type: 'true' });
+        }}>
             {
                 postClicked ?
                     <div className="postLargeContainer">

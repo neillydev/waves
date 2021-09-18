@@ -71,3 +71,7 @@
 .avatarWrapper {
     border: 1px solid rgba(35, 35, 35, 1);
 }
+
+.navbarEnlarged {
+    z-index: -1;
+}

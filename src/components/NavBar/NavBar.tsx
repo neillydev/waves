@@ -4,6 +4,7 @@ import Avatar from '../Avatar/Avatar';
 
 import {AuthContext} from '../contexts/AuthContext';
 import {ModalContext} from '../contexts/ModalContext';
+import {EnlargedContext} from '../contexts/EnlargedContext';
 import SearchDropdown from '../SearchDropdown/SearchDropdown';
 
 import { Link } from 'react-router-dom';
@@ -12,6 +13,7 @@ require('./NavBar.css');
 
 function NavBar() {
     const { authState } = useContext(AuthContext);
+    const { state } = useContext(EnlargedContext);
     const { dispatch } = useContext(ModalContext);
 
     const [searchTyping, setSearchTyping] = useState(false);
@@ -55,7 +57,7 @@ function NavBar() {
     };
 
     return (
-        <div className='navContainer flex border-b border-gray-200 top-0 inset-x-0 z-100 h-16 items-center'>
+        <div className={`navContainer ${state ? 'navbarEnlarged' : ''} flex border-b border-gray-200 top-0 inset-x-0 z-100 h-16 items-center`}>
             <div className="navbarWrapper w-full max-w-screen-xl relative">
                 <div className="navHeaderContainer flex items-center justify-between">
                     <div className="navTitleContainer">

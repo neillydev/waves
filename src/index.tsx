@@ -4,13 +4,16 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { ModalContext, ModalProvider } from './components/contexts/ModalContext';
 import { AuthContext, AuthProvider } from './components/contexts/AuthContext';
+import { EnlargedContext, EnlargedProvider } from './components/contexts/EnlargedContext';
 
 
 ReactDOM.render(
     <BrowserRouter>
         <AuthProvider>
             <ModalProvider>
-                <App />
+                <EnlargedProvider>
+                    <App />
+                </EnlargedProvider>
             </ModalProvider>
         </AuthProvider>
     </BrowserRouter>,
