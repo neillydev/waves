@@ -11,6 +11,7 @@ import BWWaveSVG from '../../svg/bw_wave.svg';
 import CommentSVG from '../../svg/comment.svg';
 import ShareSVG from '../../svg/share.svg';
 import CancelSVG from '../../svg/cancel.svg';
+import DownArrowSVG from '../../svg/down-arrow.svg';
 
 require('./Post.css');
 
@@ -49,6 +50,8 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
 
     const [comment, setComment] = useState<string>('');
     const [postComments, setPostComments] = useState<any>(comments);
+    const [reply, setReply] = useState<any>();
+    const [showReplies, setShowReplies] = useState<number>(1);
 
     const handleFetchFollow = () => {
         fetch(`http://localhost:3000/follow`, {
@@ -118,13 +121,13 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
             const saveComment = comment;
 
             setComment('');
-
+            console.log(reply);
             fetch(`http://localhost:3000/comment`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ token: localStorage.getItem('token'), user_id: localStorage.getItem("userid_cache"), post_id: postID, comment: saveComment })
+                body: JSON.stringify({ token: localStorage.getItem('token'), user_id: localStorage.getItem("userid_cache"), post_id: postID, comment: saveComment, reply_to: reply && reply.reply_to ? reply.reply_to : 0 })
             })
                 .then(res => {
                     if (res.status == 200) {
@@ -209,6 +212,9 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                         <CancelSVG onClick={() => {
                             enlarge_dispatch({ type: 'false' });
                             setPostClicked(undefined);
+                            setReply(undefined);
+                            setShowReplies(1);
+                            setComment('');
                         }} />
                         <div className="postLargeSocialContainer">
                             <div className="postLargeAuthor">
@@ -271,48 +277,119 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                             <div className="postLargeCommentContainer">
                                 <div className="enlargedComments">
 
-                                    {postComments ? postComments.map((comment: any) =>
+                                    {postComments ? postComments.map((comment: any) => {
 
-                                        <div className="commentItem">
-                                            <div className="commentItemContent">
-                                                <Link to={`/@${comment.user_profile.username}`}>
-                                                    <span className="creatorAvatar creatorAvatarImg commentAvatar">
-                                                        <img src={comment.user_profile.avatar} />
-                                                    </span>
-                                                </Link>
-                                                <div className="commentItemContentContainer">
+                                        if (Number(comment.reply_to) === 0) {
+                                            console.log(Number(comment.reply_to));
+                                            return (<div className="commentItem">
+                                                <div className="commentItemContent">
                                                     <Link to={`/@${comment.user_profile.username}`}>
-                                                        <h2 className="contentAuthorName">
-                                                            {comment.user_profile.username}
-                                                        </h2>
+                                                        <span className="creatorAvatar creatorAvatarImg commentAvatar">
+                                                            <img src={comment.user_profile.avatar} />
+                                                        </span>
                                                     </Link>
-                                                    <p className="commentText">
-                                                        <span>{comment.comment}</span>
-                                                        <div className="commentFooter">
-                                                            <span className="commentTime">
-                                                                3d ago
-                                                            </span>
-                                                            <span className="commentReplyBtn">
-                                                                Reply
-                                                            </span>
-                                                        </div>
-                                                    </p>
+                                                    <div className="commentItemContentContainer">
+                                                        <Link to={`/@${comment.user_profile.username}`}>
+                                                            <h2 className="contentAuthorName">
+                                                                {comment.user_profile.username}
+                                                            </h2>
+                                                        </Link>
+                                                        <p className="commentText">
+                                                            <span>{comment.comment}</span>
+                                                            <div className="commentFooter">
+                                                                <span className="commentTime">
+                                                                    2m ago
+                                                                </span>
+                                                                <span className="commentReplyBtn" onClick={() => {
+                                                                    setReply({
+                                                                        reply_to: comment.comment_id,
+                                                                        username: comment.user_profile.username
+                                                                    });
+                                                                }}>
+                                                                    Reply
+                                                                </span>
+                                                            </div>
+                                                        </p>
+                                                    </div>
+                                                    <div className="commentLikesContainer" onClick={() => {
+                                                        handleFetchLike(true, comment.comment_id);
+                                                    }}>
+                                                        {
+                                                            commentLiked.includes(comment.comment_id) === true ?
+                                                                <WaveSVG />
+                                                                :
+                                                                <BWWaveSVG />
+                                                        }
+                                                        <span className="commentLikes">
+                                                            {Number(comment.likes) || 0}
+                                                        </span>
+                                                    </div>
                                                 </div>
-                                                <div className="commentLikesContainer" onClick={() => {
-                                                    handleFetchLike(true, comment.comment_id);
-                                                }}>
-                                                    {
-                                                        commentLiked.includes(comment.comment_id) === true ?
-                                                            <WaveSVG />
-                                                            :
-                                                            <BWWaveSVG />
-                                                    }
-                                                    <span className="commentLikes">
-                                                        {Number(comment.likes) || 0}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>) : null}
+                                                {
+                                                    comment.replies && comment.replies.length > 0 ?
+                                                        comment.replies.map((reply: any) => {
+                                                            let lastCommentShown = false;
+
+                                                            if(comment.replies.findIndex((findReply: any) => findReply === reply) < showReplies){
+                                                                if(comment.replies.findIndex((findReply: any) => findReply === reply) + 1 === showReplies) {
+                                                                    lastCommentShown = true;
+                                                                }
+                                                                return (<div className="commentItemReply">
+                                                                    <div className="commentItemContent">
+                                                                        <Link to={`/@${reply.user_profile.username}`}>
+                                                                            <span className="creatorAvatar creatorAvatarImg commentAvatar">
+                                                                                <img src={reply.user_profile.avatar} />
+                                                                            </span>
+                                                                        </Link>
+                                                                        <div className="commentItemContentContainer">
+                                                                            <Link to={`/@${reply.user_profile.username}`}>
+                                                                                <h2 className="contentAuthorName">
+                                                                                    {reply.user_profile.username}
+                                                                                </h2>
+                                                                            </Link>
+                                                                            <p className="commentText">
+                                                                                <span>{reply.comment}</span>
+                                                                                <div className="commentFooter">
+                                                                                    <span className="commentTime">
+                                                                                        2m ago
+                                                                                    </span>
+                                                                                </div>
+                                                                            </p>
+                                                                        </div>
+                                                                        <div className="commentLikesContainer" onClick={() => {
+                                                                            handleFetchLike(true, reply.comment_id);
+                                                                        }}>
+                                                                            {
+                                                                                commentLiked.includes(reply.comment_id) === true ?
+                                                                                    <WaveSVG />
+                                                                                    :
+                                                                                    <BWWaveSVG />
+                                                                            }
+                                                                            <span className="commentLikes">
+                                                                                {Number(reply.likes) || 0}
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    {
+                                                                        comment.replies.length > showReplies && lastCommentShown ?
+                                                                        <div className="moreReplies" onClick={() => {
+                                                                            setShowReplies(showReplies + 2);
+                                                                        }}>
+                                                                            <p className="moreRepliesText">
+                                                                                More Replies
+                                                                            </p>
+                                                                            <DownArrowSVG />
+                                                                        </div>
+                                                                        : null
+                                                                    }
+                                                                </div>)
+                                                            }
+                                                        })
+                                                        : null
+                                                }
+                                            </div>)
+                                        }
+                                    }) : null}
                                 </div>
                             </div>
                             <div className="postLargeFormContainer">
@@ -321,7 +398,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                                     handlePostComment()
                                 }
                                 }>
-                                    <input value={comment} type="text" className="enlargedInputForm" placeholder="Post a comment..." onChange={(event) => setComment(event.currentTarget.value)} />
+                                    <input value={reply?.username ? `@${reply.username} ${comment.slice(`@${reply.username} `.length)}` : comment} type="text" className="enlargedInputForm" placeholder="Post a comment..." onChange={(event) => setComment(event.currentTarget.value)} />
                                 </form>
                                 <div className="postCommentBtn" onClick={() => handlePostComment()}>
                                     Post

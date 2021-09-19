@@ -541,3 +541,36 @@
     fill: rgb(212, 212, 212);
     cursor: pointer;
 }
+
+.commentItemReply {
+    margin-left: 24px;
+}
+
+.moreReplies {
+    margin-left: 54px;
+    display: flex;
+    align-items: center;
+}
+
+.moreReplies > svg {
+    width: 8px;
+    height: 8px;
+    background: transparent;
+    margin-left: 4px;
+}
+
+.moreRepliesText {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+    font-style: normal;
+    color: rgba(18, 18, 18, 0.5);
+}
+
+.moreReplies:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
