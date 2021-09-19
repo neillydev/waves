@@ -526,3 +526,18 @@
     color: rgba(22, 24, 35, 0.671);
     margin-top: 4px;
 }
+
+.postLargeContainer > svg {
+    position: absolute;
+    background: transparent;
+    width: 28px;
+    height: 28px;
+    fill: #fff;
+    margin-top: 2.5rem;
+    margin-left: 2.5rem;
+}
+
+.postLargeContainer > svg:hover {
+    fill: rgb(212, 212, 212);
+    cursor: pointer;
+}

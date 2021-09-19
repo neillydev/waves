@@ -10,6 +10,7 @@ import WaveSVG from '../../svg/wave.svg';
 import BWWaveSVG from '../../svg/bw_wave.svg';
 import CommentSVG from '../../svg/comment.svg';
 import ShareSVG from '../../svg/share.svg';
+import CancelSVG from '../../svg/cancel.svg';
 
 require('./Post.css');
 
@@ -175,7 +176,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                     setCommentLiked([...commentLiked, json.post_id]);
                 }
                 else {
-                    if(json.post_id.toString().length < 17) {
+                    if (json.post_id.toString().length < 17) {
                         //temp solution. need to fix where you're returning comment_like boolean, as it's undefined always, causing comments to register...
                         //...as a post and therefore forcing posts to become unliked, as a result of the comment not being liked
                         setLiked(json.liked);
@@ -190,7 +191,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
             handleCheckIfLiked();
             postComments.map((comment: any) => {
                 handleCheckIfLiked(comment.comment_id);
-            }); 
+            });
             handleCheckIfFollowing();
         }
     }, [])
@@ -205,6 +206,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                                 <video src={mediaURL} autoPlay preload="auto" playsInline loop className="largeMedia"></video>
                             </div>
                         </div>
+                        <CancelSVG onClick={() => setPostClicked(undefined)} />
                         <div className="postLargeSocialContainer">
                             <div className="postLargeAuthor">
                                 <div className="postLargeAuthorWrapper">
