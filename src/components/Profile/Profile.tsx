@@ -59,7 +59,7 @@ const Profile = () => {
             <div className="profileWrapper">
                 <header className="profileHeader">
                     <div className="profileAvatar">
-                        <img src={profile?.avatar ? profile?.avatar : '<none>'} />
+                        <img src={profile?.avatar ? profile.avatar : (localStorage.getItem('avatar') || '')} />
                     </div>
                     <div className="profileDetails">
                         <div className="userControls">
@@ -70,13 +70,13 @@ const Profile = () => {
                         </div>
                         <ul className="userStats">
                             <li className="userFollowers">
-                                <b className="userStat">{profile?.followers}</b> followers
+                                <b className="userStat">{profile?.followers || 0}</b> followers
                             </li>
                             <li className="userFollowing">
-                                <b className="userStat">{profile?.following}</b> following
+                                <b className="userStat">{profile?.following || 0}</b> following
                             </li>
                             <li className="userPosts">
-                                <b className="userStat">{profile?.posts.length}</b> posts
+                                <b className="userStat">{profile?.posts?.length || 0}</b> posts
                             </li>
                         </ul>
                         <div className="userBio">
@@ -95,7 +95,7 @@ const Profile = () => {
                 </ul>
                 <div className="postsContainer">
                     <div className="postsFeed">
-                        {profile?.posts.map(post => (
+                        {profile?.posts ? profile?.posts.map(post => (
                             <div className="postsItem">
                                 <div className="postsItemContent">
                                     <div className="postsItemCardWrapper">
@@ -119,7 +119,7 @@ const Profile = () => {
                                     </div>
                                 </div>
                             </div>
-                        ))}
+                        )) : null}
                     </div>
                 </div>
             </div>
