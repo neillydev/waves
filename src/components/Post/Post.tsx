@@ -206,7 +206,10 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                                 <video src={mediaURL} autoPlay preload="auto" playsInline loop className="largeMedia"></video>
                             </div>
                         </div>
-                        <CancelSVG onClick={() => setPostClicked(undefined)} />
+                        <CancelSVG onClick={() => {
+                            enlarge_dispatch({ type: 'false' });
+                            setPostClicked(undefined);
+                        }} />
                         <div className="postLargeSocialContainer">
                             <div className="postLargeAuthor">
                                 <div className="postLargeAuthorWrapper">
