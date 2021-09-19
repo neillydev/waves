@@ -40,6 +40,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
     const [postLikes, setPostLikes] = useState(Number(likes));
 
     const [liked, setLiked] = useState(false);
+    const [commentLiked, setCommentLiked] = useState<number[]>([]);
 
     const [followed, setFollowed] = useState(false);
 
@@ -67,20 +68,31 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
             .catch(error => console.error('Error: ' + error));
     };
 
-    const handleFetchLike = () => {
+    const handleFetchLike = (comment_like: boolean, comment_id?: number) => {
         fetch(`http://localhost:3000/like`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ token: localStorage.getItem('token'), user_id: localStorage.getItem("userid_cache"), post_id: postID })
+            body: JSON.stringify({ token: localStorage.getItem('token'), user_id: localStorage.getItem("userid_cache"), post_id: comment_like ? comment_id : postID, comment_like: comment_like })
         })
             .then(res => {
                 if (res.status == 200) {
-                    
+
                     res.json().then((json: any) => {
-                        setPostLikes(json.likes);
-                        setLiked(!liked);
+                        if (json.comment_like) {
+                            if (commentLiked.includes(json.post_id) === false) {
+                                setCommentLiked(oldCommentLiked => [...oldCommentLiked, json.post_id]);
+                            }
+                            else {
+                                setCommentLiked(oldCommentLiked => [...oldCommentLiked.splice(oldCommentLiked.findIndex((commentID) => commentID === comment_id), 1)]);
+                            }
+                            handleUpdateLike(json.post_id, json.likes);
+                        }
+                        else {
+                            setPostLikes(json.likes);
+                            setLiked(!liked);
+                        }
                     });
                 }
                 else if (res.status == 409) {
@@ -89,6 +101,16 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
             })
             .catch(error => console.error('Error: ' + error));
     };
+
+    const handleUpdateLike = (comment_id: number, likes: number) => {
+        let tmpPostComments = postComments;
+        let item = {
+            ...tmpPostComments[tmpPostComments.findIndex((comment: any) => comment.comment_id === comment_id)],
+            likes: Number(likes)
+        }
+        tmpPostComments[tmpPostComments.findIndex((comment: any) => comment.comment_id === comment_id)] = item;
+        setPostComments([...tmpPostComments]);
+    }
 
     const handlePostComment = () => {
         if (comment) {
@@ -128,7 +150,6 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
             .then(res => {
                 if (res.status == 200) {
                     res.json().then((json: any) => {
-                        console.log(json.following)
                         setFollowed(json.following);
                     });
                 }
@@ -140,17 +161,26 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
             .catch(error => console.error('Error: ' + error));
     };
 
-    const handleCheckIfLiked = () => {
+    const handleCheckIfLiked = (comment_id?: number) => {
         fetch(`http://localhost:3000/liked`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ token: localStorage.getItem('token'), user_id: localStorage.getItem("userid_cache"), post_id: postID })
+            body: JSON.stringify({ token: localStorage.getItem('token'), user_id: localStorage.getItem("userid_cache"), post_id: comment_id ? comment_id : postID })
         })
             .then(res => res.json())
             .then((json: any) => {
-                setLiked(json.liked);
+                if (json.comment_like === true) {
+                    setCommentLiked([...commentLiked, json.post_id]);
+                }
+                else {
+                    if(json.post_id.toString().length < 17) {
+                        //temp solution. need to fix where you're returning comment_like boolean, as it's undefined always, causing comments to register...
+                        //...as a post and therefore forcing posts to become unliked, as a result of the comment not being liked
+                        setLiked(json.liked);
+                    }
+                }
             })
             .catch(error => console.error('Error: ' + error));
     };
@@ -158,6 +188,9 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
     useEffect(() => {
         if (authState) {
             handleCheckIfLiked();
+            postComments.map((comment: any) => {
+                handleCheckIfLiked(comment.comment_id);
+            }); 
             handleCheckIfFollowing();
         }
     }, [])
@@ -208,7 +241,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                                 <div className="postSocialControls">
                                     <div className="leftControls">
                                         <div className="controlItem">
-                                            <span className="socialWaveIcon controlIcon likeIcon">
+                                            <span className="socialWaveIcon controlIcon likeIcon" onClick={() => authState ? handleFetchLike(false) : dispatch({ type: 'true' })}>
                                                 {
                                                     liked ?
                                                         <WaveSVG />
@@ -260,15 +293,17 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                                                         </div>
                                                     </p>
                                                 </div>
-                                                <div className="commentLikesContainer">
+                                                <div className="commentLikesContainer" onClick={() => {
+                                                    handleFetchLike(true, comment.comment_id);
+                                                }}>
                                                     {
-                                                        liked ?
+                                                        commentLiked.includes(comment.comment_id) === true ?
                                                             <WaveSVG />
                                                             :
                                                             <BWWaveSVG />
                                                     }
                                                     <span className="commentLikes">
-                                                        {comment.likes}
+                                                        {Number(comment.likes) || 0}
                                                     </span>
                                                 </div>
                                             </div>
@@ -342,7 +377,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                             <div className="socialControls">
                                 <ul className="socialControlList">
                                     <li className="socialControlItem">
-                                        <div className="socialWaveIcon" onClick={() => authState ? handleFetchLike() : dispatch({ type: 'true' })}>
+                                        <div className="socialWaveIcon" onClick={() => authState ? handleFetchLike(false) : dispatch({ type: 'true' })}>
                                             {
                                                 liked ?
                                                     <WaveSVG />
