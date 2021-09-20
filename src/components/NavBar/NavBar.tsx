@@ -106,14 +106,14 @@ function NavBar() {
                             null}
                     </div>
                     <div className="navRightBarContainer flex">
+                        <Link to={authState ? "/upload" : "/"} onClick={authState ? () => null : () => dispatch({ type: 'true' })} className="uploadBtn border-none">
+                            <UploadSVG />
+                        </Link>
                         {
                             authState ? <Avatar /> : <button onClick={() => dispatch({ type: 'true' })} className="loginBtn rounded-sm border-none">
                                 Login
                             </button>
                         }
-                        <Link to={authState ? "/upload" : "/"} onClick={authState ? () => null : () => dispatch({ type: 'true' })} className="uploadBtn border-none">
-                            <UploadSVG />
-                        </Link>
                     </div>
                 </div>
             </div>
