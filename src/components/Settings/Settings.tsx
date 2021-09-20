@@ -1,4 +1,6 @@
-import React, { useState, useRef, FormEventHandler } from 'react';
+import React, { useState, useRef, useContext, useEffect } from 'react';
+
+import { LoadingContext } from '../contexts/LoadingContext';
 
 import EditAvatarSVG from '../../svg/edit_avatar.svg';
 
@@ -10,6 +12,8 @@ enum EditingType {
 }
 
 const Settings = () => {
+    const { load_state, loading_dispatch } = useContext(LoadingContext);
+
     const [editingType, setEditingType] = useState<EditingType>();
 
     const avatarInput = useRef<HTMLInputElement>(null);
@@ -19,6 +23,7 @@ const Settings = () => {
     const nameInput = useRef<HTMLInputElement>(null);
 
     const handleFormSubmit = () => {
+        loading_dispatch({ type: 'false' });
         setEditingType(undefined);
         const username = usernameInput?.current?.value || localStorage.getItem('username_cache');
         const name = nameInput?.current?.value || localStorage.getItem('name_cache');
@@ -47,6 +52,7 @@ const Settings = () => {
                             localStorage.setItem('username_cache', username);
                             localStorage.setItem('name_cache', name);
                             window.location.reload(false);
+                            loading_dispatch({ type: 'true' });
                         }
                         else {
 
