@@ -58,6 +58,7 @@
     height: 35px;
     justify-content: center;
     align-items: center;
+    margin-left: 1.25rem;
 }
 
 .uploadBtn {
