@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+
+import { LoadingContext } from '../contexts/LoadingContext';
 
 import { useLocation } from 'react-router-dom';
 
@@ -29,6 +31,8 @@ type ProfileType = {
 const Profile = () => {
     const location = useLocation();
 
+    const { load_state, loading_dispatch } = useContext(LoadingContext);
+    
     const [profile, setProfile] = useState<ProfileType>();
 
     const [posts, setPosts] = useState<PostType[]>();
@@ -46,11 +50,13 @@ const Profile = () => {
             .then(res => res.json())
             .then((json: any) => {
                 setProfile(json);
+                loading_dispatch({ type: 'true' });
             })
             .catch(error => console.error('Error: ' + error));
     };
 
     useEffect(() => {
+        loading_dispatch({ type: 'false' });
         handleFetchProfile();
     }, [location.pathname]);
 
