@@ -13,6 +13,7 @@ import { ModalContext, ModalProvider } from './components/contexts/ModalContext'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import './styles.css';
+import NotFound from './components/NotFound/NotFound';
 
 require('./App.css');
 
@@ -77,11 +78,12 @@ const App = () => {
                         <Route exact path="/">
                             <Main />
                         </Route>
-                        <ProtectedRoute path="/upload" component={Upload} />
-                        <ProtectedRoute path="/settings" component={Settings} />
-                        <Route path='/@:username' component={Profile}>
+                        <ProtectedRoute exact path="/upload" component={Upload} />
+                        <ProtectedRoute exact path="/settings" component={Settings} />
+                        <Route exact path='/@:username' component={Profile}>
                             <Profile />
                         </Route>
+                        <Route component={NotFound} />
                     </Switch>
                 </div>
                 {
