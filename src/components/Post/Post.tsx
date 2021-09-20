@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
+import BoldedText from '../../util/BoldedText';
 
 import { Link } from 'react-router-dom';
 
@@ -52,6 +53,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
     const [postComments, setPostComments] = useState<any>(comments);
     const [reply, setReply] = useState<any>();
     const [showReplies, setShowReplies] = useState<number>(1);
+
 
     const handleFetchFollow = () => {
         fetch(`http://localhost:3000/follow`, {
@@ -294,7 +296,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                                                                 {comment.user_profile.username}
                                                             </h2>
                                                         </Link>
-                                                        <p className="commentText">
+                                                        <p className={`commentText ${comment.comment.includes('@') ? 'commentMention' : ''}`}>
                                                             <span>{comment.comment}</span>
                                                             <div className="commentFooter">
                                                                 <span className="commentTime">
@@ -330,8 +332,8 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                                                         comment.replies.map((reply: any) => {
                                                             let lastCommentShown = false;
 
-                                                            if(comment.replies.findIndex((findReply: any) => findReply === reply) < showReplies){
-                                                                if(comment.replies.findIndex((findReply: any) => findReply === reply) + 1 === showReplies) {
+                                                            if (comment.replies.findIndex((findReply: any) => findReply === reply) < showReplies) {
+                                                                if (comment.replies.findIndex((findReply: any) => findReply === reply) + 1 === showReplies) {
                                                                     lastCommentShown = true;
                                                                 }
                                                                 return (<div className="commentItemReply">
@@ -348,7 +350,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                                                                                 </h2>
                                                                             </Link>
                                                                             <p className="commentText">
-                                                                                <span>{reply.comment}</span>
+                                                                                <span>{reply.comment.includes('@') ? BoldedText(reply.comment, reply.comment.substr(reply.comment.indexOf('@'), reply.comment.indexOf(' '))) : reply.comment}</span>
                                                                                 <div className="commentFooter">
                                                                                     <span className="commentTime">
                                                                                         2m ago
@@ -372,15 +374,15 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                                                                     </div>
                                                                     {
                                                                         comment.replies.length > showReplies && lastCommentShown ?
-                                                                        <div className="moreReplies" onClick={() => {
-                                                                            setShowReplies(showReplies + 2);
-                                                                        }}>
-                                                                            <p className="moreRepliesText">
-                                                                                More Replies
-                                                                            </p>
-                                                                            <DownArrowSVG />
-                                                                        </div>
-                                                                        : null
+                                                                            <div className="moreReplies" onClick={() => {
+                                                                                setShowReplies(showReplies + 2);
+                                                                            }}>
+                                                                                <p className="moreRepliesText">
+                                                                                    More Replies
+                                                                                </p>
+                                                                                <DownArrowSVG />
+                                                                            </div>
+                                                                            : null
                                                                     }
                                                                 </div>)
                                                             }
