@@ -2,8 +2,6 @@ import React, { useContext } from 'react';
 
 import { LoadingContext } from '../contexts/LoadingContext';
 
-import BoatPNG from '../../resources/404.png';
-
 require('./NotFound.css');
 
 const NotFound = () => {
