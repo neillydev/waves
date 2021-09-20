@@ -5,6 +5,7 @@ import NavBar from './components/NavBar/NavBar';
 import Upload from './components/Upload/Upload';
 import Settings from './components/Settings/Settings';
 import Profile from './components/Profile/Profile';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 
 import { AuthContext, AuthProvider } from './components/contexts/AuthContext';
 import { ModalContext, ModalProvider } from './components/contexts/ModalContext';
@@ -76,12 +77,8 @@ const App = () => {
                         <Route exact path="/">
                             <Main />
                         </Route>
-                        <Route path="/upload">
-                            <Upload />
-                        </Route>
-                        <Route path="/settings">
-                            <Settings />
-                        </Route>
+                        <ProtectedRoute path="/upload" component={Upload} />
+                        <ProtectedRoute path="/settings" component={Settings} />
                         <Route path='/@:username' component={Profile}>
                             <Profile />
                         </Route>

@@ -159,7 +159,6 @@ const Upload = () => {
                         <button className={`postBtn ${caption.length > 0 ? 'enabledBtn' : 'disabledBtn'}`} disabled={caption.length === 0 ? true : false} onClick={() => {
                             handlePost()
                             .then(json => {
-                                console.log('test1');
                                 history.push('/');
                             })
                             .catch(error => {
