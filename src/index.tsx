@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { ModalContext, ModalProvider } from './components/contexts/ModalContext';
 import { AuthContext, AuthProvider } from './components/contexts/AuthContext';
 import { EnlargedContext, EnlargedProvider } from './components/contexts/EnlargedContext';
+import { LoadingContext, LoadingProvider } from './components/contexts/LoadingContext';
 
 
 ReactDOM.render(
@@ -12,7 +13,9 @@ ReactDOM.render(
         <AuthProvider>
             <ModalProvider>
                 <EnlargedProvider>
-                    <App />
+                    <LoadingProvider>
+                        <App />
+                    </LoadingProvider>
                 </EnlargedProvider>
             </ModalProvider>
         </AuthProvider>
