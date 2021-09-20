@@ -50,10 +50,9 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
     const [postClicked, setPostClicked] = useState<Number>();
 
     const [comment, setComment] = useState<string>('');
-    const [postComments, setPostComments] = useState<any>(comments);
+    const [postComments, setPostComments] = useState(comments);
     const [reply, setReply] = useState<any>();
     const [showReplies, setShowReplies] = useState<number>(1);
-
 
     const handleFetchFollow = () => {
         fetch(`http://localhost:3000/follow`, {
@@ -80,7 +79,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ token: localStorage.getItem('token'), user_id: localStorage.getItem("userid_cache"), post_id: comment_like ? comment_id : postID, comment_like: comment_like })
+            body: JSON.stringify({ token: localStorage.getItem('token'), user_id: localStorage.getItem("userid_cache"), post_id: comment_like ? comment_id : post_id, comment_like: comment_like })
         })
             .then(res => {
                 if (res.status == 200) {
@@ -129,7 +128,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ token: localStorage.getItem('token'), user_id: localStorage.getItem("userid_cache"), post_id: postID, comment: saveComment, reply_to: reply && reply.reply_to ? reply.reply_to : 0 })
+                body: JSON.stringify({ token: localStorage.getItem('token'), user_id: localStorage.getItem("userid_cache"), post_id: post_id, comment: saveComment, reply_to: reply && reply.reply_to ? reply.reply_to : 0 })
             })
                 .then(res => {
                     if (res.status == 200) {
@@ -173,7 +172,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ token: localStorage.getItem('token'), user_id: localStorage.getItem("userid_cache"), post_id: comment_id ? comment_id : postID })
+            body: JSON.stringify({ token: localStorage.getItem('token'), user_id: localStorage.getItem("userid_cache"), post_id: comment_id ? comment_id : post_id })
         })
             .then(res => res.json())
             .then((json: any) => {
@@ -208,7 +207,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                     <div className="postLargeContainer">
                         <div className="postLargeVideoContainer">
                             <div className="postLargeVideoWrapper">
-                                <video src={mediaURL} autoPlay preload="auto" playsInline loop className="largeMedia"></video>
+                                <video key={ post_id } src={mediaURL} autoPlay preload="auto" playsInline loop className="largeMedia"></video>
                             </div>
                         </div>
                         <CancelSVG onClick={() => {
@@ -282,7 +281,6 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                                     {postComments ? postComments.map((comment: any) => {
 
                                         if (Number(comment.reply_to) === 0) {
-                                            console.log(Number(comment.reply_to));
                                             return (<div className="commentItem">
                                                 <div className="commentItemContent">
                                                     <Link to={`/@${comment.user_profile.username}`}>
@@ -449,10 +447,10 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                         <div className="mediaContainer">
                             <a href="/" className="mediaWrapper">
                                 <div className="mediaImg">
-                                    <video src={mediaURL.length > 0 ? mediaURL : ''} autoPlay preload="auto" playsInline loop className="media"
+                                    <video key={ post_id } src={mediaURL.length > 0 ? mediaURL : ''} autoPlay preload="auto" playsInline loop className="media"
                                         onLoadedData={(event) => event.currentTarget.play()} onClick={(event) => {
                                             event.preventDefault();
-                                            setPostClicked(postID);
+                                            setPostClicked(post_id);
                                             enlarge_dispatch({ type: 'true' });
                                         }}>
                                     </video>
@@ -473,7 +471,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                                     </li>
                                     <li className="socialControlItem">
                                         <div className="socialWaveIcon" onClick={() => {
-                                            setPostClicked(postID);
+                                            setPostClicked(post_id);
                                             enlarge_dispatch({ type: 'true' });
                                         }}>
                                             <CommentSVG />
