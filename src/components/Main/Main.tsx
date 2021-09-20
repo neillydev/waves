@@ -1,6 +1,9 @@
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Explore from '../Explore/Explore';
 import Post from '../Post/Post';
+
+import {AuthContext} from '../contexts/AuthContext';
+import {ModalContext} from '../contexts/ModalContext';
 
 require('./Main.css');
 
@@ -25,6 +28,9 @@ enum ViewType {
 };
 
 const Main = () => {
+    const { authState } = useContext(AuthContext);
+    const { dispatch } = useContext(ModalContext);
+
     const [viewType, setViewType] = useState<ViewType>(ViewType.TRENDING);
 
     const [posts, setPosts] = useState<PostType[]>();
@@ -41,8 +47,33 @@ const Main = () => {
             .catch(error => console.error('Error: ' + error));
     };
     
+    const handleFetchFollowingPosts = () => {
+        fetch(`http://localhost:3000/posts`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                token: localStorage.getItem('token'),
+                user_id: localStorage.getItem('userid_cache')
+            })
+        })
+            .then(res => res.json())
+            .then((json: any) => {
+                setPosts(json);
+            })
+            .catch(error => console.error('Error: ' + error));
+    };
+    
     useEffect(() => {
-        handleFetchPosts();
+        switch(viewType){
+            case ViewType.FOLLOWING:
+                handleFetchFollowingPosts();
+            case ViewType.TRENDING:
+                handleFetchPosts()
+            default:
+                break;
+        }
     }, []);
 
     return (
@@ -56,7 +87,15 @@ const Main = () => {
                                     Trending
                                 </h2>
                             </a>
-                            <a href="/" className="navItem" onClick={() => setViewType(ViewType.FOLLOWING)}>
+                            <a href="/" className="navItem" onClick={(event) => {
+                                event.preventDefault();
+                                if(authState){
+                                    setViewType(ViewType.FOLLOWING);
+                                }
+                                else{
+                                    dispatch( { type: 'true' } );
+                                }
+                            }}>
                                 <h2 className={`navItemTitle ${viewType === ViewType.FOLLOWING ? 'tabSelected' : ''}`}>
                                     Following
                                 </h2>
