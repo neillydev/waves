@@ -1,6 +1,8 @@
 import React, { useContext, useState, useEffect } from 'react';
-import WaveSVG from '../../svg/wave.svg';
 import Avatar from '../Avatar/Avatar';
+
+import WaveSVG from '../../svg/wave.svg';
+import UploadSVG from '../../svg/upload.svg';
 
 import { AuthContext } from '../contexts/AuthContext';
 import { ModalContext } from '../contexts/ModalContext';
@@ -110,7 +112,7 @@ function NavBar() {
                             </button>
                         }
                         <Link to={authState ? "/upload" : "/"} onClick={authState ? () => null : () => dispatch({ type: 'true' })} className="uploadBtn border-none">
-                            +
+                            <UploadSVG />
                         </Link>
                     </div>
                 </div>
