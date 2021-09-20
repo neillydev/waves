@@ -74,7 +74,7 @@ function NavBar() {
                     </div>
                     <div className="navSearchContainer">
                         <form action="/search" className="navSearchForm flex items-center relative">
-                            <input placeholder="Search creators" autoComplete="off" type="search" value={searchValue} className="waveSearch" onChange={(event) => {
+                            <input placeholder="Surf creators and videos" autoComplete="off" type="search" value={searchValue} className="waveSearch" onChange={(event) => {
                                 if (event.currentTarget.value.length > 0) {
                                     setSearchTyping(true);
                                     setSearchValue(event.currentTarget.value);

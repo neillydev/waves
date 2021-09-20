@@ -114,7 +114,7 @@ const Main = () => {
                         </div>
                         <div className="exploreWrapper pt-6">
                             <h2 className="exploreTitle">
-                                Explore
+                                Surf
                             </h2>
                             <div className="exploreTags w-full">
                                 <Explore title="waves" />
