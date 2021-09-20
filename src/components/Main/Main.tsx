@@ -4,6 +4,7 @@ import Post from '../Post/Post';
 
 import { AuthContext } from '../contexts/AuthContext';
 import { ModalContext } from '../contexts/ModalContext';
+import { LoadingContext } from '../contexts/LoadingContext';
 
 require('./Main.css');
 
@@ -30,6 +31,8 @@ enum ViewType {
 const Main = () => {
     const { authState } = useContext(AuthContext);
     const { dispatch } = useContext(ModalContext);
+    const { load_state, loading_dispatch } = useContext(LoadingContext);
+
 
     const [viewType, setViewType] = useState<ViewType>(ViewType.TRENDING);
 
@@ -43,6 +46,7 @@ const Main = () => {
             .then(res => res.json())
             .then((json: any) => {
                 setPosts(json);
+                loading_dispatch({ type: 'true' });
             })
             .catch(error => console.error('Error: ' + error));
     };
@@ -61,11 +65,13 @@ const Main = () => {
             .then(res => res.json())
             .then((json: any) => {
                 setPosts(json);
+                loading_dispatch({ type: 'true' });
             })
             .catch(error => console.error('Error: ' + error));
     };
 
     useEffect(() => {
+        loading_dispatch({ type: 'false' });
         switch (viewType) {
             case ViewType.FOLLOWING:
                 handleFetchFollowingPosts();
