@@ -1,4 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
+
+import { LoadingContext } from '../contexts/LoadingContext';
 
 import { Redirect, useHistory } from 'react-router-dom';
 
@@ -13,6 +15,8 @@ enum AccessType {
 const Upload = () => {
     const history = useHistory();
 
+    const { load_state, loading_dispatch } = useContext(LoadingContext);
+
     const [caption, setCaption] = useState('');
 
     const mediaInput = useRef<HTMLInputElement>(null);
@@ -21,6 +25,7 @@ const Upload = () => {
     const [access, setAccess] = useState(AccessType.public);
     const handleSendPreview = () => {
         if (mediaFile) {
+            loading_dispatch({ type: 'false' });
             const formData = new FormData();
             formData.append('file', mediaFile);
             fetch('http://localhost:3000/preview', {
@@ -33,6 +38,7 @@ const Upload = () => {
                         if (res.status === 200) {
                             res.json().then(json => {
                                 setMediaPreview(json.url);
+                                loading_dispatch({ type: 'true' });
                             });
                         }
                         else if (res.status === 404) {
