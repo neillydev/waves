@@ -78,3 +78,38 @@
 .tabSelected {
     color: #2ba0ff;
 }
+.loadingBarContainer {
+    position: absolute;
+}
+.loadingBar {    
+    width: 100%;
+    height: 4px;
+    z-index: 100;
+    background-color: #2ba0ff;
+    left: 0;
+    top: 0;
+    animation: firstLoad .15s linear 0s forwards;
+}
+
+.loadedBar {
+    animation: finishLoad .25s linear 0s forwards;
+}
+
+@keyframes firstLoad {
+    from {
+        width: 0%;
+    }
+    to {
+        width: 40%;
+    }
+}
+
+@keyframes finishLoad {
+    from {
+      width: 40%;
+    }
+    to {
+        width: 100%;
+        visibility: hidden;
+    }
+}
