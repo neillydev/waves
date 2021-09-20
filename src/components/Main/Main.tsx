@@ -2,8 +2,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import Explore from '../Explore/Explore';
 import Post from '../Post/Post';
 
-import {AuthContext} from '../contexts/AuthContext';
-import {ModalContext} from '../contexts/ModalContext';
+import { AuthContext } from '../contexts/AuthContext';
+import { ModalContext } from '../contexts/ModalContext';
 
 require('./Main.css');
 
@@ -46,7 +46,7 @@ const Main = () => {
             })
             .catch(error => console.error('Error: ' + error));
     };
-    
+
     const handleFetchFollowingPosts = () => {
         fetch(`http://localhost:3000/posts`, {
             method: 'POST',
@@ -64,17 +64,19 @@ const Main = () => {
             })
             .catch(error => console.error('Error: ' + error));
     };
-    
+
     useEffect(() => {
-        switch(viewType){
+        switch (viewType) {
             case ViewType.FOLLOWING:
                 handleFetchFollowingPosts();
+                break;
             case ViewType.TRENDING:
-                handleFetchPosts()
+                handleFetchPosts();
+                break;
             default:
                 break;
         }
-    }, []);
+    }, [viewType]);
 
     return (
         <div className="mainContainer flex justify-between">
@@ -82,18 +84,21 @@ const Main = () => {
                 <div className="leftScrollContainer">
                     <div className="leftScrollWrapper">
                         <div className="navWrapper flex flex-col">
-                            <a href="/" className="navItem" onClick={() => setViewType(ViewType.TRENDING)}>
+                            <a href="/" className="navItem" onClick={(event) => {
+                                event.preventDefault();
+                                setViewType(ViewType.TRENDING);
+                            }}>
                                 <h2 className={`navItemTitle ${viewType === ViewType.TRENDING ? 'tabSelected' : ''}`}>
                                     Trending
                                 </h2>
                             </a>
                             <a href="/" className="navItem" onClick={(event) => {
                                 event.preventDefault();
-                                if(authState){
+                                if (authState) {
                                     setViewType(ViewType.FOLLOWING);
                                 }
-                                else{
-                                    dispatch( { type: 'true' } );
+                                else {
+                                    dispatch({ type: 'true' });
                                 }
                             }}>
                                 <h2 className={`navItemTitle ${viewType === ViewType.FOLLOWING ? 'tabSelected' : ''}`}>
@@ -113,7 +118,7 @@ const Main = () => {
                 </div>
             </div>
             <div className={`mainContentContainer ${posts && posts.length !== 0 ? 'mainContentSome' : 'mainContentNone'}`}>
-                
+
                 {posts && posts.length !== 0 ? posts.map(post => <Post
                     post_id={post.post_id}
                     author={post.username}
@@ -128,7 +133,7 @@ const Main = () => {
                     mediaDescription={post.date_posted}
                     likes={post.likes}
                     comments={post.comments}
-                    /> ) : <h4>Nothing to see here</h4>}
+                />) : <h4>Nothing to see here</h4>}
             </div>
         </div>
     )
