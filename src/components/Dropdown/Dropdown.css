@@ -10,6 +10,18 @@
     width: max-content;
     background: #2ba0ff;
     z-index: 2;
+    animation: dropdown .2s cubic-bezier(0.65,0,0.35,1) 0s forwards;
+}
+
+@keyframes dropdown {
+    from {
+        opacity: 0%;
+        top: 0px;
+    }
+    to {
+        opacity: 100%;
+        top: 2rem;
+    }
 }
 
 .dropdownList {
