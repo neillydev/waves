@@ -101,6 +101,11 @@
     border-radius: 10px;
     -webkit-box-pack: center;
     justify-content: center;
+    align-items: center;
+}
+
+.mediaWrapperLoading > div:nth-child(1) {
+    position: absolute;
 }
 
 .media {

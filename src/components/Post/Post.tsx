@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 import { ModalContext } from '../contexts/ModalContext';
 import { EnlargedContext } from '../contexts/EnlargedContext';
+import { LoadingContext } from '../contexts/LoadingContext';
 
 import WaveSVG from '../../svg/wave.svg';
 import BWWaveSVG from '../../svg/bw_wave.svg';
@@ -38,6 +39,7 @@ type PostProps = {
 const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle, contentDescription, mediaType, mediaURL, soundDescription, mediaDescription, likes, comments }: PostProps) => {
 
     const [loadState, setLoadState] = useState(false);
+    const { load_state, loading_dispatch } = useContext(LoadingContext);
 
     const { authState } = useContext(AuthContext);
     const { dispatch } = useContext(ModalContext);
@@ -152,6 +154,27 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                 })
                 .catch(error => console.error('Error: ' + error));
         }
+    };
+
+    const handleDeletePost = () => {
+        setLoadState(true);
+        loading_dispatch({ loading: true, type: 'loading_bar' });
+        fetch(`http://localhost:3000/post`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ token: localStorage.getItem('token'), user_id: localStorage.getItem("userid_cache"), post_id: postID })
+        })
+            .then(res => {
+                if (res.status == 200) {
+                    window.location.reload(false);
+                }
+                else if (res.status == 409 || res.status == 400) {
+                    loading_dispatch({ loading: true, type: 'bar' });
+                }
+            })
+            .catch(error => console.error('Error: ' + error));
     };
 
     const handleCheckIfFollowing = () => {
@@ -450,7 +473,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                                             setPostDrop(false);
                                         }}>
                                             <MenuSVG />
-                                            { postDrop ? <PostDropdown /> : null }
+                                            {postDrop ? <PostDropdown handleDeletePost={handleDeletePost} /> : null}
                                         </div>
                                         :
                                         <div className="followBtnWrapper">
@@ -467,7 +490,8 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                             </h2>
                         </div>
                         <div className="mediaContainer">
-                            <a href="/" className="mediaWrapper">
+                            <a href="/" className={`mediaWrapper ${loadState ? 'mediaWrapperLoading' : ''}`}>
+                                {loadState ? <LoadingWave /> : null}
                                 <div className="mediaImg">
                                     <video key={post_id} src={mediaURL.length > 0 ? mediaURL : ''} autoPlay preload="auto" playsInline loop className="media"
                                         onLoadedData={(event) => event.currentTarget.play()} onClick={(event) => {
