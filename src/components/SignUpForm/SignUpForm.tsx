@@ -1,8 +1,17 @@
-import React, { useState }  from 'react';
+import React, { useState, useContext } from 'react';
+
+import LoadingWave from '../LoadingWave/LoadingWave';
+
+import { ModalContext } from '../contexts/ModalContext';
+import { LoadingContext } from '../contexts/LoadingContext';
 
 require('./SignUpForm.css');
 
 const SignUpForm = () => {
+    //temp state value
+    const [loadState, setLoadState] = useState(false);
+    const { dispatch } = useContext(ModalContext);
+
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const days = 31;
     const years = new Date().getFullYear();
@@ -51,46 +60,60 @@ const SignUpForm = () => {
     };
 
     const onPasswordConfirm = (event: React.FormEvent<HTMLInputElement>) => {
-        if(event.currentTarget.value === password) setMatchingPass(true);
+        if (event.currentTarget.value === password) setMatchingPass(true);
         setPasswordConf(event.currentTarget.value);
     };
 
-    const handleRegister = (event: React.FormEvent<HTMLFormElement>) => { 
+    const handleRegister = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        if(!monthSelected || !daySelected || !yearSelected){
+        if (!month || !day || !year) {
             setBirthdayError('Birthday must be set');
             return;
         }
-        if(username && (username.length < 4 || username.length > 15)){
+        if (username && (username.length < 4 || username.length > 15)) {
             setUsernameError('Username must be between 4 and 15 characters');
             return;
         }
-        if(username && !username.match(alphanumeric)){
+        if (username && !username.match(alphanumeric)) {
             setUsernameError('Username can only contain letters and numbers');
             return;
         }
         setUsernameError('');
-        if(email && (!email.includes('@') || !email.includes('.'))){
+        if (email && (!email.includes('@') || !email.includes('.'))) {
             setEmailInvalid(true);
             return;
         }
-        if(password !== passwordConf) {
+        if (password !== passwordConf) {
             setMatchingPass(false);
             return;
         }
         setMatchingPass(true);
+        setLoadState(true);
         fetch(`http://localhost:3000/register`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email, username, password, birthday: `${month} ${day}, ${year}` })
-            })
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, username, password, birthday: `${month} ${day}, ${year}` })
+        })
             .then(res => {
-                if(res.status == 201){
+                if (res.status == 200) {
+                    setTimeout(() => dispatch({ type: 'false' }), 300);
 
+                    //login user as newly created account
+                    res.json().then(json => {
+                        localStorage.setItem('token', json.token);
+                        localStorage.setItem('email_cache', json.user_profile.email);
+                        localStorage.setItem('username_cache', json.user_profile.username);
+                        localStorage.setItem('userid_cache', json.user_profile.id);
+                        localStorage.setItem('name_cache', json.user_profile.name);
+                        localStorage.setItem('avatar', json.user_profile.avatar);
+                        localStorage.setItem('birthday_cache', json.user_profile.birthday);
+
+                        window.location.reload(false);
+                    });
                 }
-                else if(res.status == 409){
+                else if (res.status == 409) {
                     setEmailExists(true);
                 }
             })
@@ -111,7 +134,7 @@ const SignUpForm = () => {
                             {month ? month : 'Month'}
                         </div>
                         {monthSelected ? <ul className="birthdayListContainer">
-                            {months.map(month => <li className="birthdayListItem" onClick={(event) => { event.stopPropagation(); setMonth(month); handleBirthdayModal();}}>
+                            {months.map(month => <li className="birthdayListItem" onClick={(event) => { event.stopPropagation(); setMonth(month); handleBirthdayModal(); }}>
                                 <span>{month}</span>
                             </li>)}
                         </ul> : null}
@@ -121,7 +144,7 @@ const SignUpForm = () => {
                             {day ? day : 'Day'}
                         </div>
                         {daySelected ? <ul className="birthdayListContainer">
-                            {[...Array(days)].map((value, i) => <li className="birthdayListItem" onClick={(event) => { event.stopPropagation(); handleBirthdayModal(); setDay(`${i+1}`); }}><span>{i+1}</span></li>)}
+                            {[...Array(days)].map((value, i) => <li className="birthdayListItem" onClick={(event) => { event.stopPropagation(); handleBirthdayModal(); setDay(`${i + 1}`); }}><span>{i + 1}</span></li>)}
                         </ul> : null}
                     </div>
                     <div className={`birthdaySelectorContainer ${birthdayError ? 'loginFormError' : null}`} onClick={() => setYearSelected(true)}>
@@ -129,7 +152,7 @@ const SignUpForm = () => {
                             {year ? year : 'Year'}
                         </div>
                         {yearSelected ? <ul className="birthdayListContainer">
-                            {[...Array(years)].map((value, i) => (years-i >= 1900) ? <li className="birthdayListItem" onClick={(event) => { event.stopPropagation(); setYear(`${years-i}`); handleBirthdayModal(); }}><span>{years-i}</span></li> : null)}
+                            {[...Array(years)].map((value, i) => (years - i >= 1900) ? <li className="birthdayListItem" onClick={(event) => { event.stopPropagation(); setYear(`${years - i}`); handleBirthdayModal(); }}><span>{years - i}</span></li> : null)}
                         </ul> : null}
                     </div>
                 </div>
@@ -137,9 +160,9 @@ const SignUpForm = () => {
                     Username
                 </div>
                 <div className={`loginFormWrapper flex flex-col ${usernameError.length > 0 ? 'loginFormError' : ''}`}>
-                    <input 
-                        type="text" 
-                        placeholder="Username" 
+                    <input
+                        type="text"
+                        placeholder="Username"
                         onChange={onUsernameInput}
                         required
                     />
@@ -148,9 +171,9 @@ const SignUpForm = () => {
                     Email
                 </div>
                 <div className={`loginFormWrapper flex flex-col ${emailExists || emailInvalid ? 'loginFormError' : ''}`}>
-                    <input 
-                        type="text" 
-                        placeholder="Email" 
+                    <input
+                        type="text"
+                        placeholder="Email"
                         onChange={onEmailInput}
                         required
                     />
@@ -159,7 +182,7 @@ const SignUpForm = () => {
                     Password
                 </div>
                 <div className={`loginFormWrapper ${matchingPass ? '' : 'loginFormError'}`}>
-                    <input 
+                    <input
                         type="text"
                         placeholder="Password"
                         onChange={onPasswordInput}
@@ -167,21 +190,21 @@ const SignUpForm = () => {
                     />
                 </div>
                 <div className={`loginFormWrapper flex flex-col ${matchingPass ? '' : 'loginFormError'}`}>
-                    <input 
-                        type="text" 
+                    <input
+                        type="text"
                         placeholder="Confirm Password"
                         onChange={onPasswordConfirm}
                         required
                     />
-                    {birthdayError.length > 0 ?  <h1 className="signUpError">{birthdayError}</h1> : null}
+                    {birthdayError.length > 0 ? <h1 className="signUpError">{birthdayError}</h1> : null}
                     {emailInvalid ? <h1 className="signUpError">Email not a valid email</h1> : null}
                     {emailExists ? <h1 className="signUpError">Email already registered</h1> : null}
                     {matchingPass ? null : <h1 className="signUpError">Passwords do not match</h1>}
-                    {usernameError.length > 0 ? <h1 className="signUpError">{usernameError}</h1>: null}
+                    {usernameError.length > 0 ? <h1 className="signUpError">{usernameError}</h1> : null}
                 </div>
-                <button type="submit" className="loginButton">
+                {loadState ? <div className="nextLoading"><LoadingWave /></div> : <button type="submit" className="loginButton">
                     Next
-                </button>
+                </button>}
             </form>
             {(monthSelected || daySelected || yearSelected) ? <div className="birthdayModalMask" onClick={() => handleBirthdayModal()}></div> : null}
         </div>
