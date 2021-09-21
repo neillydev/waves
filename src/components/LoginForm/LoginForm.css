@@ -35,7 +35,7 @@
 }
 
 .loginFormError {
-    border: 1.5px solid #ef4444;
+    border: 1.5px solid #ef4444 !important;
 }
 
 .forgot {
