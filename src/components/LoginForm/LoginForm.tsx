@@ -12,7 +12,7 @@ const LoginForm = () => {
     const { dispatch } = useContext(ModalContext);
 
     const [username, setUsername] = useState<string>();
-    const [usernameExists, setUsernameExists] = useState<boolean>();
+    const [loginError, setLoginError] = useState<string>();
     const [password, setPassword] = useState<string>();
 
     const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
@@ -42,8 +42,12 @@ const LoginForm = () => {
                             window.location.reload(false);
                         });
                     }
-                    else if (res.status == 409) {
-                        setUsernameExists(false);
+                    else if (res.status === 409) {
+                        setLoginError('Username or password is invalid');
+                        setLoadState(false);
+                    }
+                    else if (res.status === 400) {
+                        setLoginError('Unknown error occurred. Please try again.');
                         setLoadState(false);
                     }
                 }
@@ -58,22 +62,31 @@ const LoginForm = () => {
                 <div className="loginTitleContainer">
                     Username
                 </div>
-                <div className="loginFormWrapper">
-                    <input type="text" placeholder="Username" onChange={(event) => setUsername(event.currentTarget.value)} required />
+                <div className={`loginFormWrapper ${loginError ? 'loginFormError' : ''}`}>
+                    <input type="text" placeholder="Username" onChange={(event) => {
+                        setLoginError(undefined);
+                        setUsername(event.currentTarget.value)
+                    }
+                    } required />
                 </div>
                 <div className="loginTitleContainer">
                     Password
                 </div>
-                <div className="loginFormWrapper">
-                    <input type="text" placeholder="Password" onChange={(event) => setPassword(event.currentTarget.value)} required />
+                <div className={`loginFormWrapper ${loginError ? 'loginFormError' : ''}`}>
+                    <input type="text" placeholder="Password" onChange={(event) => {
+                        setLoginError(undefined);
+                        setPassword(event.currentTarget.value)
+                    }
+                    } required />
                 </div>
                 <div className="forgot">
                     <a href="/">Forgot password?</a>
                 </div>
+                {!loginError ? null : <h1 className="signUpError">Username or password is invalid</h1>}
                 {loadState ? <div className="nextLoading"><LoadingWave /></div> : <button type="submit" className="loginButton">
                     Login
                 </button>}
-                
+
             </form>
         </div>
     )
