@@ -154,6 +154,23 @@
     overflow: hidden;
 }
 
+.menuBtnWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.menuBtnWrapper > svg {
+    height: 24px;
+    width: 24px;
+}
+
+.menuBtnWrapper > svg:hover {
+    fill: #2ba0ff;
+}
+
 .followBtn {
     display: flex;
     justify-content: center;

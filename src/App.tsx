@@ -72,7 +72,6 @@ const App = () => {
     };
 
     useEffect(() => handleTokenCheck(), []);
-    
     return (
         <Router>
             <ScrollToTop />

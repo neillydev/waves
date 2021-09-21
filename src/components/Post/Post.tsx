@@ -13,7 +13,9 @@ import CommentSVG from '../../svg/comment.svg';
 import ShareSVG from '../../svg/share.svg';
 import CancelSVG from '../../svg/cancel.svg';
 import DownArrowSVG from '../../svg/down-arrow.svg';
+import MenuSVG from '../../svg/menu.svg';
 import LoadingWave from '../LoadingWave/LoadingWave';
+import PostDropdown from '../PostDropdown/PostDropdown';
 
 require('./Post.css');
 
@@ -56,6 +58,8 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
     const [postComments, setPostComments] = useState(comments);
     const [reply, setReply] = useState<any>();
     const [showReplies, setShowReplies] = useState<number>(1);
+
+    const [postDrop, setPostDrop] = useState(false);
 
     const handleFetchFollow = () => {
         fetch(`http://localhost:3000/follow`, {
@@ -136,7 +140,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
             })
                 .then(res => {
                     if (res.status == 200) {
-                        setTimeout(() =>res.json().then((json: any) => {
+                        setTimeout(() => res.json().then((json: any) => {
                             setPostComments([...postComments, json]);
                             setLoadState(false);
                         }), 300)
@@ -206,6 +210,9 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
         }
     }, [])
 
+    useEffect(() => {
+        enlarge_dispatch({ type: 'false' });
+    }, [location.pathname])
     return (
         <div className="postContainer">
             {
@@ -213,7 +220,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                     <div className="postLargeContainer">
                         <div className="postLargeVideoContainer">
                             <div className="postLargeVideoWrapper">
-                                <video key={ post_id } src={mediaURL} autoPlay preload="auto" playsInline loop className="largeMedia"></video>
+                                <video key={post_id} src={mediaURL} autoPlay preload="auto" playsInline loop className="largeMedia"></video>
                             </div>
                         </div>
                         <CancelSVG onClick={() => {
@@ -243,7 +250,9 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                                     </div>
                                     {
                                         localStorage.getItem('username_cache') && author === localStorage.getItem('username_cache') ?
-                                            null
+                                            <div className="menuBtnWrapper">
+                                                <MenuSVG />
+                                            </div>
                                             :
                                             <div className="followBtnWrapper">
                                                 <button className="followBtn" onClick={authState ? () => handleFetchFollow() : () => dispatch({ type: 'true' })}>
@@ -435,7 +444,14 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                                 </div>
                                 {
                                     localStorage.getItem('username_cache') && author === localStorage.getItem('username_cache') ?
-                                        null
+                                        <div className="menuBtnWrapper" onMouseEnter={() => {
+                                            setPostDrop(true);
+                                        }} onMouseLeave={() => {
+                                            setPostDrop(false);
+                                        }}>
+                                            <MenuSVG />
+                                            { postDrop ? <PostDropdown /> : null }
+                                        </div>
                                         :
                                         <div className="followBtnWrapper">
                                             <button className="followBtn" onClick={authState ? () => handleFetchFollow() : () => dispatch({ type: 'true' })}>
@@ -453,7 +469,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                         <div className="mediaContainer">
                             <a href="/" className="mediaWrapper">
                                 <div className="mediaImg">
-                                    <video key={ post_id } src={mediaURL.length > 0 ? mediaURL : ''} autoPlay preload="auto" playsInline loop className="media"
+                                    <video key={post_id} src={mediaURL.length > 0 ? mediaURL : ''} autoPlay preload="auto" playsInline loop className="media"
                                         onLoadedData={(event) => event.currentTarget.play()} onClick={(event) => {
                                             event.preventDefault();
                                             setPostClicked(post_id);

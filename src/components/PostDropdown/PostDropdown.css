@@ -1,0 +1,43 @@
+.postDropdownContainer {
+    position: absolute;
+    z-index: 1;
+    right: -14px;
+    top: calc(5.5% + 12px);
+    min-width: 200px;
+    background: rgb(255, 255, 255);
+    border-radius: 8px;
+    box-shadow: rgb(0 0 0 / 10%) 0px -4px 32px;
+}
+
+.postDropdownWrapper {
+    padding: 8px 0px;
+    min-width: 223px;
+    transition: all 0.3s ease-in-out 0s;
+}
+
+.postDropdownItem {
+    height: 40px;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    padding: 0px 16px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    font-style: normal;
+    color: rgb(22, 24, 35);
+    word-break: keep-all;
+    white-space: nowrap;
+    transition: all 0.3s ease-in-out 0s;
+}
+
+.postDropdownItem:hover {
+    background-color: rgb(240, 240, 240);
+}
+
+.postDropdownItem > svg {
+    height: 18px;
+    width: 18px;
+    margin-right: 16px;
+}
