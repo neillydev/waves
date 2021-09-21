@@ -7,6 +7,8 @@ import Settings from './components/Settings/Settings';
 import Profile from './components/Profile/Profile';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 
+import ScrollToTop from './util/ScrollToTop';
+
 import { AuthContext, AuthProvider } from './components/contexts/AuthContext';
 import { ModalContext, ModalProvider } from './components/contexts/ModalContext';
 
@@ -19,6 +21,7 @@ require('./App.css');
 
 
 const App = () => {
+
     const { authState, authDispatch } = useContext(AuthContext);
     const { state } = useContext(ModalContext);
 
@@ -69,8 +72,10 @@ const App = () => {
     };
 
     useEffect(() => handleTokenCheck(), []);
+    
     return (
         <Router>
+            <ScrollToTop />
             <div className="appContainer">
                 <NavBar />
                 <div className="mainWrapper">

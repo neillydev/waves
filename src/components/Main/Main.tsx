@@ -33,20 +33,24 @@ const Main = () => {
     const { dispatch } = useContext(ModalContext);
     const { load_state, loading_dispatch } = useContext(LoadingContext);
 
-
     const [viewType, setViewType] = useState<ViewType>(ViewType.TRENDING);
 
     const [posts, setPosts] = useState<PostType[]>();
-    const [postComments, setPostComments] = useState<string[]>();
 
     const handleFetchPosts = () => {
         fetch(`http://localhost:3000/posts`, {
             method: 'GET'
         })
-            .then(res => res.json())
-            .then((json: any) => {
-                setPosts(json);
-                loading_dispatch({ type: 'true' });
+            .then(res => {
+                if (res.status == 200) {
+                    res.json().then((json: any) => {
+                        setPosts(json);
+                        loading_dispatch({ type: 'true' });
+                    });
+                }
+                else if (res.status == 409) {
+                    window.location.reload(false);
+                }
             })
             .catch(error => console.error('Error: ' + error));
     };
@@ -62,16 +66,23 @@ const Main = () => {
                 user_id: localStorage.getItem('userid_cache')
             })
         })
-            .then(res => res.json())
-            .then((json: any) => {
-                setPosts(json);
-                loading_dispatch({ type: 'true' });
+            .then(res => {
+                if (res.status == 200) {
+                    res.json().then((json: any) => {
+                        setPosts(json);
+                        loading_dispatch({ type: 'true' });
+                    });
+                }
+                else if (res.status == 409) {
+                    window.location.reload(false);
+                }
             })
             .catch(error => console.error('Error: ' + error));
     };
 
     useEffect(() => {
         loading_dispatch({ type: 'false' });
+        window.scrollTo(0, 0);
         switch (viewType) {
             case ViewType.FOLLOWING:
                 handleFetchFollowingPosts();
@@ -92,7 +103,7 @@ const Main = () => {
                         <div className="navWrapper flex flex-col">
                             <a href="/" className="navItem" onClick={(event) => {
                                 event.preventDefault();
-                                setViewType(ViewType.TRENDING);
+                                setViewType(newView => ViewType.TRENDING);
                             }}>
                                 <h2 className={`navItemTitle ${viewType === ViewType.TRENDING ? 'tabSelected' : ''}`}>
                                     Trending
@@ -101,7 +112,7 @@ const Main = () => {
                             <a href="/" className="navItem" onClick={(event) => {
                                 event.preventDefault();
                                 if (authState) {
-                                    setViewType(ViewType.FOLLOWING);
+                                    setViewType(newView => ViewType.FOLLOWING);
                                 }
                                 else {
                                     dispatch({ type: 'true' });
@@ -123,24 +134,26 @@ const Main = () => {
                     </div>
                 </div>
             </div>
-            <div className={`mainContentContainer ${posts && posts.length !== 0 ? 'mainContentSome' : 'mainContentNone'}`}>
-
-                {posts && posts.length !== 0 ? posts.map(post => <Post
-                    post_id={post.post_id}
-                    author={post.username}
-                    nickname={post.name}
-                    title=""
-                    creatorAvatarImg={post.avatar}
-                    contentTitle={post.caption}
-                    contentDescription={post.caption}
-                    mediaType={post.mediaType}
-                    mediaURL={post.media}
-                    soundDescription={post.sounddescription}
-                    mediaDescription={post.date_posted}
-                    likes={post.likes}
-                    comments={post.comments}
-                />) : <h4>Nothing to see here</h4>}
-            </div>
+            {
+                <div className={`${viewType === ViewType.TRENDING ? 'trendingContainer' : 'followingContainer'} ${posts && posts.length !== 0 ? 'mainContentSome' : 'mainContentNone'}`}>
+                    {posts && posts.length !== 0 ? posts.map(post => <Post
+                        key={post.post_id}
+                        post_id={post.post_id}
+                        author={post.username}
+                        nickname={post.name}
+                        title=""
+                        creatorAvatarImg={post.avatar}
+                        contentTitle={post.caption}
+                        contentDescription={post.caption}
+                        mediaType={post.mediaType}
+                        mediaURL={post.media}
+                        soundDescription={post.sounddescription}
+                        mediaDescription={post.date_posted}
+                        likes={post.likes}
+                        comments={post.comments}
+                    />) : <h4>Nothing to see here</h4>}
+                </div>
+            }
         </div>
     )
 }
