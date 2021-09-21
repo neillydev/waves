@@ -50,13 +50,13 @@ const Profile = () => {
             .then(res => res.json())
             .then((json: any) => {
                 setProfile(json);
-                loading_dispatch({ type: 'true' });
+                loading_dispatch({ loading: true, type: 'bar' });
             })
             .catch(error => console.error('Error: ' + error));
     };
 
     useEffect(() => {
-        loading_dispatch({ type: 'false' });
+        loading_dispatch({ loading: true, type: 'loading_bar' });
         handleFetchProfile();
     }, [location.pathname]);
 

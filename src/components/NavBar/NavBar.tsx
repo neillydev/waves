@@ -117,7 +117,7 @@ function NavBar() {
                     </div>
                 </div>
             </div>
-            <div className={`loadingBarContainer loadingBar ${load_state ? 'loadedBar' : ''}`}></div>
+            <div className={`loadingBarContainer ${load_state === 'loading_bar' ? 'loadingBar' : ''} ${load_state === 'bar' ? 'loadingBar loadedBar' : ''}`}></div>
         </div>
     )
 }

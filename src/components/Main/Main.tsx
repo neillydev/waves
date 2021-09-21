@@ -5,6 +5,7 @@ import Post from '../Post/Post';
 import { AuthContext } from '../contexts/AuthContext';
 import { ModalContext } from '../contexts/ModalContext';
 import { LoadingContext } from '../contexts/LoadingContext';
+import LoadingWave from '../LoadingWave/LoadingWave';
 
 require('./Main.css');
 
@@ -38,6 +39,7 @@ const Main = () => {
     const [posts, setPosts] = useState<PostType[]>();
 
     const handleFetchPosts = () => {
+        loading_dispatch({ loading: true, type: 'loading_bar' });
         fetch(`http://localhost:3000/posts`, {
             method: 'GET'
         })
@@ -45,7 +47,7 @@ const Main = () => {
                 if (res.status == 200) {
                     res.json().then((json: any) => {
                         setPosts(json);
-                        loading_dispatch({ type: 'true' });
+                        loading_dispatch({ loading: true, type: 'bar' });
                     });
                 }
                 else if (res.status == 409) {
@@ -56,6 +58,7 @@ const Main = () => {
     };
 
     const handleFetchFollowingPosts = () => {
+        loading_dispatch({ loading: true, type: 'loading_bar' });
         fetch(`http://localhost:3000/posts`, {
             method: 'POST',
             headers: {
@@ -70,7 +73,7 @@ const Main = () => {
                 if (res.status == 200) {
                     res.json().then((json: any) => {
                         setPosts(json);
-                        loading_dispatch({ type: 'true' });
+                        loading_dispatch({ loading: true, type: 'bar' });
                     });
                 }
                 else if (res.status == 409) {
@@ -81,7 +84,6 @@ const Main = () => {
     };
 
     useEffect(() => {
-        loading_dispatch({ type: 'false' });
         window.scrollTo(0, 0);
         switch (viewType) {
             case ViewType.FOLLOWING:

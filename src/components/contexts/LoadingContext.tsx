@@ -2,13 +2,13 @@ import React, {useMemo, createContext, useReducer} from "react";
 
 export const LoadingContext = createContext<any | undefined>(undefined);
 
-const initialState = false;
-const reducer = (state: boolean, action: any) => {
-  switch(action.type) {
-    case 'true':
-        return true;
-    case 'false':
-      return false;
+const initialState = '';
+const reducer = (state: string, action: any) => {
+  switch(action.loading) {
+    case true:
+        return action.type;
+    case false:
+        return null;
     default:
         return state;
   }

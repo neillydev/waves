@@ -7,7 +7,7 @@ require('./NotFound.css');
 const NotFound = () => {
     const { load_state, loading_dispatch } = useContext(LoadingContext);
 
-    loading_dispatch({ type: 'true' });
+    loading_dispatch({ loading: true, type: 'bar' });
     return (
         <div className="notFoundContainer">
             <img src="https://i.imgur.com/U3vTGjX.png" alt="" />
