@@ -4,6 +4,17 @@
     height: 34px;
   }
 
+  .loadingWaveSmall {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+.loadingWaveSmall div {
+  position: unset !important;
+  width: 4px !important;
+}
+
 .loadingWave div {
     display: inline-block;
     position: relative;

@@ -2,9 +2,9 @@ import React from 'react';
 
 require('./LoadingWave.css');
 
-const LoadingWave = () => {
+const LoadingWave = ({ small = false }) => {
     return (
-        <div className="loadingWave"><div></div><div></div><div></div></div>
+        <div className={`loadingWave ${small ? 'loadingWaveSmall' : ''}`}><div></div><div></div><div></div></div>
     )
 };
 
