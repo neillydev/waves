@@ -99,8 +99,6 @@ const SignUpForm = () => {
             .then(res => {
                 if (res.status == 200) {
                     setTimeout(() => dispatch({ type: 'false' }), 300);
-
-                    //login user as newly created account
                     res.json().then(json => {
                         localStorage.setItem('token', json.token);
                         localStorage.setItem('email_cache', json.user_profile.email);
@@ -115,6 +113,7 @@ const SignUpForm = () => {
                 }
                 else if (res.status == 409) {
                     setEmailExists(true);
+                    setLoadState(false);
                 }
             })
             .then(response => console.log('Success: ', response))

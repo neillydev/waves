@@ -2,10 +2,12 @@ import React, { useState, useContext } from 'react';
 
 import { AuthContext } from '../contexts/AuthContext';
 import { ModalContext } from '../contexts/ModalContext';
+import LoadingWave from '../LoadingWave/LoadingWave';
 
 require('./LoginForm.css');
 
 const LoginForm = () => {
+    const [loadState, setLoadState] = useState(false);
     const { authDispatch } = useContext(AuthContext);
     const { dispatch } = useContext(ModalContext);
 
@@ -15,6 +17,7 @@ const LoginForm = () => {
 
     const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        setLoadState(true);
         fetch(`http://localhost:3000/login`, {
             method: 'POST',
             headers: {
@@ -41,6 +44,7 @@ const LoginForm = () => {
                     }
                     else if (res.status == 409) {
                         setUsernameExists(false);
+                        setLoadState(false);
                     }
                 }
             })
@@ -66,9 +70,10 @@ const LoginForm = () => {
                 <div className="forgot">
                     <a href="/">Forgot password?</a>
                 </div>
-                <button type="submit" className="loginButton">
+                {loadState ? <div className="nextLoading"><LoadingWave /></div> : <button type="submit" className="loginButton">
                     Login
-                </button>
+                </button>}
+                
             </form>
         </div>
     )
