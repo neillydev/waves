@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect, useContext } from 'react';
 import { LoadingContext } from '../contexts/LoadingContext';
 
 import { Redirect, useHistory } from 'react-router-dom';
+import LoadingWave from '../LoadingWave/LoadingWave';
 
 require('./Upload.css');
 
@@ -25,7 +26,7 @@ const Upload = () => {
     const [access, setAccess] = useState(AccessType.public);
     const handleSendPreview = () => {
         if (mediaFile) {
-            loading_dispatch({ type: 'false' });
+            loading_dispatch({ loading: true, type: 'loading_bar' });
             const formData = new FormData();
             formData.append('file', mediaFile);
             fetch('http://localhost:3000/preview', {
@@ -38,7 +39,7 @@ const Upload = () => {
                         if (res.status === 200) {
                             res.json().then(json => {
                                 setMediaPreview(json.url);
-                                loading_dispatch({ type: 'true' });
+                                loading_dispatch({ loading: true, type: 'bar' });
                             });
                         }
                         else if (res.status === 404) {
@@ -78,7 +79,7 @@ const Upload = () => {
                             else if (res.status === 404) {
                                 reject();
                             }
-                            else{
+                            else {
                                 reject();
                             }
                         }
@@ -89,7 +90,10 @@ const Upload = () => {
     };
 
     useEffect(() => {
-        handleSendPreview();
+        if (mediaFile) {
+            loading_dispatch({ loading: true, type: 'wave' });
+            handleSendPreview();
+        }
     }, [mediaFile])
 
     return (
@@ -136,10 +140,13 @@ const Upload = () => {
                     </div>
                 </div>
                 <div className="uploadMediaContainer">
-                    <div className={`uploadMediaMask ${mediaFile ? '' : 'mediaDisabled'}`}>
-                        <video src={mediaPreview.length > 0 ? mediaPreview : ''} autoPlay preload="auto" playsInline loop className="mediaPreview"
-                            onLoadedData={(event) => event.currentTarget.play()}>
-                        </video>
+                    <div className={`uploadMediaMask ${mediaFile ? 'uploadMediaMaskBlk' : 'mediaDisabled'}`}>
+                        {mediaPreview.length > 0 ?
+                            <video src={mediaPreview.length > 0 ? mediaPreview : ''} autoPlay preload="auto" playsInline loop className="mediaPreview"
+                                onLoadedData={(event) => event.currentTarget.play()}>
+                            </video>
+                            
+                        : <LoadingWave /> }
                     </div>
                     <div className={`uploadMediaWrapper ${mediaFile ? 'mediaDisabled' : ''}`}
                         onClick={() => {
@@ -164,12 +171,12 @@ const Upload = () => {
                         </button>
                         <button className={`postBtn ${caption.length > 0 ? 'enabledBtn' : 'disabledBtn'}`} disabled={caption.length === 0 ? true : false} onClick={() => {
                             handlePost()
-                            .then(json => {
-                                history.push('/');
-                            })
-                            .catch(error => {
+                                .then(json => {
+                                    history.push('/');
+                                })
+                                .catch(error => {
 
-                            });
+                                });
                         }} >
                             Post
                         </button>

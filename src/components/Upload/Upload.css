@@ -123,6 +123,9 @@
 }
 
 .uploadMediaMask {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: relative;
     background: rgb(255, 255, 255);
     line-height: 0;
@@ -130,14 +133,27 @@
     height: 556px;
 }
 
-.mediaPreview {
+.uploadMediaMaskBlk {
+    background-color: rgb(0, 0, 0);
+    border-radius: 10px;
+}
+
+/* .mediaPreview {
     height: 486px;
     width: 259px;
     background-color: rgb(0, 0, 0);
     object-fit: contain;
-    margin-left: 12px;
-    margin-top: 13px;
+     margin-left: 12px;
+    margin-top: 13px; 
     border-radius: 0.5px;
+} */
+
+.mediaPreview {
+    width: calc(0.56 * (475px + ((100vw - 768px) / 1152) * 100));
+    height: calc(475px + ((100vw - 768px) / 1152) * 100);
+    background-color: rgb(0, 0, 0);
+    object-fit: cover;
+    border-radius: 10px;
 }
 
 .mediaDisabled {
