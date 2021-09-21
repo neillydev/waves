@@ -5,22 +5,22 @@
     max-width: 360px;
     min-width: 250px;
     left: auto;
-    right: 1rem;
+    right: 0px;
+    top: 2.25rem;
     padding: 0;
     width: max-content;
     background: #2ba0ff;
     z-index: 2;
+    box-shadow: rgb(0 0 0 / 30%) 0px -4px 32px;
     animation: dropdown .2s cubic-bezier(0.65,0,0.35,1) 0s forwards;
 }
 
 @keyframes dropdown {
     from {
         opacity: 0%;
-        top: 0px;
     }
     to {
         opacity: 100%;
-        top: 2rem;
     }
 }
 
