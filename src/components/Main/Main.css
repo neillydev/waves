@@ -91,6 +91,23 @@
     flex-wrap: wrap;
 }
 
+.wavesCopyright {
+    padding: 20px 0;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-size: 10px;
+}
+
+.leftFooterWrapper::before {
+    content: "";
+    height: 1px;
+    right: 8px;
+    left: 8px;
+    background: rgba(22, 24, 35, 0.12);
+    position: absolute;
+}
+
+
 .tabSelected {
     color: #2ba0ff;
 }

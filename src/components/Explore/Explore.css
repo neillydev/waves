@@ -6,16 +6,9 @@
     color: rgb(116, 116, 116);
 }
 
-.exploreWrapper::after {
-    content: "";
-    height: 1px;
-    right: 8px;
-    left: 8px;
-    background: rgba(22, 24, 35, 0.12);
-    margin-top: 2rem;
-    position: absolute;
+.exploreWrapper {
+    padding: 20px 0px;
 }
-
 
 .exploreTagContainer {
     display: flex;

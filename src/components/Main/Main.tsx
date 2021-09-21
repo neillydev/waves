@@ -131,6 +131,9 @@ const Main = () => {
                                 <Explore title="waves" />
                             </div>
                         </div>
+                        <div className="leftFooterWrapper">
+                            <h3 className="wavesCopyright">© 2021 Waves</h3>
+                        </div>
                     </div>
                 </div>
             </div>

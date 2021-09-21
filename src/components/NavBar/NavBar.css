@@ -16,10 +16,10 @@
 .navSearchForm {
     -webkit-box-align: center;
     background: rgba(22, 24, 35, 0.1);
-    border-radius: 5px;
+    border-radius: 10px;
     overflow: hidden;
     padding: 10px;
-    width: 32rem;
+    width: 24rem;
 }
 
 .waveSearch {
