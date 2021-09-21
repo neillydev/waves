@@ -13,6 +13,7 @@ import CommentSVG from '../../svg/comment.svg';
 import ShareSVG from '../../svg/share.svg';
 import CancelSVG from '../../svg/cancel.svg';
 import DownArrowSVG from '../../svg/down-arrow.svg';
+import LoadingWave from '../LoadingWave/LoadingWave';
 
 require('./Post.css');
 
@@ -33,6 +34,8 @@ type PostProps = {
 };
 
 const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle, contentDescription, mediaType, mediaURL, soundDescription, mediaDescription, likes, comments }: PostProps) => {
+
+    const [loadState, setLoadState] = useState(false);
 
     const { authState } = useContext(AuthContext);
     const { dispatch } = useContext(ModalContext);
@@ -120,6 +123,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
     const handlePostComment = () => {
         if (comment) {
             const saveComment = comment;
+            setLoadState(true);
 
             setComment('');
             console.log(reply);
@@ -132,12 +136,14 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
             })
                 .then(res => {
                     if (res.status == 200) {
-                        res.json().then((json: any) => {
+                        setTimeout(() =>res.json().then((json: any) => {
                             setPostComments([...postComments, json]);
-                        });
+                            setLoadState(false);
+                        }), 300)
                     }
                     else if (res.status == 409) {
                         window.location.reload(false);
+                        setLoadState(false);
                     }
                 })
                 .catch(error => console.error('Error: ' + error));
@@ -400,9 +406,9 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                                 }>
                                     <input value={reply?.username ? `@${reply.username} ${comment.slice(`@${reply.username} `.length)}` : comment} type="text" className="enlargedInputForm" placeholder="Post a comment..." onChange={(event) => setComment(event.currentTarget.value)} />
                                 </form>
-                                <div className="postCommentBtn" onClick={() => handlePostComment()}>
+                                {loadState ? <LoadingWave small={true} /> : <div className="postCommentBtn" onClick={() => handlePostComment()}>
                                     Post
-                                </div>
+                                </div>}
                             </div>
                         </div>
                     </div>
