@@ -600,3 +600,11 @@
 .commentMention {
     font-weight: 700;
 }
+
+.hashtagItem {
+    cursor: pointer;
+}
+
+.hashtagItem:hover {
+    text-decoration: underline;
+}
