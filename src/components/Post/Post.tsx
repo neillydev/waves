@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect, useRef } from 'react';
 import BoldedText from '../../util/BoldedText';
 
 import { Link } from 'react-router-dom';
+import VisibilitySensor from 'react-visibility-sensor';
 
 import { AuthContext } from '../contexts/AuthContext';
 import { ModalContext } from '../contexts/ModalContext';
@@ -44,6 +45,10 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
     const { authState } = useContext(AuthContext);
     const { dispatch } = useContext(ModalContext);
     const { enlarge_dispatch } = useContext(EnlargedContext);
+
+    const videoRef = useRef<HTMLVideoElement>(null);
+
+    const [visible, setVisible] = useState(false)
 
     const [postID, setPostID] = useState(post_id);
 
@@ -408,6 +413,8 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                                                                                     :
                                                                                     <BWWaveSVG />
                                                                             }
+
+
                                                                             <span className="commentLikes">
                                                                                 {Number(reply.likes) || 0}
                                                                             </span>
@@ -498,13 +505,25 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                             <a href="/" className={`mediaWrapper ${loadState ? 'mediaWrapperLoading' : ''}`}>
                                 {loadState ? <LoadingWave /> : null}
                                 <div className="mediaImg">
-                                    <video key={post_id} src={mediaURL.length > 0 ? mediaURL : ''} autoPlay preload="auto" playsInline loop className="media"
-                                        onLoadedData={(event) => event.currentTarget.play()} onClick={(event) => {
-                                            event.preventDefault();
-                                            setPostClicked(post_id);
-                                            enlarge_dispatch({ type: 'true' });
-                                        }}>
-                                    </video>
+                                    <VisibilitySensor onChange={(isVisible) => {
+                                        if (isVisible) {
+                                            console.log('visible!')
+                                            setVisible(true);
+                                            videoRef?.current?.play();
+                                        }
+                                        else{
+                                            setVisible(false);
+                                            videoRef?.current?.pause();
+                                        }
+                                    }}>
+                                        <video ref={videoRef} key={post_id} src={mediaURL.length > 0 ? mediaURL : ''} loop onPlay={()=> visible ? null : videoRef.current?.pause()} className="media"
+                                            onLoadedData={(event) => event.currentTarget.play()} onClick={(event) => {
+                                                event.preventDefault();
+                                                setPostClicked(post_id);
+                                                enlarge_dispatch({ type: 'true' });
+                                            }}>
+                                        </video>
+                                    </VisibilitySensor>
                                 </div>
                             </a>
                             <div className="socialControls">
