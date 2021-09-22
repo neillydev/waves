@@ -273,8 +273,13 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                                     </div>
                                     {
                                         localStorage.getItem('username_cache') && author === localStorage.getItem('username_cache') ?
-                                            <div className="menuBtnWrapper">
+                                            <div className="menuBtnWrapper" onMouseEnter={() => {
+                                                setPostDrop(true);
+                                            }} onMouseLeave={() => {
+                                                setPostDrop(false);
+                                            }}>
                                                 <MenuSVG />
+                                                {postDrop ? <PostDropdown handleDeletePost={handleDeletePost} /> : null}
                                             </div>
                                             :
                                             <div className="followBtnWrapper">
