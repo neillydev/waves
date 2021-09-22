@@ -520,6 +520,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                                             onLoadedData={(event) => event.currentTarget.play()} onClick={(event) => {
                                                 event.preventDefault();
                                                 setPostClicked(post_id);
+                                                videoRef.current?.pause();
                                                 enlarge_dispatch({ type: 'true' });
                                             }}>
                                         </video>
