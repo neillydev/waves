@@ -11,6 +11,7 @@ import { AuthContext } from '../contexts/AuthContext';
 import { ModalContext } from '../contexts/ModalContext';
 import { LoadingContext } from '../contexts/LoadingContext';
 import LoadingWave from '../LoadingWave/LoadingWave';
+import Skeleton from '../Skeleton/Skeleton';
 
 require('./Main.css');
 
@@ -52,7 +53,9 @@ const Main = () => {
                 if (res.status == 200) {
                     res.json().then((json: any) => {
                         setPosts(json);
-                        loading_dispatch({ loading: true, type: 'bar' });
+                        setTimeout(() => {
+                            loading_dispatch({ loading: true, type: 'bar' });
+                        }, 200);
                     });
                 }
                 else if (res.status == 409) {
@@ -78,7 +81,9 @@ const Main = () => {
                 if (res.status == 200) {
                     res.json().then((json: any) => {
                         setPosts(json);
-                        loading_dispatch({ loading: true, type: 'bar' });
+                        setTimeout(() => {
+                            loading_dispatch({ loading: true, type: 'bar' });
+                        }, 200);
                     });
                 }
                 else if (res.status == 409) {
@@ -147,6 +152,9 @@ const Main = () => {
                 </div>
             </div>
             {
+                load_state !== "bar" ? 
+                <Skeleton type="main" />
+                :
                 <div className={`${viewType === ViewType.TRENDING ? 'trendingContainer' : 'followingContainer'} ${posts && posts.length !== 0 ? 'mainContentSome' : 'mainContentNone'}`}>
                     {posts && posts.length !== 0 ? posts.map(post => <Post
                         key={post.post_id}
@@ -166,6 +174,26 @@ const Main = () => {
                     />) : <h4>Nothing to see here</h4>}
                 </div>
             }
+            {/* {
+                <div className={`${viewType === ViewType.TRENDING ? 'trendingContainer' : 'followingContainer'} ${posts && posts.length !== 0 ? 'mainContentSome' : 'mainContentNone'}`}>
+                    {posts && posts.length !== 0 ? posts.map(post => <Post
+                        key={post.post_id}
+                        post_id={post.post_id}
+                        author={post.username}
+                        nickname={post.name}
+                        title=""
+                        creatorAvatarImg={post.avatar}
+                        contentTitle={post.caption}
+                        contentDescription={post.caption}
+                        mediaType={post.mediaType}
+                        mediaURL={post.media}
+                        soundDescription={post.sounddescription}
+                        mediaDescription={post.date_posted}
+                        likes={post.likes}
+                        comments={post.comments}
+                    />) : <h4>Nothing to see here</h4>}
+                </div>
+            } */}
         </div>
     )
 }
