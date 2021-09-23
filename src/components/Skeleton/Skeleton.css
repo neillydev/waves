@@ -1,0 +1,90 @@
+.skeletonContainer {
+    display: flex;
+    justify-content: center;
+    font-family: 'Bebas Neue', cursive;
+    font-style: italic;
+    font-size: xx-large;
+    font-weight: 500;
+    color: #00000033;
+    /*color: rgb(204, 204, 204);*/
+    padding: 14px 0px;
+    margin-right: 24px;
+    width: 692px;
+    max-width: 692px;
+    z-index: 1;
+}
+
+.skeletonShimmer {
+    background-image: linear-gradient(90deg, #ddd 0px, #e8e8e8 40px, #ddd 80px);
+    background-size: 600px;
+    animation: shimmer 1.5s infinite linear;
+}
+
+.skeletonAvatar {
+    background-color: rgba(22, 24, 35, 0.06);
+    border-width: 0px;
+}
+
+.skeletonHeader {
+    margin-left: 2rem;
+    margin-bottom: .5rem;
+}
+
+.skeletonUsername {
+    width: 10rem;
+    height: .75rem;
+    background-color: rgba(22, 24, 35, 0.06);
+    border-radius: 2px;
+}
+
+.contentDescription {
+    width: 20rem;
+    height: .75rem;
+    margin-left: 2rem;
+}
+
+.skeletonDescription {
+    display: block;
+    width: 15rem;
+    height: .75rem;
+    background-color: rgba(22, 24, 35, 0.06);
+    border-radius: 2px; 
+}
+
+.skeletonMedia {
+    width: calc(0.56 * (475px + ((100vw - 768px) / 1152) * 100));
+    height: calc(475px + ((100vw - 768px) / 1152) * 100);
+    /* height: 486px;
+    width: 259px; */
+    background-color: rgba(22, 24, 35, 0.06);
+    border-radius: 10px;
+    margin-left: 2rem;
+}
+
+.skeletonSoundDescription {
+    display: block;
+    margin-left: 2rem;
+    width: 12rem;
+    height: .75rem;
+    background-color: rgba(22, 24, 35, 0.06);
+    border-radius: 2px;
+}
+
+.skeletonMediaDescription {
+    display: block;
+    margin-left: 2rem;
+    width: 5rem;
+    height: .75rem;
+    background-color: rgba(22, 24, 35, 0.06);
+    border-radius: 2px;
+}
+
+@keyframes shimmer {
+    0% {
+      background-position: -100px
+    }
+    
+    40%, 100% {
+      background-position: 325px
+    }
+}
