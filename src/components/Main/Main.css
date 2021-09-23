@@ -73,7 +73,19 @@
 }
 
 .navItem {
+    display: flex;
+    align-items: center;
     margin-top: 1rem;
+}
+
+.navItem > svg {
+    margin-right: .75rem;
+    width: 24px;
+    height: 24px;
+}
+
+.navItemSelected {
+    fill: #2ba0ff;
 }
 
 .navItemTitle {

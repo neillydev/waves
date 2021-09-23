@@ -2,6 +2,11 @@ import React, { useState, useEffect, useContext } from 'react';
 import Explore from '../Explore/Explore';
 import Post from '../Post/Post';
 
+import FireSVG from '../../svg/fire.svg';
+import FireDarkSVG from '../../svg/fire_dark.svg';
+import UserSVG from '../../svg/user.svg';
+import UserDarkSVG from '../../svg/user_dark.svg';
+
 import { AuthContext } from '../contexts/AuthContext';
 import { ModalContext } from '../contexts/ModalContext';
 import { LoadingContext } from '../contexts/LoadingContext';
@@ -103,15 +108,16 @@ const Main = () => {
                 <div className="leftScrollContainer">
                     <div className="leftScrollWrapper">
                         <div className="navWrapper flex flex-col">
-                            <a href="/" className="navItem" onClick={(event) => {
+                            <a href="/" className={`navItem ${viewType === ViewType.TRENDING ? 'navItemSelected' : ''}`} onClick={(event) => {
                                 event.preventDefault();
                                 setViewType(newView => ViewType.TRENDING);
                             }}>
+                                { viewType === ViewType.TRENDING ? <FireDarkSVG /> : <FireSVG /> }
                                 <h2 className={`navItemTitle ${viewType === ViewType.TRENDING ? 'tabSelected' : ''}`}>
                                     Trending
                                 </h2>
                             </a>
-                            <a href="/" className="navItem" onClick={(event) => {
+                            <a href="/" className={`navItem ${viewType === ViewType.FOLLOWING ? 'navItemSelected' : ''}`} onClick={(event) => {
                                 event.preventDefault();
                                 if (authState) {
                                     setViewType(newView => ViewType.FOLLOWING);
@@ -120,6 +126,7 @@ const Main = () => {
                                     dispatch({ type: 'true' });
                                 }
                             }}>
+                                { viewType === ViewType.TRENDING ? <UserSVG /> : <UserDarkSVG /> }
                                 <h2 className={`navItemTitle ${viewType === ViewType.FOLLOWING ? 'tabSelected' : ''}`}>
                                     Following
                                 </h2>
