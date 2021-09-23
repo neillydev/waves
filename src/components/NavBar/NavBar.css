@@ -11,6 +11,9 @@
 
 .navTitle {
     font-family: 'Bebas Neue', cursive;
+    font-size: 2rem;
+    margin-top: 6px;
+    margin-left: 6px;
 }
 
 .navSearchForm {
