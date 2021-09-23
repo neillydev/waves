@@ -31,8 +31,17 @@
 }
 
 .skeletonUsername {
+    display: block;
     width: 10rem;
     height: .75rem;
+    background-color: rgba(22, 24, 35, 0.06);
+    border-radius: 2px;
+}
+
+.skeletonProfileUsername {
+    display: block;
+    width: 15rem;
+    height: 1.45rem;
     background-color: rgba(22, 24, 35, 0.06);
     border-radius: 2px;
 }
@@ -49,6 +58,40 @@
     height: .75rem;
     background-color: rgba(22, 24, 35, 0.06);
     border-radius: 2px; 
+}
+
+.skeletonUserStats {
+    margin-top: 1.5rem;
+    justify-content: flex-start;
+}
+
+.skeletonProfileData {
+    display: block;
+    width: 5rem;
+    height: .75rem;
+    background-color: rgba(22, 24, 35, 0.06);
+    border-radius: 2px; 
+}
+
+.skeletonUserBio {
+    margin-top: 1.5rem;
+}
+
+.skeletonNickname {
+    display: block;
+    width: 12rem;
+    height: 1rem;
+    background-color: rgba(22, 24, 35, 0.06);
+    border-radius: 2px;
+    margin-bottom: 1.5rem;
+}
+
+.skeletonBio {
+    display: block;
+    width: 25rem;
+    height: 1rem;
+    background-color: rgba(22, 24, 35, 0.06);
+    border-radius: 2px;
 }
 
 .skeletonMedia {
