@@ -22,7 +22,7 @@ const Skeleton = ({ type }: SkeletonProps) => {
                                 </div>
                             </div>
                         </div>
-                        <div className="contentDescription">
+                        <div className="contentDescription skeletonContentDescription">
                             <span className="skeletonDescription skeletonShimmer"></span>
                         </div>
                         <div className="mediaContainer">
