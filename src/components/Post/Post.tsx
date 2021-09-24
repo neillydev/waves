@@ -18,6 +18,7 @@ import DownArrowSVG from '../../svg/down-arrow.svg';
 import MenuSVG from '../../svg/menu.svg';
 import LoadingWave from '../LoadingWave/LoadingWave';
 import PostDropdown from '../PostDropdown/PostDropdown';
+import EnlargedPost from '../EnlargedPost/EnlargedPost';
 
 require('./Post.css');
 
@@ -61,7 +62,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
 
     const [followed, setFollowed] = useState(false);
 
-    const [postClicked, setPostClicked] = useState<Number>();
+    const [postClicked, setPostClicked] = useState<number>();
 
     const [comment, setComment] = useState<string>('');
     const [postComments, setPostComments] = useState(comments);
@@ -70,6 +71,9 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
 
     const [postDrop, setPostDrop] = useState(false);
 
+    const handlePostClicked = (postClicked: number | undefined) => {
+        setPostClicked(postClicked);
+    };
 
     const handleFetchFollow = () => {
         fetch(`http://localhost:3000/follow`, {
@@ -257,7 +261,26 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
         <div className="postContainer">
             {
                 postClicked ?
-                    <div className="postLargeContainer">
+                        <EnlargedPost key={post_id}
+                        post_id={post_id}
+                        author={author}
+                        nickname={nickname}
+                        title=""
+                        creatorAvatarImg={creatorAvatarImg}
+                        contentTitle={contentTitle}
+                        contentDescription={contentDescription}
+                        mediaType={mediaType}
+                        mediaURL={mediaURL}
+                        soundDescription={soundDescription}
+                        mediaDescription={mediaDescription}
+                        likes={likes}
+                        comments={comments}
+                        handlePostClicked={handlePostClicked}
+                        handleDeletePost={handleDeletePost}
+                        handleFetchFollow={handleFetchFollow}
+                        handleFetchLike={handleFetchLike}
+                        handlePostComment={handlePostComment} />
+                        /* <div className="postLargeContainer">
                         <div className="postLargeVideoContainer">
                             <div className="postLargeVideoWrapper">
                                 <video key={post_id} src={mediaURL} autoPlay preload="auto" playsInline loop className="largeMedia"></video>
@@ -451,7 +474,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                                                 }
                                             </div>)
                                         }
-                                    }) : null}
+                                    }) } : null}
                                 </div>
                             </div>
                             <div className="postLargeFormContainer">
@@ -467,7 +490,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                                 </div>}
                             </div>
                         </div>
-                    </div>
+                    </div>*/
                     :
                     null
             }
