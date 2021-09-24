@@ -48,23 +48,50 @@ export const handleDeletePost = (post_id: number) => {
 
 export const handlePostComment = (post_id: number, reply_to: number, comment: string) => {
     return new Promise((resolve, reject) => {
-            fetch(`http://localhost:3000/comment`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ token: localStorage.getItem('token'), user_id: localStorage.getItem("userid_cache"), post_id: post_id, comment: comment, reply_to: reply_to ? reply_to : 0 })
+        fetch(`http://localhost:3000/comment`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ token: localStorage.getItem('token'), user_id: localStorage.getItem("userid_cache"), post_id: post_id, comment: comment, reply_to: reply_to ? reply_to : 0 })
+        })
+            .then(res => {
+                if (res.status == 200) {
+                    setTimeout(() => res.json().then((json: any) => {
+                        resolve(json);
+                    }), 300)
+                }
+                else if (res.status == 409) {
+                    window.location.reload(false);
+                }
             })
-                .then(res => {
-                    if (res.status == 200) {
-                        setTimeout(() => res.json().then((json: any) => {
-                            resolve(json);
-                        }), 300)
-                    }
-                    else if (res.status == 409) {
-                        window.location.reload(false);
-                    }
-                })
-                .catch(error => console.error('Error: ' + error));
+            .catch(error => console.error('Error: ' + error));
+    });
+};
+
+
+
+export const handleFetchLike = (comment_like: boolean, post_id: number, comment_id?: number) => {
+    return new Promise((resolve, reject) => {
+        console.log(post_id);
+        fetch(`http://localhost:3000/like`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ token: localStorage.getItem('token'), user_id: localStorage.getItem("userid_cache"), post_id: comment_like ? comment_id : post_id, comment_like: comment_like })
+        })
+            .then(res => {
+                if (res.status == 200) {
+
+                    res.json().then((json: any) => {
+                        resolve(json);
+                    });
+                }
+                else if (res.status == 409) {
+                    window.location.reload(false);
+                }
+            })
+            .catch(error => console.error('Error: ' + error));
     });
 };
