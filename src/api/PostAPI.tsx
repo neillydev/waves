@@ -73,7 +73,6 @@ export const handlePostComment = (post_id: number, reply_to: number, comment: st
 
 export const handleFetchLike = (comment_like: boolean, post_id: number, comment_id?: number) => {
     return new Promise((resolve, reject) => {
-        console.log(post_id);
         fetch(`http://localhost:3000/like`, {
             method: 'POST',
             headers: {
@@ -91,6 +90,23 @@ export const handleFetchLike = (comment_like: boolean, post_id: number, comment_
                 else if (res.status == 409) {
                     window.location.reload(false);
                 }
+            })
+            .catch(error => console.error('Error: ' + error));
+    });
+};
+
+export const handleCheckIfLiked = (post_id: number, comment_id?: number) => {
+    return new Promise((resolve, reject) => {
+        fetch(`http://localhost:3000/liked`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ token: localStorage.getItem('token'), user_id: localStorage.getItem("userid_cache"), post_id: comment_id ? comment_id : post_id })
+        })
+            .then(res => res.json())
+            .then((json: any) => {
+                resolve(json);
             })
             .catch(error => console.error('Error: ' + error));
     });
