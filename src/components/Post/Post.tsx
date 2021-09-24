@@ -339,11 +339,11 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                             {soundDescription}
                         </h2>
                     </div>
-                    <div className="mediaDescription">
+                    {/* <div className="mediaDescription">
                         <h2 className="mediaDescriptionText">
                             {mediaDescription}
                         </h2>
-                    </div>
+                    </div> */}
                 </div>
                 </div>
             </span>
