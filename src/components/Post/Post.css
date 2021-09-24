@@ -36,6 +36,16 @@
     margin-left: 4.5rem;
 }
 
+.contentAuthor {
+    display: flex;
+    align-items: center;
+}
+
+.contentAuthor > svg {
+    width: 18px;
+    height: 18px;
+}
+
 .contentAuthorTitle {
     display: flex;
     flex-direction: row;
