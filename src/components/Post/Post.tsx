@@ -18,8 +18,6 @@ import WaveSVG from '../../svg/wave.svg';
 import BWWaveSVG from '../../svg/bw_wave.svg';
 import CommentSVG from '../../svg/comment.svg';
 import ShareSVG from '../../svg/share.svg';
-import CancelSVG from '../../svg/cancel.svg';
-import DownArrowSVG from '../../svg/down-arrow.svg';
 import MenuSVG from '../../svg/menu.svg';
 import LoadingWave from '../LoadingWave/LoadingWave';
 
@@ -53,6 +51,8 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
     const videoRef = useRef<HTMLVideoElement>(null);
 
     const [visible, setVisible] = useState(false)
+
+    const [verified, setVerified] = useState(false);
 
     const [postID, setPostID] = useState(post_id);
 
@@ -217,6 +217,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
             {
                 postClicked ?
                         <EnlargedPost key={post_id}
+                        verified={verified}
                         post_id={post_id}
                         username={author}
                         name={nickname}

@@ -13,6 +13,7 @@ import WaveSVG from '../../svg/wave.svg';
 import BWWaveSVG from '../../svg/bw_wave.svg';
 import CommentSVG from '../../svg/comment.svg';
 import CancelSVG from '../../svg/cancel.svg';
+import VerifiedSVG from '../../svg/correct.svg';
 import DownArrowSVG from '../../svg/down-arrow.svg';
 import MenuSVG from '../../svg/menu.svg';
 import LoadingWave from '../LoadingWave/LoadingWave';
@@ -21,6 +22,7 @@ import PostDropdown from '../PostDropdown/PostDropdown';
 require('../Post/Post.css');
 
 type EnlargedPostProps = {
+    verified: boolean;
     post_id: number;
     username: string;
     name: string;
@@ -37,7 +39,7 @@ type EnlargedPostProps = {
     handlePostClicked: (postClicked: number | undefined) => void;
 };
 
-const EnlargedPost = ({ post_id, username, name, title, creatorAvatarImg, contentTitle, contentDescription, mediaType, mediaURL, soundDescription, mediaDescription, likes, comments, handlePostClicked }: EnlargedPostProps) => {
+const EnlargedPost = ({ verified, post_id, username, name, title, creatorAvatarImg, contentTitle, contentDescription, mediaType, mediaURL, soundDescription, mediaDescription, likes, comments, handlePostClicked }: EnlargedPostProps) => {
 
     const [loadState, setLoadState] = useState(false);
 
@@ -103,10 +105,11 @@ const EnlargedPost = ({ post_id, username, name, title, creatorAvatarImg, conten
                                 </span>
                             </Link>
                             <div className="contentAuthorTitle contentAuthorLarge">
-                                <Link to={`/@${username}`}>
+                                <Link to={`/@${username}`} className="contentAuthor">
                                     <h2 className="contentAuthorName">
                                         {username}
                                     </h2>
+                                    {verified ? <VerifiedSVG /> : null}
                                 </Link>
                                 <h3 className="contentAuthorNickname">{name}</h3>
                             </div>
