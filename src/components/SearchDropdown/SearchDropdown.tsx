@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { Link } from 'react-router-dom';
+import SkeletonSearch from '../Skeleton/SkeletonSearch';
 
 require('./SearchDropdown.css');
 
@@ -31,7 +32,7 @@ const SearchDropdown = ({ username, name, avatar, handleSearchTyping }: SearchDr
                             </span>
                         </Link>
                     </li>
-                    : null}
+                    : <SkeletonSearch />}
             </ul>
         </div>
     )

@@ -20,6 +20,10 @@
     animation: shimmer 1s infinite linear;
 }
 
+.skeletonShimmerSearch {
+    background-image: linear-gradient(90deg, #03a9f4 0px, #2196f3 40px, #1a8fec 80px) !important;
+}
+
 .skeletonAvatar {
     background-color: rgba(22, 24, 35, 0.06);
     border-width: 0px;
@@ -118,6 +122,23 @@
     margin-left: 2rem;
     width: 5rem;
     height: .75rem;
+    background-color: rgba(22, 24, 35, 0.06);
+    border-radius: 2px;
+}
+
+.skeletonItemUsername {
+    display: block;
+    width: 5rem;
+    height: .55rem;
+    background-color: rgba(22, 24, 35, 0.06);
+    border-radius: 2px;
+    margin-bottom: 12px;
+}
+
+.skeletonItemName {
+    display: block;
+    width: 7rem;
+    height: .55rem;
     background-color: rgba(22, 24, 35, 0.06);
     border-radius: 2px;
 }
