@@ -1,6 +1,11 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import BoldedText from '../../util/BoldedText';
 
+import PostDropdown from '../PostDropdown/PostDropdown';
+import EnlargedPost from '../EnlargedPost/EnlargedPost';
+
+import { handleCheckIfLiked } from '../../api/PostAPI';
+
 import { Link } from 'react-router-dom';
 import VisibilitySensor from 'react-visibility-sensor';
 
@@ -17,8 +22,6 @@ import CancelSVG from '../../svg/cancel.svg';
 import DownArrowSVG from '../../svg/down-arrow.svg';
 import MenuSVG from '../../svg/menu.svg';
 import LoadingWave from '../LoadingWave/LoadingWave';
-import PostDropdown from '../PostDropdown/PostDropdown';
-import EnlargedPost from '../EnlargedPost/EnlargedPost';
 
 require('./Post.css');
 
@@ -67,13 +70,16 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
     const [comment, setComment] = useState<string>('');
     const [postComments, setPostComments] = useState(comments);
     const [reply, setReply] = useState<any>();
-    const [showReplies, setShowReplies] = useState<number>(1);
 
     const [postDrop, setPostDrop] = useState(false);
 
     const handlePostClicked = (postClicked: number | undefined) => {
         setPostClicked(postClicked);
     };
+    
+    const handleLoadState = (loadState: boolean) => {
+        setLoadState(loadState);
+    }
 
     const handleFetchFollow = () => {
         fetch(`http://localhost:3000/follow`, {
@@ -106,16 +112,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                 if (res.status == 200) {
 
                     res.json().then((json: any) => {
-                        if (json.comment_like) {
-                            if (commentLiked.includes(json.post_id) === false) {
-                                setCommentLiked(oldCommentLiked => [...oldCommentLiked, json.post_id]);
-                            }
-                            else {
-                                setCommentLiked(oldCommentLiked => [...oldCommentLiked.splice(oldCommentLiked.findIndex((commentID) => commentID === comment_id), 1)]);
-                            }
-                            handleUpdateLike(json.post_id, json.likes);
-                        }
-                        else {
+                        if (!json.comment_like) {
                             setPostLikes(json.likes);
                             setLiked(!liked);
                         }
@@ -127,16 +124,6 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
             })
             .catch(error => console.error('Error: ' + error));
     };
-
-    const handleUpdateLike = (comment_id: number, likes: number) => {
-        let tmpPostComments = postComments;
-        let item = {
-            ...tmpPostComments[tmpPostComments.findIndex((comment: any) => comment.comment_id === comment_id)],
-            likes: Number(likes)
-        }
-        tmpPostComments[tmpPostComments.findIndex((comment: any) => comment.comment_id === comment_id)] = item;
-        setPostComments([...tmpPostComments]);
-    }
 
     const handlePostComment = () => {
         if (comment) {
@@ -168,27 +155,6 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
         }
     };
 
-    const handleDeletePost = () => {
-        setLoadState(true);
-        loading_dispatch({ loading: true, type: 'loading_bar' });
-        fetch(`http://localhost:3000/post`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ token: localStorage.getItem('token'), user_id: localStorage.getItem("userid_cache"), post_id: postID })
-        })
-            .then(res => {
-                if (res.status == 200) {
-                    window.location.reload(false);
-                }
-                else if (res.status == 409 || res.status == 400) {
-                    loading_dispatch({ loading: true, type: 'bar' });
-                }
-            })
-            .catch(error => console.error('Error: ' + error));
-    };
-
     const handleCheckIfFollowing = () => {
         fetch(`http://localhost:3000/following`, {
             method: 'POST',
@@ -211,29 +177,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
             .catch(error => console.error('Error: ' + error));
     };
 
-    const handleCheckIfLiked = (comment_id?: number) => {
-        fetch(`http://localhost:3000/liked`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ token: localStorage.getItem('token'), user_id: localStorage.getItem("userid_cache"), post_id: comment_id ? comment_id : post_id })
-        })
-            .then(res => res.json())
-            .then((json: any) => {
-                if (json.comment_like === true) {
-                    setCommentLiked([...commentLiked, json.post_id]);
-                }
-                else {
-                    if (json.post_id.toString().length < 17) {
-                        //temp solution. need to fix where you're returning comment_like boolean, as it's undefined always, causing comments to register...
-                        //...as a post and therefore forcing posts to become unliked, as a result of the comment not being liked
-                        setLiked(json.liked);
-                    }
-                }
-            })
-            .catch(error => console.error('Error: ' + error));
-    };
+    
 
     useEffect(() => {
         if (postCaption.includes('#')) {
@@ -246,7 +190,18 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
             setPostCaption(str);
         }
         if (authState) {
-            handleCheckIfLiked();
+            handleCheckIfLiked(post_id).then((json: any) => {
+                if (json.comment_like === true) {
+                    setCommentLiked([...commentLiked, json.post_id]);
+                }
+                else {
+                    if (json.post_id.toString().length < 17) {
+                        //temp solution. need to fix where you're returning comment_like boolean, as it's undefined always, causing comments to register...
+                        //...as a post and therefore forcing posts to become unliked, as a result of the comment not being liked
+                        setLiked(json.liked);
+                    }
+                }
+            });
             postComments.map((comment: any) => {
                 handleCheckIfLiked(comment.comment_id);
             });
@@ -263,8 +218,8 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                 postClicked ?
                         <EnlargedPost key={post_id}
                         post_id={post_id}
-                        author={author}
-                        nickname={nickname}
+                        username={author}
+                        name={nickname}
                         title=""
                         creatorAvatarImg={creatorAvatarImg}
                         contentTitle={contentTitle}
@@ -275,222 +230,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                         mediaDescription={mediaDescription}
                         likes={likes}
                         comments={comments}
-                        handlePostClicked={handlePostClicked}
-                        handleDeletePost={handleDeletePost}
-                        handleFetchFollow={handleFetchFollow}
-                        handleFetchLike={handleFetchLike}
-                        handlePostComment={handlePostComment} />
-                        /* <div className="postLargeContainer">
-                        <div className="postLargeVideoContainer">
-                            <div className="postLargeVideoWrapper">
-                                <video key={post_id} src={mediaURL} autoPlay preload="auto" playsInline loop className="largeMedia"></video>
-                            </div>
-                        </div>
-                        <CancelSVG onClick={() => {
-                            enlarge_dispatch({ type: 'false' });
-                            setPostClicked(undefined);
-                            setReply(undefined);
-                            setShowReplies(1);
-                            setComment('');
-                        }} />
-                        <div className="postLargeSocialContainer">
-                            <div className="postLargeAuthor">
-                                <div className="postLargeAuthorWrapper">
-                                    <div className="postLargeAuthorInfo">
-                                        <Link to={`/@${author}`}>
-                                            <span className="creatorAvatar creatorAvatarImg">
-                                                <img src={creatorAvatarImg} />
-                                            </span>
-                                        </Link>
-                                        <div className="contentAuthorTitle contentAuthorLarge">
-                                            <Link to={`/@${author}`}>
-                                                <h2 className="contentAuthorName">
-                                                    {author}
-                                                </h2>
-                                            </Link>
-                                            <h3 className="contentAuthorNickname">{nickname}</h3>
-                                        </div>
-                                    </div>
-                                    {
-                                        localStorage.getItem('username_cache') && author === localStorage.getItem('username_cache') ?
-                                            <div className="menuBtnWrapper" onMouseEnter={() => {
-                                                setPostDrop(true);
-                                            }} onMouseLeave={() => {
-                                                setPostDrop(false);
-                                            }}>
-                                                <MenuSVG />
-                                                {postDrop ? <PostDropdown handleDeletePost={handleDeletePost} /> : null}
-                                            </div>
-                                            :
-                                            <div className="followBtnWrapper">
-                                                <button className="followBtn" onClick={authState ? () => handleFetchFollow() : () => dispatch({ type: 'true' })}>
-                                                    {followed ? "Following" : "Follow"}
-                                                </button>
-                                            </div>
-                                    }
-                                </div>
-                            </div>
-                            <div className="postLargeDesc">
-                                <h1 className="postLargeCaption" dangerouslySetInnerHTML={{ __html: postCaption }}></h1>
-                                <h1 className="postLargeSoundDesc">{soundDescription}</h1>
-                                <div className="postSocialControls">
-                                    <div className="leftControls">
-                                        <div className="controlItem">
-                                            <span className="socialWaveIcon controlIcon likeIcon" onClick={() => authState ? handleFetchLike(false) : dispatch({ type: 'true' })}>
-                                                {
-                                                    liked ?
-                                                        <WaveSVG />
-                                                        :
-                                                        <BWWaveSVG />
-                                                }
-                                            </span>
-                                            <h3 className="socialStats controlStats">{postLikes}</h3>
-                                        </div>
-                                        <div className="controlItem">
-                                            <span className="socialWaveIcon controlIcon likeIcon">
-                                                <CommentSVG />
-                                            </span>
-                                            <h3 className="socialStats controlStats">{postComments.length}</h3>
-                                        </div>
-                                    </div>
-                                    <div className="rightControls">
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="postLargeCommentContainer">
-                                <div className="enlargedComments">
-
-                                    {postComments ? postComments.map((comment: any) => {
-
-                                        if (Number(comment.reply_to) === 0) {
-                                            return (<div className="commentItem">
-                                                <div className="commentItemContent">
-                                                    <Link to={`/@${comment.user_profile.username}`}>
-                                                        <span className="creatorAvatar creatorAvatarImg commentAvatar">
-                                                            <img src={comment.user_profile.avatar} />
-                                                        </span>
-                                                    </Link>
-                                                    <div className="commentItemContentContainer">
-                                                        <Link to={`/@${comment.user_profile.username}`}>
-                                                            <h2 className="contentAuthorName">
-                                                                {comment.user_profile.username}
-                                                            </h2>
-                                                        </Link>
-                                                        <p className={`commentText ${comment.comment.includes('@') ? 'commentMention' : ''}`}>
-                                                            <span>{comment.comment}</span>
-                                                            <div className="commentFooter">
-                                                                <span className="commentTime">
-                                                                    2m ago
-                                                                </span>
-                                                                <span className="commentReplyBtn" onClick={() => {
-                                                                    setReply({
-                                                                        reply_to: comment.comment_id,
-                                                                        username: comment.user_profile.username
-                                                                    });
-                                                                }}>
-                                                                    Reply
-                                                                </span>
-                                                            </div>
-                                                        </p>
-                                                    </div>
-                                                    <div className="commentLikesContainer" onClick={() => {
-                                                        handleFetchLike(true, comment.comment_id);
-                                                    }}>
-                                                        {
-                                                            commentLiked.includes(comment.comment_id) === true ?
-                                                                <WaveSVG />
-                                                                :
-                                                                <BWWaveSVG />
-                                                        }
-                                                        <span className="commentLikes">
-                                                            {Number(comment.likes) || 0}
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                {
-                                                    comment.replies && comment.replies.length > 0 ?
-                                                        comment.replies.map((reply: any) => {
-                                                            let lastCommentShown = false;
-
-                                                            if (comment.replies.findIndex((findReply: any) => findReply === reply) < showReplies) {
-                                                                if (comment.replies.findIndex((findReply: any) => findReply === reply) + 1 === showReplies) {
-                                                                    lastCommentShown = true;
-                                                                }
-                                                                return (<div className="commentItemReply">
-                                                                    <div className="commentItemContent">
-                                                                        <Link to={`/@${reply.user_profile.username}`}>
-                                                                            <span className="creatorAvatar creatorAvatarImg commentAvatar">
-                                                                                <img src={reply.user_profile.avatar} />
-                                                                            </span>
-                                                                        </Link>
-                                                                        <div className="commentItemContentContainer">
-                                                                            <Link to={`/@${reply.user_profile.username}`}>
-                                                                                <h2 className="contentAuthorName">
-                                                                                    {reply.user_profile.username}
-                                                                                </h2>
-                                                                            </Link>
-                                                                            <p className="commentText">
-                                                                                <span>{reply.comment.includes('@') ? BoldedText(reply.comment, reply.comment.substr(reply.comment.indexOf('@'), reply.comment.indexOf(' '))) : reply.comment}</span>
-                                                                                <div className="commentFooter">
-                                                                                    <span className="commentTime">
-                                                                                        2m ago
-                                                                                    </span>
-                                                                                </div>
-                                                                            </p>
-                                                                        </div>
-                                                                        <div className="commentLikesContainer" onClick={() => {
-                                                                            handleFetchLike(true, reply.comment_id);
-                                                                        }}>
-                                                                            {
-                                                                                commentLiked.includes(reply.comment_id) === true ?
-                                                                                    <WaveSVG />
-                                                                                    :
-                                                                                    <BWWaveSVG />
-                                                                            }
-
-
-                                                                            <span className="commentLikes">
-                                                                                {Number(reply.likes) || 0}
-                                                                            </span>
-                                                                        </div>
-                                                                    </div>
-                                                                    {
-                                                                        comment.replies.length > showReplies && lastCommentShown ?
-                                                                            <div className="moreReplies" onClick={() => {
-                                                                                setShowReplies(showReplies + 2);
-                                                                            }}>
-                                                                                <p className="moreRepliesText">
-                                                                                    More Replies
-                                                                                </p>
-                                                                                <DownArrowSVG />
-                                                                            </div>
-                                                                            : null
-                                                                    }
-                                                                </div>)
-                                                            }
-                                                        })
-                                                        : null
-                                                }
-                                            </div>)
-                                        }
-                                    }) } : null}
-                                </div>
-                            </div>
-                            <div className="postLargeFormContainer">
-                                <form className="postLargeFormWrapper" action="" onSubmit={(event) => {
-                                    event.preventDefault();
-                                    handlePostComment()
-                                }
-                                }>
-                                    <input value={reply?.username ? `@${reply.username} ${comment.slice(`@${reply.username} `.length)}` : comment} type="text" className="enlargedInputForm" placeholder="Post a comment..." onChange={(event) => setComment(event.currentTarget.value)} />
-                                </form>
-                                {loadState ? <LoadingWave small={true} /> : <div className="postCommentBtn" onClick={() => handlePostComment()}>
-                                    Post
-                                </div>}
-                            </div>
-                        </div>
-                    </div>*/
+                        handlePostClicked={handlePostClicked} />
                     :
                     null
             }
@@ -520,7 +260,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                                             setPostDrop(false);
                                         }}>
                                             <MenuSVG />
-                                            {postDrop ? <PostDropdown handleDeletePost={handleDeletePost} /> : null}
+                                            {postDrop ? <PostDropdown post_id={post_id} handleLoadState={handleLoadState}  /> : null}
                                         </div>
                                         :
                                         <div className="followBtnWrapper">

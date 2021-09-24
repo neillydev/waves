@@ -6,7 +6,8 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 import { ModalContext } from '../contexts/ModalContext';
 import { EnlargedContext } from '../contexts/EnlargedContext';
-import { LoadingContext } from '../contexts/LoadingContext';
+
+import { handleFetchFollow, handlePostComment, handleFetchLike, handleCheckIfLiked } from '../../api/PostAPI';
 
 import WaveSVG from '../../svg/wave.svg';
 import BWWaveSVG from '../../svg/bw_wave.svg';
@@ -21,8 +22,8 @@ require('../Post/Post.css');
 
 type EnlargedPostProps = {
     post_id: number;
-    author: string;
-    nickname: string;
+    username: string;
+    name: string;
     title: string;
     creatorAvatarImg: string;
     contentTitle: string;
@@ -34,13 +35,9 @@ type EnlargedPostProps = {
     likes: number;
     comments: any;
     handlePostClicked: (postClicked: number | undefined) => void;
-    handleDeletePost: () => void;
-    handleFetchFollow: () => void;
-    handleFetchLike: (comment_like: boolean, comment_id?: number) => void;
-    handlePostComment: () => void;
 };
 
-const EnlargedPost = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle, contentDescription, mediaType, mediaURL, soundDescription, mediaDescription, likes, comments, handlePostClicked, handleDeletePost, handleFetchFollow, handleFetchLike, handlePostComment }: EnlargedPostProps) => {
+const EnlargedPost = ({ post_id, username, name, title, creatorAvatarImg, contentTitle, contentDescription, mediaType, mediaURL, soundDescription, mediaDescription, likes, comments, handlePostClicked }: EnlargedPostProps) => {
 
     const [loadState, setLoadState] = useState(false);
 
@@ -57,14 +54,30 @@ const EnlargedPost = ({ post_id, author, nickname, title, creatorAvatarImg, cont
 
     const [followed, setFollowed] = useState(false);
 
-    const [postClicked, setPostClicked] = useState<number>();
-
     const [comment, setComment] = useState<string>('');
     const [postComments, setPostComments] = useState(comments);
     const [reply, setReply] = useState<any>();
     const [showReplies, setShowReplies] = useState<number>(1);
 
     const [postDrop, setPostDrop] = useState(false);
+
+    const handleLoadState = (loadState: boolean) => {
+        setLoadState(loadState);
+    }
+
+    const handleUpdateLike = (comment_id: number, likes: number) => {
+        let tmpPostComments = postComments;
+        let item = {
+            ...tmpPostComments[tmpPostComments.findIndex((comment: any) => comment.comment_id === comment_id)],
+            likes: Number(likes)
+        }
+        tmpPostComments[tmpPostComments.findIndex((comment: any) => comment.comment_id === comment_id)] = item;
+        setPostComments([...tmpPostComments]);
+    }
+
+    useEffect(() => {
+        handleCheckIfLiked(post_id).then((json: any) => setLiked(json.liked));
+    }, []);
 
     return (
         <div className="postLargeContainer">
@@ -84,33 +97,33 @@ const EnlargedPost = ({ post_id, author, nickname, title, creatorAvatarImg, cont
                 <div className="postLargeAuthor">
                     <div className="postLargeAuthorWrapper">
                         <div className="postLargeAuthorInfo">
-                            <Link to={`/@${author}`}>
+                            <Link to={`/@${username}`}>
                                 <span className="creatorAvatar creatorAvatarImg">
                                     <img src={creatorAvatarImg} />
                                 </span>
                             </Link>
                             <div className="contentAuthorTitle contentAuthorLarge">
-                                <Link to={`/@${author}`}>
+                                <Link to={`/@${username}`}>
                                     <h2 className="contentAuthorName">
-                                        {author}
+                                        {username}
                                     </h2>
                                 </Link>
-                                <h3 className="contentAuthorNickname">{nickname}</h3>
+                                <h3 className="contentAuthorNickname">{name}</h3>
                             </div>
                         </div>
                         {
-                            localStorage.getItem('username_cache') && author === localStorage.getItem('username_cache') ?
+                            localStorage.getItem('username_cache') && username === localStorage.getItem('username_cache') ?
                                 <div className="menuBtnWrapper" onMouseEnter={() => {
                                     setPostDrop(true);
                                 }} onMouseLeave={() => {
                                     setPostDrop(false);
                                 }}>
                                     <MenuSVG />
-                                    {postDrop ? <PostDropdown handleDeletePost={handleDeletePost} /> : null}
+                                    {postDrop ? <PostDropdown post_id={post_id} handleLoadState={handleLoadState} /> : null}
                                 </div>
                                 :
                                 <div className="followBtnWrapper">
-                                    <button className="followBtn" onClick={authState ? () => handleFetchFollow() : () => dispatch({ type: 'true' })}>
+                                    <button className="followBtn" onClick={authState ? () => handleFetchFollow(username) : () => dispatch({ type: 'true' })}>
                                         {followed ? "Following" : "Follow"}
                                     </button>
                                 </div>
@@ -123,7 +136,10 @@ const EnlargedPost = ({ post_id, author, nickname, title, creatorAvatarImg, cont
                     <div className="postSocialControls">
                         <div className="leftControls">
                             <div className="controlItem">
-                                <span className="socialWaveIcon controlIcon likeIcon" onClick={() => authState ? handleFetchLike(false) : dispatch({ type: 'true' })}>
+                                <span className="socialWaveIcon controlIcon likeIcon" onClick={() => authState ? handleFetchLike(false, post_id).then((json: any) => {
+                                    setPostLikes(json.likes);
+                                    setLiked(!liked);
+                                }) : dispatch({ type: 'true' })}>
                                     {
                                         liked ?
                                             <WaveSVG />
@@ -182,7 +198,18 @@ const EnlargedPost = ({ post_id, author, nickname, title, creatorAvatarImg, cont
                                             </p>
                                         </div>
                                         <div className="commentLikesContainer" onClick={() => {
-                                            handleFetchLike(true, comment.comment_id);
+                                            handleFetchLike(true, post_id, comment.comment_id).then((json: any) => {
+
+                                                if (json.comment_like) {
+                                                    if (commentLiked.includes(json.post_id) === false) {
+                                                        setCommentLiked(oldCommentLiked => [...oldCommentLiked, json.post_id]);
+                                                    }
+                                                    else {
+                                                        setCommentLiked(oldCommentLiked => [...oldCommentLiked.splice(oldCommentLiked.findIndex((commentID) => commentID === reply.comment_id), 1)]);
+                                                    }
+                                                    handleUpdateLike(json.post_id, json.likes);
+                                                }
+                                            });
                                         }}>
                                             {
                                                 commentLiked.includes(comment.comment_id) === true ?
@@ -227,7 +254,18 @@ const EnlargedPost = ({ post_id, author, nickname, title, creatorAvatarImg, cont
                                                                 </p>
                                                             </div>
                                                             <div className="commentLikesContainer" onClick={() => {
-                                                                handleFetchLike(true, reply.comment_id);
+                                                                handleFetchLike(true, reply.comment_id, reply.comment_id).then((json: any) => {
+
+                                                                    if (json.comment_like) {
+                                                                        if (commentLiked.includes(json.post_id) === false) {
+                                                                            setCommentLiked(oldCommentLiked => [...oldCommentLiked, json.post_id]);
+                                                                        }
+                                                                        else {
+                                                                            setCommentLiked(oldCommentLiked => [...oldCommentLiked.splice(oldCommentLiked.findIndex((commentID) => commentID === reply.comment_id), 1)]);
+                                                                        }
+                                                                        handleUpdateLike(json.post_id, json.likes);
+                                                                    }
+                                                                });
                                                             }}>
                                                                 {
                                                                     commentLiked.includes(reply.comment_id) === true ?
@@ -267,12 +305,32 @@ const EnlargedPost = ({ post_id, author, nickname, title, creatorAvatarImg, cont
                 <div className="postLargeFormContainer">
                     <form className="postLargeFormWrapper" action="" onSubmit={(event) => {
                         event.preventDefault();
-                        handlePostComment()
+                        if (comment) {
+                            setLoadState(true);
+                            setComment('');
+                            handlePostComment(post_id, reply.reply_to, comment).then((json) => {
+                                setPostComments([...postComments, json]);
+                                setLoadState(false);
+                            }).catch(() => {
+                                setLoadState(false);
+                            });
+                        }
                     }
                     }>
                         <input value={reply?.username ? `@${reply.username} ${comment.slice(`@${reply.username} `.length)}` : comment} type="text" className="enlargedInputForm" placeholder="Post a comment..." onChange={(event) => setComment(event.currentTarget.value)} />
                     </form>
-                    {loadState ? <LoadingWave small={true} /> : <div className="postCommentBtn" onClick={() => handlePostComment()}>
+                    {loadState ? <LoadingWave small={true} /> : <div className="postCommentBtn" onClick={() => {
+                        if (comment) {
+                            setLoadState(true);
+                            setComment('');
+                            handlePostComment(post_id, reply.reply_to, comment).then((json) => {
+                                setPostComments([...postComments, json]);
+                                setLoadState(false);
+                            }).catch(() => {
+                                setLoadState(false);
+                            });
+                        }
+                    }}>
                         Post
                     </div>}
                 </div>
