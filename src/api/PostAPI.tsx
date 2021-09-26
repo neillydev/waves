@@ -104,10 +104,17 @@ export const handleCheckIfLiked = (post_id: number, comment_id?: number) => {
             },
             body: JSON.stringify({ token: localStorage.getItem('token'), user_id: localStorage.getItem("userid_cache"), post_id: comment_id ? comment_id : post_id })
         })
-            .then(res => res.json())
-            .then((json: any) => {
-                resolve(json);
-            })
-            .catch(error => console.error('Error: ' + error));
+        .then(res => {
+            if (res.status == 200) {
+
+                res.json().then((json: any) => {
+                    resolve(json);
+                });
+            }
+            else if (res.status == 409) {
+                
+            }
+        })
+        .catch(error => console.error('Error: ' + error));
     });
 };

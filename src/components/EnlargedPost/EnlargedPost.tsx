@@ -75,10 +75,38 @@ const EnlargedPost = ({ verified, post_id, username, name, title, creatorAvatarI
         }
         tmpPostComments[tmpPostComments.findIndex((comment: any) => comment.comment_id === comment_id)] = item;
         setPostComments([...tmpPostComments]);
+
+        //temporary solution
+        postComments.map((comment: any, i: number) => {
+            handleCheckIfLiked(comment.comment_id, comment.comment_id).then((json: any) => {
+                if (json.liked) {
+                    setCommentLiked(oldArray => [...oldArray, Number(json.post_id)]);
+                }
+                else if(commentLiked.includes(Number(json.post_id))){
+                    let newCommentLiked = commentLiked;
+                    newCommentLiked.splice(newCommentLiked.findIndex((comment_id) => comment_id === Number(json.post_id)), 1);
+                    setCommentLiked([...newCommentLiked])
+                }
+            });
+        });
     }
 
     useEffect(() => {
         handleCheckIfLiked(post_id).then((json: any) => setLiked(json.liked));
+
+        //temporary solution
+        postComments.map((comment: any, i: number) => {
+            handleCheckIfLiked(comment.comment_id, comment.comment_id).then((json: any) => {
+                if (json.liked) {
+                    setCommentLiked(oldArray => [...oldArray, Number(json.post_id)]);
+                }
+                else if(commentLiked.includes(Number(json.post_id))){
+                    let newCommentLiked = commentLiked;
+                    newCommentLiked.splice(newCommentLiked.findIndex((comment_id) => comment_id === Number(json.post_id)), 1);
+                    setCommentLiked([...newCommentLiked])
+                }
+            });
+        });
     }, []);
 
     return (
@@ -204,18 +232,20 @@ const EnlargedPost = ({ verified, post_id, username, name, title, creatorAvatarI
                                             handleFetchLike(true, post_id, comment.comment_id).then((json: any) => {
 
                                                 if (json.comment_like) {
+                                                    let newCommentLiked = commentLiked;
                                                     if (commentLiked.includes(json.post_id) === false) {
-                                                        setCommentLiked(oldCommentLiked => [...oldCommentLiked, json.post_id]);
+                                                        setCommentLiked(newCommentLiked => [...newCommentLiked, json.post_id]);
                                                     }
                                                     else {
-                                                        setCommentLiked(oldCommentLiked => [...oldCommentLiked.splice(oldCommentLiked.findIndex((commentID) => commentID === reply.comment_id), 1)]);
+                                                        newCommentLiked.splice(newCommentLiked.findIndex((commentID) => commentID === comment.comment_id), 1);
+                                                        setCommentLiked([...newCommentLiked]);
                                                     }
                                                     handleUpdateLike(json.post_id, json.likes);
                                                 }
                                             });
                                         }}>
                                             {
-                                                commentLiked.includes(comment.comment_id) === true ?
+                                                commentLiked.includes(Number(comment.comment_id)) === true ?
                                                     <WaveSVG />
                                                     :
                                                     <BWWaveSVG />
@@ -229,7 +259,7 @@ const EnlargedPost = ({ verified, post_id, username, name, title, creatorAvatarI
                                         comment.replies && comment.replies.length > 0 ?
                                             comment.replies.map((reply: any) => {
                                                 let lastCommentShown = false;
-
+                                                console.log(reply);
                                                 if (comment.replies.findIndex((findReply: any) => findReply === reply) < showReplies) {
                                                     if (comment.replies.findIndex((findReply: any) => findReply === reply) + 1 === showReplies) {
                                                         lastCommentShown = true;
@@ -260,18 +290,20 @@ const EnlargedPost = ({ verified, post_id, username, name, title, creatorAvatarI
                                                                 handleFetchLike(true, reply.comment_id, reply.comment_id).then((json: any) => {
 
                                                                     if (json.comment_like) {
+                                                                        let newCommentLiked = commentLiked;
                                                                         if (commentLiked.includes(json.post_id) === false) {
-                                                                            setCommentLiked(oldCommentLiked => [...oldCommentLiked, json.post_id]);
+                                                                            setCommentLiked(newCommentLiked => [...newCommentLiked, json.post_id]);
                                                                         }
                                                                         else {
-                                                                            setCommentLiked(oldCommentLiked => [...oldCommentLiked.splice(oldCommentLiked.findIndex((commentID) => commentID === reply.comment_id), 1)]);
+                                                                            newCommentLiked.splice(newCommentLiked.findIndex((commentID) => commentID === reply.comment_id), 1);
+                                                                            setCommentLiked([...newCommentLiked]);
                                                                         }
                                                                         handleUpdateLike(json.post_id, json.likes);
                                                                     }
                                                                 });
                                                             }}>
                                                                 {
-                                                                    commentLiked.includes(reply.comment_id) === true ?
+                                                                    commentLiked.includes(Number(reply.comment_id)) === true ?
                                                                         <WaveSVG />
                                                                         :
                                                                         <BWWaveSVG />
@@ -311,7 +343,7 @@ const EnlargedPost = ({ verified, post_id, username, name, title, creatorAvatarI
                         if (comment) {
                             setLoadState(true);
                             setComment('');
-                            handlePostComment(post_id, reply.reply_to, comment).then((json) => {
+                            handlePostComment(post_id, reply && reply.reply_to ? reply.reply_to : 0, comment).then((json) => {
                                 setPostComments([...postComments, json]);
                                 setLoadState(false);
                             }).catch(() => {
@@ -326,7 +358,7 @@ const EnlargedPost = ({ verified, post_id, username, name, title, creatorAvatarI
                         if (comment) {
                             setLoadState(true);
                             setComment('');
-                            handlePostComment(post_id, reply.reply_to, comment).then((json) => {
+                            handlePostComment(post_id, reply && reply.reply_to ? reply.reply_to : 0, comment).then((json) => {
                                 setPostComments([...postComments, json]);
                                 setLoadState(false);
                             }).catch(() => {
