@@ -4,7 +4,7 @@ import BoldedText from '../../util/BoldedText';
 import PostDropdown from '../PostDropdown/PostDropdown';
 import EnlargedPost from '../EnlargedPost/EnlargedPost';
 
-import { handleCheckIfLiked } from '../../api/PostAPI';
+import { handleCheckIfLiked, handleFetchLike } from '../../api/PostAPI';
 
 import { Link } from 'react-router-dom';
 import VisibilitySensor from 'react-visibility-sensor';
@@ -100,61 +100,6 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
             .catch(error => console.error('Error: ' + error));
     };
 
-    const handleFetchLike = (comment_like: boolean, comment_id?: number) => {
-        fetch(`http://localhost:3000/like`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ token: localStorage.getItem('token'), user_id: localStorage.getItem("userid_cache"), post_id: comment_like ? comment_id : post_id, comment_like: comment_like })
-        })
-            .then(res => {
-                if (res.status == 200) {
-
-                    res.json().then((json: any) => {
-                        if (!json.comment_like) {
-                            setPostLikes(json.likes);
-                            setLiked(!liked);
-                        }
-                    });
-                }
-                else if (res.status == 409) {
-                    window.location.reload(false);
-                }
-            })
-            .catch(error => console.error('Error: ' + error));
-    };
-
-    const handlePostComment = () => {
-        if (comment) {
-            const saveComment = comment;
-            setLoadState(true);
-
-            setComment('');
-            console.log(reply);
-            fetch(`http://localhost:3000/comment`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ token: localStorage.getItem('token'), user_id: localStorage.getItem("userid_cache"), post_id: post_id, comment: saveComment, reply_to: reply && reply.reply_to ? reply.reply_to : 0 })
-            })
-                .then(res => {
-                    if (res.status == 200) {
-                        setTimeout(() => res.json().then((json: any) => {
-                            setPostComments([...postComments, json]);
-                            setLoadState(false);
-                        }), 300)
-                    }
-                    else if (res.status == 409) {
-                        window.location.reload(false);
-                        setLoadState(false);
-                    }
-                })
-                .catch(error => console.error('Error: ' + error));
-        }
-    };
-
     const handleCheckIfFollowing = () => {
         fetch(`http://localhost:3000/following`, {
             method: 'POST',
@@ -229,7 +174,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                         mediaURL={mediaURL}
                         soundDescription={soundDescription}
                         mediaDescription={mediaDescription}
-                        likes={likes}
+                        likes={postLikes}
                         comments={comments}
                         handlePostClicked={handlePostClicked} />
                     :
@@ -305,7 +250,10 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                         <div className="socialControls">
                             <ul className="socialControlList">
                                 <li className="socialControlItem">
-                                    <div className="socialWaveIcon" onClick={() => authState ? handleFetchLike(false) : dispatch({ type: 'true' })}>
+                                    <div className="socialWaveIcon" onClick={() => authState ? handleFetchLike(false, post_id).then((json: any) => {
+                                    setPostLikes(json.likes);
+                                    setLiked(!liked);
+                                }) : dispatch({ type: 'true' })}>
                                         {
                                             liked ?
                                                 <WaveSVG />
