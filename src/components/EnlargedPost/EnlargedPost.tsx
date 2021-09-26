@@ -67,16 +67,40 @@ const EnlargedPost = ({ verified, post_id, username, name, title, creatorAvatarI
         setLoadState(loadState);
     }
 
-    const handleUpdateLike = (comment_id: number, likes: number) => {
+    const handleUpdateLike = (comment_id: number, likes: number, reply = false) => {
+        //temporary solution
+        console.log(comment_id, likes);
+
         let tmpPostComments = postComments;
-        let item = {
+    
+        let replyObj = {
+            commentIndex: 0,
+            replyIndex: 0,
+            reply: {
+
+            }
+        }
+        
+        if(reply){
+            replyObj.commentIndex = tmpPostComments.findIndex((comment:any) => comment.replies.findIndex((reply:any) => reply.comment_id === comment_id) != -1);
+
+            replyObj.replyIndex = tmpPostComments[replyObj.commentIndex].replies.findIndex(((reply:any) => reply.comment_id === comment_id));
+
+            replyObj.reply = tmpPostComments[replyObj.commentIndex].replies[replyObj.replyIndex];
+        }
+
+        console.log(replyObj);
+        let item = reply ? {
+            ...replyObj.reply,
+            likes: Number(likes)
+        } : {
             ...tmpPostComments[tmpPostComments.findIndex((comment: any) => comment.comment_id === comment_id)],
             likes: Number(likes)
         }
-        tmpPostComments[tmpPostComments.findIndex((comment: any) => comment.comment_id === comment_id)] = item;
+        console.log(replyObj);
+        reply ? tmpPostComments[replyObj.commentIndex].replies[replyObj.replyIndex] = item : tmpPostComments[tmpPostComments.findIndex((comment: any) => comment.comment_id === comment_id)] = item;
         setPostComments([...tmpPostComments]);
 
-        //temporary solution
         postComments.map((comment: any, i: number) => {
             handleCheckIfLiked(comment.comment_id, comment.comment_id).then((json: any) => {
                 if (json.liked) {
@@ -196,7 +220,7 @@ const EnlargedPost = ({ verified, post_id, username, name, title, creatorAvatarI
                     <div className="enlargedComments">
 
                         {postComments ? postComments.map((comment: any) => {
-
+                            //console.log(comment);
                             if (Number(comment.reply_to) === 0) {
                                 return (<div className="commentItem">
                                     <div className="commentItemContent">
@@ -259,7 +283,7 @@ const EnlargedPost = ({ verified, post_id, username, name, title, creatorAvatarI
                                         comment.replies && comment.replies.length > 0 ?
                                             comment.replies.map((reply: any) => {
                                                 let lastCommentShown = false;
-                                                console.log(reply);
+                                                //console.log(reply);
                                                 if (comment.replies.findIndex((findReply: any) => findReply === reply) < showReplies) {
                                                     if (comment.replies.findIndex((findReply: any) => findReply === reply) + 1 === showReplies) {
                                                         lastCommentShown = true;
@@ -298,7 +322,8 @@ const EnlargedPost = ({ verified, post_id, username, name, title, creatorAvatarI
                                                                             newCommentLiked.splice(newCommentLiked.findIndex((commentID) => commentID === reply.comment_id), 1);
                                                                             setCommentLiked([...newCommentLiked]);
                                                                         }
-                                                                        handleUpdateLike(json.post_id, json.likes);
+                                                                        handleUpdateLike(json.post_id, json.likes, true);
+                                                                        console.log('updated like');
                                                                     }
                                                                 });
                                                             }}>
