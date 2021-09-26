@@ -21,6 +21,7 @@ type ProfileProps = {
 };
 
 type PostType = {
+    verified: boolean;
     post_id: number;
     avatar: string;
     username: string;
@@ -76,11 +77,12 @@ const Profile = () => {
                     :
                     (
                         postClicked ? <EnlargedPost key={postClicked.post_id}
+                            verified={postClicked.verified}
                             post_id={postClicked.post_id}
                             username={postClicked.username}
-                            name={postClicked.name}
+                            name={profile?.name || ''}
                             title={postClicked.caption}
-                            creatorAvatarImg={postClicked.avatar}
+                            creatorAvatarImg={profile?.avatar || ''}
                             contentTitle={postClicked.caption}
                             contentDescription={postClicked.caption}
                             mediaType={"video"}
@@ -96,7 +98,7 @@ const Profile = () => {
                                 <div className="profileWrapper">
                                     <header className="profileHeader">
                                         <div className="profileAvatar">
-                                            <img src={profile?.avatar ? profile.avatar : (localStorage.getItem('avatar') || '')} />
+                                            <img src={profile?.avatar ? profile.avatar : ''} />
                                         </div>
                                         <div className="profileDetails">
                                             <div className="userControls">
