@@ -39,7 +39,7 @@ type EnlargedPostProps = {
     handlePostClicked: (postClicked: number | undefined) => void;
 };
 
-const EnlargedPost = ({ verified, post_id, username, name, title, creatorAvatarImg, contentTitle, contentDescription, mediaType, mediaURL, soundDescription, mediaDescription, likes, comments, handlePostClicked }: EnlargedPostProps) => {
+const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, contentDescription, mediaURL, soundDescription, likes, comments, handlePostClicked }: EnlargedPostProps) => {
 
     const [loadState, setLoadState] = useState(false);
 
@@ -59,6 +59,7 @@ const EnlargedPost = ({ verified, post_id, username, name, title, creatorAvatarI
     const [comment, setComment] = useState<string>('');
     const [postComments, setPostComments] = useState(comments);
     const [reply, setReply] = useState<any>();
+    const [replies, setReplies] = useState<any>();
     const [showReplies, setShowReplies] = useState<number>(1);
 
     const [postDrop, setPostDrop] = useState(false);
@@ -69,10 +70,9 @@ const EnlargedPost = ({ verified, post_id, username, name, title, creatorAvatarI
 
     const handleUpdateLike = (comment_id: number, likes: number, reply = false) => {
         //temporary solution
-        console.log(comment_id, likes);
 
         let tmpPostComments = postComments;
-    
+
         let replyObj = {
             commentIndex: 0,
             replyIndex: 0,
@@ -80,16 +80,14 @@ const EnlargedPost = ({ verified, post_id, username, name, title, creatorAvatarI
 
             }
         }
-        
-        if(reply){
-            replyObj.commentIndex = tmpPostComments.findIndex((comment:any) => comment.replies.findIndex((reply:any) => reply.comment_id === comment_id) != -1);
 
-            replyObj.replyIndex = tmpPostComments[replyObj.commentIndex].replies.findIndex(((reply:any) => reply.comment_id === comment_id));
+        if (reply) {
+            replyObj.commentIndex = tmpPostComments.findIndex((comment: any) => comment.replies.findIndex((reply: any) => reply.comment_id === comment_id) != -1);
+
+            replyObj.replyIndex = tmpPostComments[replyObj.commentIndex].replies.findIndex(((reply: any) => reply.comment_id === comment_id));
 
             replyObj.reply = tmpPostComments[replyObj.commentIndex].replies[replyObj.replyIndex];
         }
-
-        console.log(replyObj);
         let item = reply ? {
             ...replyObj.reply,
             likes: Number(likes)
@@ -97,7 +95,6 @@ const EnlargedPost = ({ verified, post_id, username, name, title, creatorAvatarI
             ...tmpPostComments[tmpPostComments.findIndex((comment: any) => comment.comment_id === comment_id)],
             likes: Number(likes)
         }
-        console.log(replyObj);
         reply ? tmpPostComments[replyObj.commentIndex].replies[replyObj.replyIndex] = item : tmpPostComments[tmpPostComments.findIndex((comment: any) => comment.comment_id === comment_id)] = item;
         setPostComments([...tmpPostComments]);
 
@@ -106,7 +103,7 @@ const EnlargedPost = ({ verified, post_id, username, name, title, creatorAvatarI
                 if (json.liked) {
                     setCommentLiked(oldArray => [...oldArray, Number(json.post_id)]);
                 }
-                else if(commentLiked.includes(Number(json.post_id))){
+                else if (commentLiked.includes(Number(json.post_id))) {
                     let newCommentLiked = commentLiked;
                     newCommentLiked.splice(newCommentLiked.findIndex((comment_id) => comment_id === Number(json.post_id)), 1);
                     setCommentLiked([...newCommentLiked])
@@ -124,7 +121,7 @@ const EnlargedPost = ({ verified, post_id, username, name, title, creatorAvatarI
                 if (json.liked) {
                     setCommentLiked(oldArray => [...oldArray, Number(json.post_id)]);
                 }
-                else if(commentLiked.includes(Number(json.post_id))){
+                else if (commentLiked.includes(Number(json.post_id))) {
                     let newCommentLiked = commentLiked;
                     newCommentLiked.splice(newCommentLiked.findIndex((comment_id) => comment_id === Number(json.post_id)), 1);
                     setCommentLiked([...newCommentLiked])
@@ -220,7 +217,6 @@ const EnlargedPost = ({ verified, post_id, username, name, title, creatorAvatarI
                     <div className="enlargedComments">
 
                         {postComments ? postComments.map((comment: any) => {
-                            //console.log(comment);
                             if (Number(comment.reply_to) === 0) {
                                 return (<div className="commentItem">
                                     <div className="commentItemContent">
@@ -283,7 +279,6 @@ const EnlargedPost = ({ verified, post_id, username, name, title, creatorAvatarI
                                         comment.replies && comment.replies.length > 0 ?
                                             comment.replies.map((reply: any) => {
                                                 let lastCommentShown = false;
-                                                //console.log(reply);
                                                 if (comment.replies.findIndex((findReply: any) => findReply === reply) < showReplies) {
                                                     if (comment.replies.findIndex((findReply: any) => findReply === reply) + 1 === showReplies) {
                                                         lastCommentShown = true;
@@ -323,7 +318,6 @@ const EnlargedPost = ({ verified, post_id, username, name, title, creatorAvatarI
                                                                             setCommentLiked([...newCommentLiked]);
                                                                         }
                                                                         handleUpdateLike(json.post_id, json.likes, true);
-                                                                        console.log('updated like');
                                                                     }
                                                                 });
                                                             }}>
@@ -368,8 +362,18 @@ const EnlargedPost = ({ verified, post_id, username, name, title, creatorAvatarI
                         if (comment) {
                             setLoadState(true);
                             setComment('');
-                            handlePostComment(post_id, reply && reply.reply_to ? reply.reply_to : 0, comment).then((json) => {
-                                setPostComments([...postComments, json]);
+                            handlePostComment(post_id, reply.reply_to ? reply.reply_to : 0, comment).then((json: any) => {
+                                let tmpPostComments = postComments;
+                                if (json.reply_to !== 0) {
+                                    let commentIndex = tmpPostComments.findIndex((comment: any) => comment.comment_id === json.reply_to);
+
+                                    tmpPostComments[commentIndex].replies.push(json);
+                                }
+                                else {
+
+                                    tmpPostComments.push(json);
+                                }
+                                setPostComments((oldArray: any) => [...oldArray, tmpPostComments]);
                                 setLoadState(false);
                             }).catch(() => {
                                 setLoadState(false);
@@ -383,8 +387,18 @@ const EnlargedPost = ({ verified, post_id, username, name, title, creatorAvatarI
                         if (comment) {
                             setLoadState(true);
                             setComment('');
-                            handlePostComment(post_id, reply && reply.reply_to ? reply.reply_to : 0, comment).then((json) => {
-                                setPostComments([...postComments, json]);
+                            handlePostComment(post_id, reply.reply_to ? reply.reply_to : 0, comment).then((json: any) => {
+                                let tmpPostComments = postComments;
+                                if (json.reply_to !== 0) {
+                                    let commentIndex = tmpPostComments.findIndex((comment: any) => comment.comment_id === json.reply_to);
+
+                                    tmpPostComments[commentIndex].replies.push(json);
+                                }
+                                else {
+
+                                    tmpPostComments.push(json);
+                                }
+                                setPostComments((oldArray: any) => [...oldArray, tmpPostComments]);
                                 setLoadState(false);
                             }).catch(() => {
                                 setLoadState(false);
