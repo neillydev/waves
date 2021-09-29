@@ -389,7 +389,7 @@ const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, con
 
                                     tmpPostComments.push(json);
                                 }
-                                setPostComments((oldArray: any) => [...oldArray, tmpPostComments]);
+                                setPostComments([...tmpPostComments]);
                                 setLoadState(false);
                             }).catch(() => {
                                 setLoadState(false);
@@ -414,7 +414,7 @@ const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, con
 
                                     tmpPostComments.push(json);
                                 }
-                                setPostComments((oldArray: any) => [...oldArray, tmpPostComments]);
+                                setPostComments([...tmpPostComments]);
                                 setLoadState(false);
                             }).catch(() => {
                                 setLoadState(false);
