@@ -39,6 +39,13 @@ type EnlargedPostProps = {
     handlePostClicked: (postClicked: number | undefined) => void;
 };
 
+type ShowRepliesType = {
+    [key: string]: {
+        showAmount: number;
+        lastCommentShown: number;
+    }
+};
+
 const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, contentDescription, mediaURL, soundDescription, likes, comments, handlePostClicked }: EnlargedPostProps) => {
 
     const [loadState, setLoadState] = useState(false);
@@ -59,8 +66,7 @@ const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, con
     const [comment, setComment] = useState<string>('');
     const [postComments, setPostComments] = useState(comments);
     const [reply, setReply] = useState<any>();
-    const [replies, setReplies] = useState<any>();
-    const [showReplies, setShowReplies] = useState<number>(1);
+    const [showReplies, setShowReplies] = useState<ShowRepliesType>({});
 
     const [postDrop, setPostDrop] = useState(false);
 
@@ -141,7 +147,7 @@ const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, con
                 enlarge_dispatch({ type: 'false' });
                 handlePostClicked(undefined);
                 setReply(undefined);
-                setShowReplies(1);
+                setShowReplies({});
                 setComment('');
             }} />
             <div className="postLargeSocialContainer">
@@ -279,11 +285,18 @@ const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, con
                                         comment.replies && comment.replies.length > 0 ?
                                             comment.replies.map((reply: any) => {
                                                 let lastCommentShown = false;
-                                                if (comment.replies.findIndex((findReply: any) => findReply === reply) < showReplies) {
-                                                    if (comment.replies.findIndex((findReply: any) => findReply === reply) + 1 === showReplies) {
-                                                        lastCommentShown = true;
-                                                    }
-                                                    return (<div className="commentItemReply">
+
+                                                if (!showReplies[comment.comment_id]) {
+                                                    let tmpShowReplies = showReplies;
+                                                    tmpShowReplies[comment.comment_id] = {
+                                                        showAmount: 1,
+                                                        lastCommentShown: reply.comment_id
+                                                    };
+                                                    setShowReplies({...tmpShowReplies});
+                                                }
+
+                                                if (comment.replies.findIndex((findReply: any) => findReply === reply) < showReplies[comment.comment_id].showAmount) {
+                                                    return comment.replies.findIndex((findReply: any) => findReply === reply) + 1 <= showReplies[comment.comment_id].showAmount ? (<div className="commentItemReply">
                                                         <div className="commentItemContent">
                                                             <Link to={`/@${reply.user_profile.username}`}>
                                                                 <span className="creatorAvatar creatorAvatarImg commentAvatar">
@@ -335,9 +348,12 @@ const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, con
                                                             </div>
                                                         </div>
                                                         {
-                                                            comment.replies.length > showReplies && lastCommentShown ?
+                                                            comment.replies.length > showReplies[comment.comment_id].showAmount && (showReplies[comment.comment_id].lastCommentShown === reply.comment_id) ?
                                                                 <div className="moreReplies" onClick={() => {
-                                                                    setShowReplies(showReplies + 2);
+                                                                    let tmpShowReplies = showReplies;
+                                                                    tmpShowReplies[comment.comment_id].showAmount = showReplies[comment.comment_id].showAmount + 2;
+                                                                    tmpShowReplies[comment.comment_id].lastCommentShown = comment.replies[comment.replies.findIndex((findReply: any) => findReply === reply) + showReplies[comment.comment_id].showAmount]?.comment_id;
+                                                                    setShowReplies({...tmpShowReplies});
                                                                 }}>
                                                                     <p className="moreRepliesText">
                                                                         More Replies
@@ -346,7 +362,7 @@ const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, con
                                                                 </div>
                                                                 : null
                                                         }
-                                                    </div>)
+                                                    </div>) : null
                                                 }
                                             })
                                             : null
@@ -362,7 +378,7 @@ const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, con
                         if (comment) {
                             setLoadState(true);
                             setComment('');
-                            handlePostComment(post_id, reply.reply_to ? reply.reply_to : 0, comment).then((json: any) => {
+                            handlePostComment(post_id, reply && reply.reply_to ? reply.reply_to : 0, comment).then((json: any) => {
                                 let tmpPostComments = postComments;
                                 if (json.reply_to !== 0) {
                                     let commentIndex = tmpPostComments.findIndex((comment: any) => comment.comment_id === json.reply_to);
@@ -387,7 +403,7 @@ const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, con
                         if (comment) {
                             setLoadState(true);
                             setComment('');
-                            handlePostComment(post_id, reply.reply_to ? reply.reply_to : 0, comment).then((json: any) => {
+                            handlePostComment(post_id, reply && reply.reply_to ? reply.reply_to : 0, comment).then((json: any) => {
                                 let tmpPostComments = postComments;
                                 if (json.reply_to !== 0) {
                                     let commentIndex = tmpPostComments.findIndex((comment: any) => comment.comment_id === json.reply_to);
