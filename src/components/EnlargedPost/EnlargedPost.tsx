@@ -380,13 +380,12 @@ const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, con
                             setComment('');
                             handlePostComment(post_id, reply && reply.reply_to ? reply.reply_to : 0, comment).then((json: any) => {
                                 let tmpPostComments = postComments;
-                                if (json.reply_to !== 0) {
-                                    let commentIndex = tmpPostComments.findIndex((comment: any) => comment.comment_id === json.reply_to);
-
+                                if (Number(json.reply_to) !== 0) {
+                                    let commentIndex = tmpPostComments.findIndex((comment: any) => comment.comment_id === json.reply_to.toString());
                                     tmpPostComments[commentIndex].replies.push(json);
+                                    setReply(undefined);
                                 }
                                 else {
-
                                     tmpPostComments.push(json);
                                 }
                                 setPostComments([...tmpPostComments]);
@@ -405,10 +404,10 @@ const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, con
                             setComment('');
                             handlePostComment(post_id, reply && reply.reply_to ? reply.reply_to : 0, comment).then((json: any) => {
                                 let tmpPostComments = postComments;
-                                if (json.reply_to !== 0) {
-                                    let commentIndex = tmpPostComments.findIndex((comment: any) => comment.comment_id === json.reply_to);
-
+                                if (Number(json.reply_to) !== 0) {
+                                    let commentIndex = tmpPostComments.findIndex((comment: any) => comment.comment_id === json.reply_to.toString());
                                     tmpPostComments[commentIndex].replies.push(json);
+                                    setReply(undefined);
                                 }
                                 else {
 
