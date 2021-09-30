@@ -60,6 +60,7 @@ const Profile = () => {
     };
 
     useEffect(() => {
+        enlarge_dispatch({ type: 'false' });
         loading_dispatch({ loading: true, type: 'loading_bar' });
         handleFetchProfile().then((json: any) => {
             setProfile(json)
