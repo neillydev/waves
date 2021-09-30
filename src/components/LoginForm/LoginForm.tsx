@@ -73,7 +73,7 @@ const LoginForm = () => {
                     Password
                 </div>
                 <div className={`loginFormWrapper ${loginError ? 'loginFormError' : ''}`}>
-                    <input type="text" placeholder="Password" onChange={(event) => {
+                    <input type="password" placeholder="Password" onChange={(event) => {
                         setLoginError(undefined);
                         setPassword(event.currentTarget.value)
                     }

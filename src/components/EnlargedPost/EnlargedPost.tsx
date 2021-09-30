@@ -284,8 +284,6 @@ const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, con
                                     {
                                         comment.replies && comment.replies.length > 0 ?
                                             comment.replies.map((reply: any) => {
-                                                let lastCommentShown = false;
-
                                                 if (!showReplies[comment.comment_id]) {
                                                     let tmpShowReplies = showReplies;
                                                     tmpShowReplies[comment.comment_id] = {

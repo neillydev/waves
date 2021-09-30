@@ -182,7 +182,7 @@ const SignUpForm = () => {
                 </div>
                 <div className={`loginFormWrapper ${matchingPass ? '' : 'loginFormError'}`}>
                     <input
-                        type="text"
+                        type="password"
                         placeholder="Password"
                         onChange={onPasswordInput}
                         required
