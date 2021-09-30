@@ -21,8 +21,8 @@ const SearchDropdown = ({ username, name, avatar, handleSearchTyping }: SearchDr
             </div>
             <ul className="searchDropdownList">
                 {username ?
-                    <li className="searchDropdownItem">
-                        <Link to={`/@${username}`} onClick={() => handleSearchTyping(false)}>
+                    <Link to={`/@${username}`} onClick={() => handleSearchTyping(false)}>
+                        <li className="searchDropdownItem">
                             <span className="searchItemAvatar">
                                 <img src={avatar ? avatar : ""} alt="" />
                             </span>
@@ -30,11 +30,11 @@ const SearchDropdown = ({ username, name, avatar, handleSearchTyping }: SearchDr
                                 <p className="searchItemUsername">{username}</p>
                                 <p className="searchItemName">{name}</p>
                             </span>
-                        </Link>
-                    </li>
+                        </li>
+                    </Link>
                     : <SkeletonSearch />}
             </ul>
-        </div>
+        </div >
     )
 };
 
