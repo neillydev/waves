@@ -19,7 +19,7 @@ type PostType = {
     post_id: number;
     avatar: string;
     name: string;
-    userID: string;
+    wavecreators_id: string;
     username: string;
     caption: string;
     mediaType: "video" | "image";
@@ -44,6 +44,8 @@ const Main = () => {
 
     const [posts, setPosts] = useState<PostType[]>();
 
+    const [followingList, setFollowingList] = useState<any>(undefined);
+
     const handleFetchPosts = () => {
         loading_dispatch({ loading: true, type: 'loading_bar' });
         fetch(`http://localhost:3000/posts`, {
@@ -62,6 +64,28 @@ const Main = () => {
                     window.location.reload(false);
                 }
             })
+            .catch(error => console.error('Error: ' + error));
+    };
+
+    const handleCheckIfFollowing = () => {
+        fetch(`http://localhost:3000/following`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ token: localStorage.getItem('token'), user_id: localStorage.getItem("userid_cache") })
+        })
+            .then(res => {
+                if (res.status == 200) {
+                    res.json().then((json: any[]) => {
+                        setFollowingList(json);
+                    });
+                }
+                else if (res.status == 409) {
+
+                }
+            })
+
             .catch(error => console.error('Error: ' + error));
     };
 
@@ -95,6 +119,7 @@ const Main = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
+        handleCheckIfFollowing();
         switch (viewType) {
             case ViewType.FOLLOWING:
                 handleFetchFollowingPosts();
@@ -171,29 +196,10 @@ const Main = () => {
                         mediaDescription={post.date_posted}
                         likes={post.likes}
                         comments={post.comments}
+                        followingAuthor={followingList ? (followingList.filter((following_id: any) => following_id === post.wavecreators_id).length > 0 ? true : false) : false}
                     />) : <h4>Nothing to see here</h4>}
                 </div>
             }
-            {/* {
-                <div className={`${viewType === ViewType.TRENDING ? 'trendingContainer' : 'followingContainer'} ${posts && posts.length !== 0 ? 'mainContentSome' : 'mainContentNone'}`}>
-                    {posts && posts.length !== 0 ? posts.map(post => <Post
-                        key={post.post_id}
-                        post_id={post.post_id}
-                        author={post.username}
-                        nickname={post.name}
-                        title=""
-                        creatorAvatarImg={post.avatar}
-                        contentTitle={post.caption}
-                        contentDescription={post.caption}
-                        mediaType={post.mediaType}
-                        mediaURL={post.media}
-                        soundDescription={post.sounddescription}
-                        mediaDescription={post.date_posted}
-                        likes={post.likes}
-                        comments={post.comments}
-                    />) : <h4>Nothing to see here</h4>}
-                </div>
-            } */}
         </div>
     )
 }

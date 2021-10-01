@@ -37,9 +37,10 @@ type PostProps = {
     mediaDescription: string;
     likes: number;
     comments: any;
+    followingAuthor: boolean;
 };
 
-const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle, contentDescription, mediaType, mediaURL, soundDescription, mediaDescription, likes, comments }: PostProps) => {
+const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle, contentDescription, mediaType, mediaURL, soundDescription, mediaDescription, likes, comments, followingAuthor }: PostProps) => {
 
     const [loadState, setLoadState] = useState(false);
     const { load_state, loading_dispatch } = useContext(LoadingContext);
@@ -63,7 +64,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
     const [liked, setLiked] = useState(false);
     const [commentLiked, setCommentLiked] = useState<number[]>([]);
 
-    const [followed, setFollowed] = useState(false);
+    const [followed, setFollowed] = useState(followingAuthor);
 
     const [postClicked, setPostClicked] = useState<number>();
 
@@ -99,29 +100,6 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
             })
             .catch(error => console.error('Error: ' + error));
     };
-
-    const handleCheckIfFollowing = () => {
-        fetch(`http://localhost:3000/following`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ token: localStorage.getItem('token'), user_id: localStorage.getItem("userid_cache"), following_username: author })
-        })
-            .then(res => {
-                if (res.status == 200) {
-                    res.json().then((json: any) => {
-                        setFollowed(json.following);
-                    });
-                }
-                else if (res.status == 409) {
-                    window.location.reload(false);
-                }
-            })
-
-            .catch(error => console.error('Error: ' + error));
-    };
-
     
 
     useEffect(() => {
@@ -150,7 +128,6 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
             postComments.map((comment: any) => {
                 handleCheckIfLiked(comment.comment_id);
             });
-            handleCheckIfFollowing();
         }
     }, [])
 
