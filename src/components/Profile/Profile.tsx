@@ -143,7 +143,6 @@ const Profile = () => {
                                                                 <video ref={videoRef} src={post.media} autoPlay preload="auto" playsInline loop className="postsItemVideo" onClick={(event) => {
                                                                     event.preventDefault();
                                                                     setPostClicked(post);
-                                                                    console.log(post);
                                                                     videoRef.current?.pause();
                                                                     enlarge_dispatch({ type: 'true' });
                                                                 }}></video>
