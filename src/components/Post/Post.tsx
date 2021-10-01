@@ -25,6 +25,7 @@ require('./Post.css');
 
 type PostProps = {
     post_id: number;
+    author_id: string;
     author: string;
     nickname: string;
     title: string;
@@ -38,12 +39,12 @@ type PostProps = {
     likes: number;
     comments: any;
     followingAuthor: boolean;
+    handleUpdateFollowing: (author_id: string) => void;
 };
 
-const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle, contentDescription, mediaType, mediaURL, soundDescription, mediaDescription, likes, comments, followingAuthor }: PostProps) => {
+const Post = ({ post_id, author, author_id, nickname, title, creatorAvatarImg, contentTitle, contentDescription, mediaType, mediaURL, soundDescription, mediaDescription, likes, comments, followingAuthor, handleUpdateFollowing }: PostProps) => {
 
     const [loadState, setLoadState] = useState(false);
-    const { load_state, loading_dispatch } = useContext(LoadingContext);
 
     const { authState } = useContext(AuthContext);
     const { dispatch } = useContext(ModalContext);
@@ -54,8 +55,6 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
     const [visible, setVisible] = useState(false)
 
     const [verified, setVerified] = useState(false);
-
-    const [postID, setPostID] = useState(post_id);
 
     const [postCaption, setPostCaption] = useState(contentDescription);
 
@@ -68,16 +67,14 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
 
     const [postClicked, setPostClicked] = useState<number>();
 
-    const [comment, setComment] = useState<string>('');
     const [postComments, setPostComments] = useState(comments);
-    const [reply, setReply] = useState<any>();
 
     const [postDrop, setPostDrop] = useState(false);
 
     const handlePostClicked = (postClicked: number | undefined) => {
         setPostClicked(postClicked);
     };
-    
+
     const handleLoadState = (loadState: boolean) => {
         setLoadState(loadState);
     }
@@ -100,7 +97,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
             })
             .catch(error => console.error('Error: ' + error));
     };
-    
+
 
     useEffect(() => {
         if (postCaption.includes('#')) {
@@ -138,7 +135,7 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
         <div className="postContainer">
             {
                 postClicked ?
-                        <EnlargedPost key={post_id}
+                    <EnlargedPost key={post_id}
                         verified={verified}
                         post_id={post_id}
                         username={author}
@@ -183,11 +180,14 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                                             setPostDrop(false);
                                         }}>
                                             <MenuSVG />
-                                            {postDrop ? <PostDropdown post_id={post_id} handleLoadState={handleLoadState}  /> : null}
+                                            {postDrop ? <PostDropdown post_id={post_id} handleLoadState={handleLoadState} /> : null}
                                         </div>
                                         :
                                         <div className="followBtnWrapper">
-                                            <button className="followBtn" onClick={authState ? () => handleFetchFollow() : () => dispatch({ type: 'true' })}>
+                                            <button className="followBtn" onClick={authState ? () => {
+                                                handleUpdateFollowing(author_id);
+                                                handleFetchFollow()
+                                            } : () => dispatch({ type: 'true' })}>
                                                 {followed ? "Following" : "Follow"}
                                             </button>
                                         </div>
@@ -197,80 +197,74 @@ const Post = ({ post_id, author, nickname, title, creatorAvatarImg, contentTitle
                         <div className="contentDescription">
                             <h2 className="contentDescriptionText" dangerouslySetInnerHTML={{ __html: postCaption }}>
                             </h2>
-                    </div>
-                    <div className="mediaContainer">
-                        <a href="/" className={`mediaWrapper ${loadState ? 'mediaWrapperLoading' : ''}`}>
-                            {loadState ? <LoadingWave /> : null}
-                            <div className="mediaImg">
-                                <VisibilitySensor onChange={(isVisible) => {
-                                    if (isVisible) {
-                                        console.log('visible!')
-                                        setVisible(true);
-                                        videoRef?.current?.play();
-                                    }
-                                    else {
-                                        setVisible(false);
-                                        videoRef?.current?.pause();
-                                    }
-                                }}>
-                                    <video controls ref={videoRef} key={post_id} src={mediaURL.length > 0 ? mediaURL : ''} loop onPlay={() => visible ? null : videoRef.current?.pause()} className="media"
-                                        onLoadedData={(event) => event.currentTarget.play()} onClick={(event) => {
-                                            event.preventDefault();
+                        </div>
+                        <div className="mediaContainer">
+                            <a href="/" className={`mediaWrapper ${loadState ? 'mediaWrapperLoading' : ''}`}>
+                                {loadState ? <LoadingWave /> : null}
+                                <div className="mediaImg">
+                                    <VisibilitySensor onChange={(isVisible) => {
+                                        if (isVisible) {
+                                            setVisible(true);
+                                            videoRef?.current?.play();
+                                        }
+                                        else {
+                                            setVisible(false);
+                                            videoRef?.current?.pause();
+                                        }
+                                    }}>
+                                        <video controls ref={videoRef} key={post_id} src={mediaURL.length > 0 ? mediaURL : ''} loop onPlay={() => visible ? null : videoRef.current?.pause()} className="media"
+                                            onLoadedData={(event) => event.currentTarget.play()} onClick={(event) => {
+                                                event.preventDefault();
+                                                setPostClicked(post_id);
+                                                videoRef.current?.pause();
+                                                enlarge_dispatch({ type: 'true' });
+                                            }}>
+                                        </video>
+                                    </VisibilitySensor>
+                                </div>
+                            </a>
+                            <div className="socialControls">
+                                <ul className="socialControlList">
+                                    <li className="socialControlItem">
+                                        <div className="socialWaveIcon" onClick={() => authState ? handleFetchLike(false, post_id).then((json: any) => {
+                                            setPostLikes(json.likes);
+                                            setLiked(!liked);
+                                        }) : dispatch({ type: 'true' })}>
+                                            {
+                                                liked ?
+                                                    <WaveSVG />
+                                                    :
+                                                    <BWWaveSVG />
+                                            }
+                                        </div>
+                                        <h3 className="socialStats">{postLikes}</h3>
+                                    </li>
+                                    <li className="socialControlItem">
+                                        <div className="socialWaveIcon" onClick={() => {
                                             setPostClicked(post_id);
-                                            videoRef.current?.pause();
                                             enlarge_dispatch({ type: 'true' });
                                         }}>
-                                    </video>
-                                </VisibilitySensor>
-                            </div>
-                        </a>
-                        <div className="socialControls">
-                            <ul className="socialControlList">
-                                <li className="socialControlItem">
-                                    <div className="socialWaveIcon" onClick={() => authState ? handleFetchLike(false, post_id).then((json: any) => {
-                                    setPostLikes(json.likes);
-                                    setLiked(!liked);
-                                }) : dispatch({ type: 'true' })}>
-                                        {
-                                            liked ?
-                                                <WaveSVG />
-                                                :
-                                                <BWWaveSVG />
-                                        }
-                                    </div>
-                                    <h3 className="socialStats">{postLikes}</h3>
-                                </li>
-                                <li className="socialControlItem">
-                                    <div className="socialWaveIcon" onClick={() => {
-                                        setPostClicked(post_id);
-                                        enlarge_dispatch({ type: 'true' });
-                                    }}>
-                                        <CommentSVG />
-                                    </div>
-                                    <h3 className="socialStats">{comments.length}</h3>
-                                </li>
-                                <li className="socialControlItem">
-                                    <div className="socialControlItemWrapper">
-                                        <div className="socialWaveIcon">
-                                            <ShareSVG />
+                                            <CommentSVG />
                                         </div>
-                                    </div>
-                                    <h3 className="socialStats">0</h3>
-                                </li>
-                            </ul>
+                                        <h3 className="socialStats">{comments.length}</h3>
+                                    </li>
+                                    <li className="socialControlItem">
+                                        <div className="socialControlItemWrapper">
+                                            <div className="socialWaveIcon">
+                                                <ShareSVG />
+                                            </div>
+                                        </div>
+                                        <h3 className="socialStats">0</h3>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div className="soundDescription">
+                            <h2 className="soundDescriptionHeader">
+                                {soundDescription}
+                            </h2>
                         </div>
                     </div>
-                    <div className="soundDescription">
-                        <h2 className="soundDescriptionHeader">
-                            {soundDescription}
-                        </h2>
-                    </div>
-                    {/* <div className="mediaDescription">
-                        <h2 className="mediaDescriptionText">
-                            {mediaDescription}
-                        </h2>
-                    </div> */}
-                </div>
                 </div>
             </span>
         </div >

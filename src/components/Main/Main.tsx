@@ -67,6 +67,25 @@ const Main = () => {
             .catch(error => console.error('Error: ' + error));
     };
 
+    const handleUpdateFollowing = (author_id: string) => {
+        loading_dispatch({ loading: true, type: 'loading_bar' });
+        switch(followingList.filter((following_id: string) => following_id === author_id).length){
+            case 0:
+                setFollowingList((oldFollowingList: any) => [...oldFollowingList, author_id])
+                break;
+            case 1:
+                let tmpFollowingList = followingList;
+                tmpFollowingList.splice(tmpFollowingList.findIndex((following_id: string) => following_id === author_id), 1);
+                setFollowingList([...tmpFollowingList]);
+                break;
+            default:
+                break;
+        }
+        setTimeout(() => {
+            loading_dispatch({ loading: true, type: 'bar' });
+        }, 200)
+    }
+
     const handleCheckIfFollowing = () => {
         fetch(`http://localhost:3000/following`, {
             method: 'POST',
@@ -184,6 +203,7 @@ const Main = () => {
                     {posts && posts.length !== 0 ? posts.map(post => <Post
                         key={post.post_id}
                         post_id={post.post_id}
+                        author_id={post.wavecreators_id}
                         author={post.username}
                         nickname={post.name}
                         title=""
@@ -197,6 +217,7 @@ const Main = () => {
                         likes={post.likes}
                         comments={post.comments}
                         followingAuthor={followingList ? (followingList.filter((following_id: any) => following_id === post.wavecreators_id).length > 0 ? true : false) : false}
+                        handleUpdateFollowing={handleUpdateFollowing}
                     />) : <h4>Nothing to see here</h4>}
                 </div>
             }
