@@ -68,6 +68,7 @@ const Post = ({ post_id, author, author_id, nickname, title, creatorAvatarImg, c
     const [postClicked, setPostClicked] = useState<number>();
 
     const [postComments, setPostComments] = useState(comments);
+    const [commentAmount, setCommentAmount] = useState(0);
 
     const [postDrop, setPostDrop] = useState(false);
 
@@ -98,7 +99,6 @@ const Post = ({ post_id, author, author_id, nickname, title, creatorAvatarImg, c
             .catch(error => console.error('Error: ' + error));
     };
 
-
     useEffect(() => {
         if (postCaption.includes('#')) {
             var str = postCaption;
@@ -109,21 +109,23 @@ const Post = ({ post_id, author, author_id, nickname, title, creatorAvatarImg, c
             });
             setPostCaption(str);
         }
+
+        let commentAmt = postComments.length;
+
+        postComments.map((comment: any) => {
+            commentAmt += comment.replies.length;
+        });
+        setCommentAmount(commentAmt);
+
         if (authState) {
+
             handleCheckIfLiked(post_id).then((json: any) => {
-                if (json.comment_like === true) {
-                    setCommentLiked([...commentLiked, json.post_id]);
+                if (json.post_id.toString().length < 17) {
+                    //temp solution. need to fix where you're returning comment_like boolean, as it's undefined always, causing comments to register...
+                    //...as a post and therefore forcing posts to become unliked, as a result of the comment not being liked
+                    setLiked(json.liked);
                 }
-                else {
-                    if (json.post_id.toString().length < 17) {
-                        //temp solution. need to fix where you're returning comment_like boolean, as it's undefined always, causing comments to register...
-                        //...as a post and therefore forcing posts to become unliked, as a result of the comment not being liked
-                        setLiked(json.liked);
-                    }
-                }
-            });
-            postComments.map((comment: any) => {
-                handleCheckIfLiked(comment.comment_id);
+                
             });
         }
     }, [])
@@ -150,6 +152,8 @@ const Post = ({ post_id, author, author_id, nickname, title, creatorAvatarImg, c
                         mediaDescription={mediaDescription}
                         likes={postLikes}
                         comments={comments}
+                        commentAmt={commentAmount}
+                        handleCommentAmountChange={setCommentAmount}
                         handlePostClicked={handlePostClicked} />
                     :
                     null
@@ -246,7 +250,7 @@ const Post = ({ post_id, author, author_id, nickname, title, creatorAvatarImg, c
                                         }}>
                                             <CommentSVG />
                                         </div>
-                                        <h3 className="socialStats">{comments.length}</h3>
+                                        <h3 className="socialStats">{commentAmount}</h3>
                                     </li>
                                     <li className="socialControlItem">
                                         <div className="socialControlItemWrapper">

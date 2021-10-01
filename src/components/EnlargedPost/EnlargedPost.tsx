@@ -36,6 +36,8 @@ type EnlargedPostProps = {
     mediaDescription: string;
     likes: number;
     comments: any;
+    commentAmt: number;
+    handleCommentAmountChange: (amount: number) =>  void;
     handlePostClicked: (postClicked: number | undefined) => void;
 };
 
@@ -46,7 +48,7 @@ type ShowRepliesType = {
     }
 };
 
-const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, contentDescription, mediaURL, soundDescription, likes, comments, handlePostClicked }: EnlargedPostProps) => {
+const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, contentDescription, mediaURL, soundDescription, likes, comments, commentAmt, handleCommentAmountChange, handlePostClicked }: EnlargedPostProps) => {
 
     const [loadState, setLoadState] = useState(false);
 
@@ -116,6 +118,30 @@ const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, con
                 }
             });
         });
+    }
+
+    const handleCommentBtn = () => {
+        if (comment) {
+            handleCommentAmountChange(commentAmt + 1);
+            setLoadState(true);
+            setComment('');
+            handlePostComment(post_id, reply && reply.reply_to ? reply.reply_to : 0, comment).then((json: any) => {
+                let tmpPostComments = postComments;
+                if (Number(json.reply_to) !== 0) {
+                    let commentIndex = tmpPostComments.findIndex((comment: any) => comment.comment_id === json.reply_to.toString());
+                    tmpPostComments[commentIndex].replies.push(json);
+                    setReply(undefined);
+                }
+                else {
+
+                    tmpPostComments.push(json);
+                }
+                setPostComments([...tmpPostComments]);
+                setLoadState(false);
+            }).catch(() => {
+                setLoadState(false);
+            });
+        }
     }
 
     useEffect(() => {
@@ -211,7 +237,7 @@ const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, con
                                 <span className="socialWaveIcon controlIcon likeIcon">
                                     <CommentSVG />
                                 </span>
-                                <h3 className="socialStats controlStats">{postComments.length}</h3>
+                                <h3 className="socialStats controlStats">{commentAmt}</h3>
                             </div>
                         </div>
                         <div className="rightControls">
@@ -373,50 +399,13 @@ const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, con
                 <div className="postLargeFormContainer">
                     <form className="postLargeFormWrapper" action="" onSubmit={(event) => {
                         event.preventDefault();
-                        if (comment) {
-                            setLoadState(true);
-                            setComment('');
-                            handlePostComment(post_id, reply && reply.reply_to ? reply.reply_to : 0, comment).then((json: any) => {
-                                let tmpPostComments = postComments;
-                                if (Number(json.reply_to) !== 0) {
-                                    let commentIndex = tmpPostComments.findIndex((comment: any) => comment.comment_id === json.reply_to.toString());
-                                    tmpPostComments[commentIndex].replies.push(json);
-                                    setReply(undefined);
-                                }
-                                else {
-                                    tmpPostComments.push(json);
-                                }
-                                setPostComments([...tmpPostComments]);
-                                setLoadState(false);
-                            }).catch(() => {
-                                setLoadState(false);
-                            });
-                        }
+                        handleCommentBtn();
                     }
                     }>
                         <input value={reply?.username ? `@${reply.username} ${comment.slice(`@${reply.username} `.length)}` : comment} type="text" className="enlargedInputForm" placeholder="Post a comment..." onChange={(event) => setComment(event.currentTarget.value)} />
                     </form>
                     {loadState ? <LoadingWave small={true} /> : <div className="postCommentBtn" onClick={() => {
-                        if (comment) {
-                            setLoadState(true);
-                            setComment('');
-                            handlePostComment(post_id, reply && reply.reply_to ? reply.reply_to : 0, comment).then((json: any) => {
-                                let tmpPostComments = postComments;
-                                if (Number(json.reply_to) !== 0) {
-                                    let commentIndex = tmpPostComments.findIndex((comment: any) => comment.comment_id === json.reply_to.toString());
-                                    tmpPostComments[commentIndex].replies.push(json);
-                                    setReply(undefined);
-                                }
-                                else {
-
-                                    tmpPostComments.push(json);
-                                }
-                                setPostComments([...tmpPostComments]);
-                                setLoadState(false);
-                            }).catch(() => {
-                                setLoadState(false);
-                            });
-                        }
+                        handleCommentBtn();
                     }}>
                         Post
                     </div>}
