@@ -151,3 +151,73 @@
         visibility: hidden;
     }
 }
+
+/* Extra small devices (phones, less than 768px) */
+@media (max-width: 767px) { 
+    .mainContainer {
+        max-width: none !important;
+    }
+
+    .trendingContainer {
+        max-width: none !important;
+        width: auto !important;
+    }
+
+    .leftBarContainer {
+        flex: 0 0 68px !important;
+        -webkit-flex: 0 0 68px !important;
+        -ms-flex: 0 0 68px !important;
+    }
+
+    .leftScrollContainer {
+        left: unset;
+        overflow-x: hidden;
+        overflow-y: auto;
+        width: 68px !important;
+        padding: 0 8px 0 8px !important;
+        border-right: 1px solid rgba(22,24,35,0.12);
+        box-shadow: 0px 2px 8px rgb(0 0 0 / 6%);
+    }
+
+    .leftScrollWrapper {
+        padding-top: 12px;
+        width: auto !important;
+    }
+
+    .navWrapper {
+        width: 52px !important;
+        -webkit-box-pack: justify;
+        -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
+    }
+
+    .navItem {
+        display: flex;
+        position: relative;
+        align-items: center;
+        justify-content: center;
+        margin-top: unset;
+        padding: 12px 0;
+        border-radius: 4px;
+    }
+    .navItem > svg {
+        margin-right: unset;
+        width: 26px !important;
+        height: 26px !important;
+    }
+
+    .navItemTitle {
+        display: none;
+    }
+
+    .exploreWrapper{
+        display: none;
+    }
+    
+    .leftFooterWrapper {
+        display: none;
+    }
+}
