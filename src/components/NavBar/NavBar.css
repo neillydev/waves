@@ -83,3 +83,39 @@
 .navbarEnlarged {
     z-index: -1;
 }
+
+/* Extra small devices (phones, less than 768px) */
+@media (max-width: 767px) { 
+    .navbarWrapper {
+        max-width: none !important;
+        margin-left: 1rem !important;
+        margin-right: 1rem !important;
+    }
+
+    .navSearchContainer, .uploadBtn{
+        display: none;
+    }
+
+    .navRightBarContainer {
+        margin-right: 1rem !important;
+    }
+
+    .loginBtn {
+        margin-left: none !important;
+    }
+}
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) { 
+
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) { 
+
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) { 
+    
+}
