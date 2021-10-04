@@ -616,3 +616,11 @@
 .hashtagItem:hover {
     text-decoration: underline;
 }
+
+/* Extra small devices (phones, less than 768px) */
+@media (max-width: 767px) { 
+    .post {
+        max-width: none !important;
+        width: auto !important;
+    }
+}
