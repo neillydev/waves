@@ -48,3 +48,10 @@
     color: rgb(18, 180, 255);
     font-weight: bold;
 }
+
+
+@media (max-width: 767px) { 
+    .loginModalWrapper {
+        width: 80%;
+    }
+}
