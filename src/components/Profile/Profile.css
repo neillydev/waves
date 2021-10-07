@@ -217,3 +217,21 @@
     height: 20px;
     margin-right: 5px;
 }
+
+@media (max-width: 767px) { 
+    .profileAvatar {
+        margin-right: 1.5rem !important;
+    }
+
+    .userControls {
+        font-size: 26px !important;
+    }
+
+    .userStats {
+        font-size: 12px !important;
+    }
+
+    .userBio > h1,h2 {
+        font-size: 14px !important;
+    }
+}
