@@ -62,7 +62,7 @@ function NavBar() {
 
     return (
         <div className={`navContainer ${state ? 'navbarEnlarged' : ''} flex border-b border-gray-200 top-0 inset-x-0 z-100 h-16 items-center`}>
-            <div className="navbarWrapper w-full max-w-screen-xl relative">
+            <div className="navbarWrapper w-full relative">
                 <div className="navHeaderContainer flex items-center justify-between">
                     <div className="navTitleContainer">
                         <div className="flex items-center">

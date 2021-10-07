@@ -1,12 +1,12 @@
 .navContainer {
+    justify-content: center;
     position: fixed;
     background-color: #fff;
     z-index: 10;
 }
 
 .navbarWrapper {
-    margin-left: 25rem;
-    margin-right: 25rem;
+    max-width: 1100px;
 }
 
 .navTitle {
