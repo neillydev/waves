@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import Explore from '../Explore/Explore';
 import Post from '../Post/Post';
 
+import { Link } from 'react-router-dom';
+
 import FireSVG from '../../svg/fire.svg';
 import FireDarkSVG from '../../svg/fire_dark.svg';
 import UserSVG from '../../svg/user.svg';
@@ -43,8 +45,23 @@ const Main = () => {
     const [viewType, setViewType] = useState<ViewType>(ViewType.TRENDING);
 
     const [posts, setPosts] = useState<PostType[]>();
+    const [suggested, setSuggested] = useState<any>(undefined);
 
     const [followingList, setFollowingList] = useState<any>(undefined);
+
+    const handleFetchSuggested = () => {
+        fetch(`http://localhost:3000/suggested`, {
+            method: 'GET'
+        })
+            .then(res => {
+                if (res.status == 200) {
+                    res.json().then((json: any) => {
+                        setSuggested(json);
+                    });
+                }
+            })
+            .catch(error => console.error('Error: ' + error));
+    };
 
     const handleFetchPosts = () => {
         loading_dispatch({ loading: true, type: 'loading_bar' });
@@ -61,7 +78,7 @@ const Main = () => {
                     });
                 }
                 else if (res.status == 409) {
-                    window.location.reload(false);
+                    window.location.reload();
                 }
             })
             .catch(error => console.error('Error: ' + error));
@@ -69,7 +86,7 @@ const Main = () => {
 
     const handleUpdateFollowing = (author_id: string) => {
         loading_dispatch({ loading: true, type: 'loading_bar' });
-        switch(followingList.filter((following_id: string) => following_id === author_id).length){
+        switch (followingList.filter((following_id: string) => following_id === author_id).length) {
             case 0:
                 setFollowingList((oldFollowingList: any) => [...oldFollowingList, author_id])
                 break;
@@ -130,7 +147,7 @@ const Main = () => {
                     });
                 }
                 else if (res.status == 409) {
-                    window.location.reload(false);
+                    window.location.reload();
                 }
             })
             .catch(error => console.error('Error: ' + error));
@@ -138,7 +155,13 @@ const Main = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
-        handleCheckIfFollowing();
+
+        if(authState) {
+            handleCheckIfFollowing();
+        }
+        
+        handleFetchSuggested();
+        
         switch (viewType) {
             case ViewType.FOLLOWING:
                 handleFetchFollowingPosts();
@@ -161,7 +184,7 @@ const Main = () => {
                                 event.preventDefault();
                                 setViewType(newView => ViewType.TRENDING);
                             }}>
-                                { viewType === ViewType.TRENDING ? <FireDarkSVG /> : <FireSVG /> }
+                                {viewType === ViewType.TRENDING ? <FireDarkSVG /> : <FireSVG />}
                                 <h2 className={`navItemTitle ${viewType === ViewType.TRENDING ? 'tabSelected' : ''}`}>
                                     Trending
                                 </h2>
@@ -175,11 +198,24 @@ const Main = () => {
                                     dispatch({ type: 'true' });
                                 }
                             }}>
-                                { viewType === ViewType.TRENDING ? <UserSVG /> : <UserDarkSVG /> }
+                                {viewType === ViewType.TRENDING ? <UserSVG /> : <UserDarkSVG />}
                                 <h2 className={`navItemTitle ${viewType === ViewType.FOLLOWING ? 'tabSelected' : ''}`}>
                                     Following
                                 </h2>
                             </a>
+                        </div>
+                        <div className="suggestedWrapper">
+                            {
+                                suggested ? suggested.map((user: any) =>
+                                    <Link to={`/@${user.username}`}>
+                                        <span className="suggestedCreator">
+                                            <span className="suggestedCreatorWrapper">
+                                                <img className="suggestedCreatorAvatar" src={user.avatar} />
+                                            </span>
+                                        </span>
+                                    </Link>
+                                ) : null
+                            }
                         </div>
                         <div className="exploreWrapper pt-6">
                             <h2 className="exploreTitle">
@@ -196,30 +232,30 @@ const Main = () => {
                 </div>
             </div>
             {
-                load_state !== "bar" ? 
-                <Skeleton type="main" />
-                :
-                <div className={`${viewType === ViewType.TRENDING ? 'trendingContainer' : 'followingContainer'} ${posts && posts.length !== 0 ? 'mainContentSome' : 'mainContentNone'}`}>
-                    {posts && posts.length !== 0 ? posts.map(post => <Post
-                        key={post.post_id}
-                        post_id={post.post_id}
-                        author_id={post.wavecreators_id}
-                        author={post.username}
-                        nickname={post.name}
-                        title=""
-                        creatorAvatarImg={post.avatar}
-                        contentTitle={post.caption}
-                        contentDescription={post.caption}
-                        mediaType={post.mediaType}
-                        mediaURL={post.media}
-                        soundDescription={post.sounddescription}
-                        mediaDescription={post.date_posted}
-                        likes={post.likes}
-                        comments={post.comments}
-                        followingAuthor={followingList ? (followingList.filter((following_id: any) => following_id === post.wavecreators_id).length > 0 ? true : false) : false}
-                        handleUpdateFollowing={handleUpdateFollowing}
-                    />) : <h4>Nothing to see here</h4>}
-                </div>
+                load_state !== "bar" ?
+                    <Skeleton type="main" />
+                    :
+                    <div className={`${viewType === ViewType.TRENDING ? 'trendingContainer' : 'followingContainer'} ${posts && posts.length !== 0 ? 'mainContentSome' : 'mainContentNone'}`}>
+                        {posts && posts.length !== 0 ? posts.map(post => <Post
+                            key={post.post_id}
+                            post_id={post.post_id}
+                            author_id={post.wavecreators_id}
+                            author={post.username}
+                            nickname={post.name}
+                            title=""
+                            creatorAvatarImg={post.avatar}
+                            contentTitle={post.caption}
+                            contentDescription={post.caption}
+                            mediaType={post.mediaType}
+                            mediaURL={post.media}
+                            soundDescription={post.sounddescription}
+                            mediaDescription={post.date_posted}
+                            likes={post.likes}
+                            comments={post.comments}
+                            followingAuthor={followingList ? (followingList.filter((following_id: any) => following_id === post.wavecreators_id).length > 0 ? true : false) : false}
+                            handleUpdateFollowing={handleUpdateFollowing}
+                        />) : <h4>Nothing to see here</h4>}
+                    </div>
             }
         </div>
     )
