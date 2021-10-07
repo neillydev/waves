@@ -165,6 +165,12 @@
         margin-left: 1rem;
     }
 
+    .followingContainer {
+        max-width: none !important;
+        width: auto !important;
+        margin-left: 1rem;
+    }
+
     .leftBarContainer {
         flex: 0 0 68px !important;
         -webkit-flex: 0 0 68px !important;
