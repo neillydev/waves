@@ -623,4 +623,50 @@
         max-width: none !important;
         width: auto !important;
     }
+
+    .creatorAvatarImg {
+        width: 52px;
+        height: 52px;
+    }
+
+    .content {
+        margin-left: unset;
+    }
+
+    .contentHeader {
+        width: unset;
+        margin-right: 1rem;
+    }
+
+    .contentAuthorTitle {
+        margin-left: .5rem;
+        flex-direction: column;
+    }
+
+    .contentDescription {
+        margin: 1rem 0;
+        width: 90%;
+        word-wrap: break-word;
+        font-weight: 500;
+    }
+
+    .socialWaveIcon {
+        padding: 6px;
+    }
+
+    .socialWaveIcon > svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .socialControlItem {
+        margin-left: .75rem;
+        margin-bottom: .5rem;
+    }
+
+    .socialStats {
+        margin-top: .15rem;
+        font-size: 10px;
+        font-weight: 700;
+    }
 }
