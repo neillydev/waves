@@ -52,6 +52,6 @@
 
 @media (max-width: 767px) { 
     .loginModalWrapper {
-        width: 80%;
+        width: 90% !important;
     }
 }
