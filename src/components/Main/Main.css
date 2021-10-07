@@ -161,6 +161,7 @@
     .trendingContainer {
         max-width: none !important;
         width: auto !important;
+        margin-left: 1rem;
     }
 
     .leftBarContainer {
