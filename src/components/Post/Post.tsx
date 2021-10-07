@@ -93,7 +93,7 @@ const Post = ({ post_id, author, author_id, nickname, title, creatorAvatarImg, c
                     setFollowed(followed ? false : true);
                 }
                 else if (res.status == 409) {
-                    window.location.reload(false);
+                    window.location.reload();
                 }
             })
             .catch(error => console.error('Error: ' + error));
