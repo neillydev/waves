@@ -156,6 +156,7 @@
 @media (max-width: 767px) { 
     .mainContainer {
         max-width: none !important;
+        justify-content: unset !important;
     }
 
     .trendingContainer {
