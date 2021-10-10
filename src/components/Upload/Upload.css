@@ -281,3 +281,41 @@
     background: rgba(22,24,35,0.06);
     color: rgba(22,24,35,0.34);
 }
+
+@media (max-width: 767px) { 
+    .uploadContainer {
+        max-width: unset;
+        padding-left: unset;
+        padding-top: unset;
+    }
+
+    .uploadHeader {
+        display: flex;
+        justify-content: center;
+    }
+
+    .uploadForm {
+        margin-bottom: 2rem;
+    }
+
+    .uploadContent {
+        flex-direction: column;
+        margin-left: unset;
+        padding: 0 2rem;
+        margin-top: 3rem;
+    }
+
+    .uploadSettingsContainer {
+        margin-top: 1rem;
+    }
+
+    .uploadMediaContainer {
+        justify-content: unset;
+        align-items: unset;
+    }
+
+    .uploadMediaWrapper {
+        height: 10rem;
+        width: auto;
+    }
+}
