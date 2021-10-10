@@ -314,6 +314,11 @@
         align-items: unset;
     }
 
+    .uploadMediaMask, .uploadMediaMask > video {
+        width: auto;
+        height: 10rem;
+    }
+
     .uploadMediaWrapper {
         height: 10rem;
         width: auto;
