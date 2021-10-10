@@ -156,12 +156,12 @@ const Main = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
 
-        if(authState) {
+        if (authState) {
             handleCheckIfFollowing();
         }
-        
+
         handleFetchSuggested();
-        
+
         switch (viewType) {
             case ViewType.FOLLOWING:
                 handleFetchFollowingPosts();
@@ -205,12 +205,19 @@ const Main = () => {
                             </a>
                         </div>
                         <div className="suggestedWrapper">
+                            <h2 className="exploreTitle">
+                                Suggested Creators
+                            </h2>
                             {
                                 suggested ? suggested.map((user: any) =>
                                     <Link to={`/@${user.username}`}>
                                         <span className="suggestedCreator">
                                             <span className="suggestedCreatorWrapper">
                                                 <img className="suggestedCreatorAvatar" src={user.avatar} />
+                                                <div className="suggestedCreatorName">
+                                                    <h3>{user.username}</h3>
+                                                    <h4 className="suggestedCreatorNickname">{user.name}</h4>
+                                                </div>
                                             </span>
                                         </span>
                                     </Link>
