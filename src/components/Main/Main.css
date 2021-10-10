@@ -59,11 +59,11 @@
 }
 
 .suggestedWrapper {
-    display: hidden;
+    display: none;
 }
 
 .suggestedCreator {
-    display: hidden;
+    display: none;
 }
 
 .navWrapper::after {
