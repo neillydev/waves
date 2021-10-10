@@ -15,7 +15,7 @@ export const handleFetchFollow = (username: string) => {
                 }
                 else if (res.status == 409) {
                     reject();
-                    window.location.reload(false);
+                    window.location.reload();
                 }
             })
             .catch(error => console.error('Error: ' + error));
@@ -33,7 +33,7 @@ export const handleDeletePost = (post_id: number) => {
         })
             .then(res => {
                 if (res.status == 200) {
-                    window.location.reload(false);
+                    window.location.reload();
                     resolve();
                 }
                 else if (res.status == 409 || res.status == 400) {
@@ -62,7 +62,7 @@ export const handlePostComment = (post_id: number, reply_to: number, comment: st
                     }), 300)
                 }
                 else if (res.status == 409) {
-                    window.location.reload(false);
+                    window.location.reload();
                 }
             })
             .catch(error => console.error('Error: ' + error));
@@ -88,7 +88,7 @@ export const handleFetchLike = (comment_like: boolean, post_id: number, comment_
                     });
                 }
                 else if (res.status == 409) {
-                    window.location.reload(false);
+                    window.location.reload();
                 }
             })
             .catch(error => console.error('Error: ' + error));
