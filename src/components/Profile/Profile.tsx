@@ -176,7 +176,11 @@ const Profile = () => {
                                                             <div className="followBtnWrapper">
                                                                 <button className="followBtn" onClick={authState ? () => {
                                                                     handleUpdateFollowing(profile && profile.user_id ? profile.user_id.toString() : '');
-                                                                    handleFetchFollow(profile ? profile.username : '')
+                                                                    handleFetchFollow(profile ? profile.username : '').then(() => {
+                                                                        setFollowed(followed ? false : true);
+                                                                    }).catch(() => {
+                                                                        window.location.reload();
+                                                                    });
                                                                 } : () => dispatch({ type: 'true' })}>
                                                                     {followed ? "Following" : "Follow"}
                                                                 </button>
