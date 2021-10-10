@@ -47,7 +47,7 @@ const Main = () => {
     const [posts, setPosts] = useState<PostType[]>();
     const [suggested, setSuggested] = useState<any>(undefined);
 
-    const [followingList, setFollowingList] = useState<any>(undefined);
+    const [followingList, setFollowingList] = useState<any>([]);
 
     const handleFetchSuggested = () => {
         fetch(`http://localhost:3000/suggested`, {
