@@ -204,7 +204,7 @@ const Main = () => {
                                 </h2>
                             </a>
                         </div>
-                        <div className="suggestedWrapper">
+                        <div className="suggestedWrapper pt-6">
                             <h2 className="exploreTitle">
                                 Suggested Creators
                             </h2>
