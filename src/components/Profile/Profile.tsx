@@ -3,6 +3,10 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import PostDropdown from '../PostDropdown/PostDropdown';
 import EnlargedPost from '../EnlargedPost/EnlargedPost';
 
+import { handleFetchFollow } from '../../api/PostAPI';
+
+import { AuthContext } from '../contexts/AuthContext';
+import { ModalContext } from '../contexts/ModalContext';
 import { EnlargedContext } from '../contexts/EnlargedContext';
 import { LoadingContext } from '../contexts/LoadingContext';
 
@@ -48,10 +52,17 @@ const Profile = () => {
     const location = useLocation();
 
     const { load_state, loading_dispatch } = useContext(LoadingContext);
+    const { authState } = useContext(AuthContext);
     const { enlarge_dispatch } = useContext(EnlargedContext);
+    const { dispatch } = useContext(ModalContext);
 
     const [profile, setProfile] = useState<ProfileType>();
     const [postClicked, setPostClicked] = useState<PostType>();
+
+    const [followed, setFollowed] = useState(false);
+    const [followingList, setFollowingList] = useState<any>([]);
+
+    const [commentAmount, setCommentAmount] = useState(0);
 
     const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -59,9 +70,56 @@ const Profile = () => {
         setPostClicked(undefined);
     };
 
+    const handleUpdateFollowing = (author_id: string) => {
+        loading_dispatch({ loading: true, type: 'loading_bar' });
+        switch (followingList.filter((following_id: string) => following_id === author_id).length) {
+            case 0:
+                setFollowingList((oldFollowingList: any) => [...oldFollowingList, author_id])
+                break;
+            case 1:
+                let tmpFollowingList = followingList;
+                tmpFollowingList.splice(tmpFollowingList.findIndex((following_id: string) => following_id === author_id), 1);
+                setFollowingList([...tmpFollowingList]);
+                break;
+            default:
+                break;
+        }
+        setTimeout(() => {
+            loading_dispatch({ loading: true, type: 'bar' });
+        }, 200)
+    }
+
+    const handleCheckIfFollowing = () => {
+        fetch(`http://localhost:3000/following`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ token: localStorage.getItem('token'), user_id: localStorage.getItem("userid_cache") })
+        })
+            .then(res => {
+                if (res.status == 200) {
+                    res.json().then((json: any[]) => {
+                        setFollowingList(json);
+                    });
+                }
+                else if (res.status == 409) {
+
+                }
+            })
+
+            .catch(error => console.error('Error: ' + error));
+    };
+
     useEffect(() => {
         enlarge_dispatch({ type: 'false' });
         loading_dispatch({ loading: true, type: 'loading_bar' });
+
+
+        if (authState) {
+            handleCheckIfFollowing();
+        }
+
         handleFetchProfile().then((json: any) => {
             setProfile(json)
             setTimeout(() => {
@@ -93,7 +151,9 @@ const Profile = () => {
                             likes={postClicked.likes}
                             comments={postClicked.comments}
                             handlePostClicked={handlePostClicked}
-                             />
+                            commentAmt={commentAmount}
+                            handleCommentAmountChange={setCommentAmount}
+                        />
                             :
                             < div className="profileContainer" >
                                 <div className="profileWrapper">
@@ -103,9 +163,25 @@ const Profile = () => {
                                         </div>
                                         <div className="profileDetails">
                                             <div className="userControls">
-                                                <h1>{profile?.username}</h1>
-                                                <div className="editProfile">
+                                                <div className="userTitle">
 
+                                                    <h1>{profile?.username}</h1>
+                                                    <div className="editProfile">
+
+                                                    </div>
+                                                    {
+                                                        localStorage.getItem('username_cache') && profile?.username === localStorage.getItem('username_cache') ?
+                                                            null
+                                                            :
+                                                            <div className="followBtnWrapper">
+                                                                <button className="followBtn" onClick={authState ? () => {
+                                                                    handleUpdateFollowing(profile && profile.user_id ? profile.user_id.toString() : '');
+                                                                    handleFetchFollow(profile ? profile.username : '')
+                                                                } : () => dispatch({ type: 'true' })}>
+                                                                    {followed ? "Following" : "Follow"}
+                                                                </button>
+                                                            </div>
+                                                    }
                                                 </div>
                                             </div>
                                             <ul className="userStats">
