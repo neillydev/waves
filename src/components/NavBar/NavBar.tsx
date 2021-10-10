@@ -65,13 +65,13 @@ function NavBar() {
             <div className="navbarWrapper w-full relative">
                 <div className="navHeaderContainer flex items-center justify-between">
                     <div className="navTitleContainer">
-                        <div className="flex items-center">
-                            <a href="/" className="block">
+                        <div className="">
+                            <a href="/" className="block flex items-center">
                                 <WaveSVG className='replaceThis w-auto md:block h-9' />
+                                <h1 className="navTitle">
+                                    waves
+                                </h1>
                             </a>
-                            <h1 className="navTitle">
-                                waves
-                            </h1>
                         </div>
                     </div>
                     <div className="navSearchContainer">
