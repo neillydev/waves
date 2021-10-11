@@ -298,7 +298,7 @@ const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, fol
 
                                                 if (json.comment_like) {
                                                     let newCommentLiked = commentLiked;
-                                                    if (commentLiked.includes(json.post_id) === false) {
+                                                    if (commentLiked.includes(Number(json.post_id)) === false) {
                                                         setCommentLiked(newCommentLiked => [...newCommentLiked, json.post_id]);
                                                     }
                                                     else {
