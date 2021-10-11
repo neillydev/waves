@@ -8,6 +8,7 @@ import FireSVG from '../../svg/fire.svg';
 import FireDarkSVG from '../../svg/fire_dark.svg';
 import UserSVG from '../../svg/user.svg';
 import UserDarkSVG from '../../svg/user_dark.svg';
+import WaveSVG from '../../svg/wave.svg';
 
 import { AuthContext } from '../contexts/AuthContext';
 import { ModalContext } from '../contexts/ModalContext';
@@ -241,7 +242,7 @@ const Main = () => {
                 load_state !== "bar" ?
                     <Skeleton type="main" />
                     :
-                    <div className={`${viewType === ViewType.TRENDING ? 'trendingContainer' : 'followingContainer'} ${posts && posts.length !== 0 ? 'mainContentSome' : 'mainContentNone'}`}>
+                    <div className={`${viewType === ViewType.TRENDING ? 'trendingContainer' : 'followingContainer'} ${posts && posts.length !== 0 ? 'mainContentSome' : 'mainContentNone noPostsFound'}`}>
                         {posts && posts.length !== 0 ? posts.map(post => <Post
                             key={post.post_id}
                             post_id={post.post_id}
@@ -260,7 +261,13 @@ const Main = () => {
                             comments={post.comments}
                             followingAuthor={followingList ? (followingList.filter((following_id: any) => following_id === post.wavecreators_id).length > 0 ? true : false) : false}
                             handleUpdateFollowing={handleUpdateFollowing}
-                        />) : <h4>Nothing to see here</h4>}
+                        />) : (
+                            <>
+                                <WaveSVG />
+                                <h4>Hmm..keep surfing!</h4>
+                            </>
+                        )
+                        }
                     </div>
             }
         </div>
