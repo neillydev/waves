@@ -37,6 +37,9 @@ type EnlargedPostProps = {
     soundDescription: string;
     mediaDescription: string;
     likes: number;
+    liked: boolean;
+    setPostLikes: (amount: number) => void;
+    setLiked: (liked: boolean) => void;
     comments: any;
     commentAmt: number;
     handleCommentAmountChange: (amount: number) => void;
@@ -50,7 +53,7 @@ type ShowRepliesType = {
     }
 };
 
-const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, following, contentDescription, mediaURL, soundDescription, likes, comments, commentAmt, handleCommentAmountChange, handlePostClicked }: EnlargedPostProps) => {
+const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, following, contentDescription, mediaURL, soundDescription, likes, liked, setPostLikes, setLiked, comments, commentAmt, handleCommentAmountChange, handlePostClicked }: EnlargedPostProps) => {
 
     const [loadState, setLoadState] = useState(false);
 
@@ -59,10 +62,7 @@ const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, fol
     const { enlarge_dispatch } = useContext(EnlargedContext);
 
     const [postCaption, setPostCaption] = useState(contentDescription);
-
-    const [postLikes, setPostLikes] = useState(Number(likes));
-
-    const [liked, setLiked] = useState(false);
+    
     const [commentLiked, setCommentLiked] = useState<number[]>([]);
 
     const [followed, setFollowed] = useState(following);
@@ -233,7 +233,7 @@ const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, fol
                                             <BWWaveSVG />
                                     }
                                 </span>
-                                <h3 className="socialStats controlStats">{postLikes}</h3>
+                                <h3 className="socialStats controlStats">{likes}</h3>
                             </div>
                             <div className="controlItem">
                                 <span className="socialWaveIcon controlIcon likeIcon">
