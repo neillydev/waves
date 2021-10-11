@@ -379,4 +379,8 @@
     .leftFooterWrapper {
         display: none;
     }
+
+    .noPostsFound {
+        width: 100vw !important;
+    }
 }
