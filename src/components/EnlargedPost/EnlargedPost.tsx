@@ -62,7 +62,7 @@ const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, fol
     const { enlarge_dispatch } = useContext(EnlargedContext);
 
     const [postCaption, setPostCaption] = useState(contentDescription);
-    
+
     const [commentLiked, setCommentLiked] = useState<number[]>([]);
 
     const [followed, setFollowed] = useState(following);
@@ -146,21 +146,32 @@ const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, fol
         }
     }
 
+    const handleInitLikes = (comment: any) => {
+        handleCheckIfLiked(comment.comment_id, comment.comment_id).then((json: any) => {
+            if (json.liked) {
+                setCommentLiked(oldArray => [...oldArray, Number(json.post_id)]);
+            }
+            else if (commentLiked.includes(Number(json.post_id))) {
+                let newCommentLiked = commentLiked;
+                newCommentLiked.splice(newCommentLiked.findIndex((comment_id) => comment_id === Number(json.post_id)), 1);
+                setCommentLiked([...newCommentLiked])
+            }
+        });
+    };
+
     useEffect(() => {
         handleCheckIfLiked(post_id).then((json: any) => setLiked(json.liked));
 
+        console.log(postComments);
+
         //temporary solution
-        postComments.map((comment: any, i: number) => {
-            handleCheckIfLiked(comment.comment_id, comment.comment_id).then((json: any) => {
-                if (json.liked) {
-                    setCommentLiked(oldArray => [...oldArray, Number(json.post_id)]);
-                }
-                else if (commentLiked.includes(Number(json.post_id))) {
-                    let newCommentLiked = commentLiked;
-                    newCommentLiked.splice(newCommentLiked.findIndex((comment_id) => comment_id === Number(json.post_id)), 1);
-                    setCommentLiked([...newCommentLiked])
-                }
-            });
+        postComments.map((comment: any) => {
+            if(comment.replies.length > 0) {
+                comment.replies.map((comment: any) => {
+                    handleInitLikes(comment);
+                })
+            }
+            handleInitLikes(comment);
         });
     }, []);
 
@@ -349,11 +360,11 @@ const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, fol
 
                                                                     if (json.comment_like) {
                                                                         let newCommentLiked = commentLiked;
-                                                                        if (commentLiked.includes(json.post_id) === false) {
-                                                                            setCommentLiked(newCommentLiked => [...newCommentLiked, json.post_id]);
+                                                                        if (commentLiked.includes(Number(json.post_id)) === false) {
+                                                                            setCommentLiked(newCommentLiked => [...newCommentLiked, Number(json.post_id)]);
                                                                         }
                                                                         else {
-                                                                            newCommentLiked.splice(newCommentLiked.findIndex((commentID) => commentID === reply.comment_id), 1);
+                                                                            newCommentLiked.splice(newCommentLiked.findIndex((commentID) => commentID === Number(reply.comment_id)), 1);
                                                                             setCommentLiked([...newCommentLiked]);
                                                                         }
                                                                         handleUpdateLike(json.post_id, json.likes, true);
