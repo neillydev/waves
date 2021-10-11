@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import BoldedText from '../../util/BoldedText';
+import RelativeTime from '../../util/RelativeTime';
 
 import { Link } from 'react-router-dom';
 
@@ -38,7 +39,7 @@ type EnlargedPostProps = {
     likes: number;
     comments: any;
     commentAmt: number;
-    handleCommentAmountChange: (amount: number) =>  void;
+    handleCommentAmountChange: (amount: number) => void;
     handlePostClicked: (postClicked: number | undefined) => void;
 };
 
@@ -268,7 +269,7 @@ const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, fol
                                                 <span>{comment.comment}</span>
                                                 <div className="commentFooter">
                                                     <span className="commentTime">
-                                                        2m ago
+                                                        {RelativeTime(comment.timestamp)}
                                                     </span>
                                                     <span className="commentReplyBtn" onClick={() => {
                                                         setReply({
@@ -317,7 +318,7 @@ const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, fol
                                                         showAmount: 1,
                                                         lastCommentShown: reply.comment_id
                                                     };
-                                                    setShowReplies({...tmpShowReplies});
+                                                    setShowReplies({ ...tmpShowReplies });
                                                 }
 
                                                 if (comment.replies.findIndex((findReply: any) => findReply === reply) < showReplies[comment.comment_id].showAmount) {
@@ -338,7 +339,7 @@ const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, fol
                                                                     <span>{reply.comment.includes('@') ? BoldedText(reply.comment, reply.comment.substr(reply.comment.indexOf('@'), reply.comment.indexOf(' '))) : reply.comment}</span>
                                                                     <div className="commentFooter">
                                                                         <span className="commentTime">
-                                                                            2m ago
+                                                                            {RelativeTime(reply.timestamp)}
                                                                         </span>
                                                                     </div>
                                                                 </p>
@@ -378,7 +379,7 @@ const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, fol
                                                                     let tmpShowReplies = showReplies;
                                                                     tmpShowReplies[comment.comment_id].showAmount = showReplies[comment.comment_id].showAmount + 2;
                                                                     tmpShowReplies[comment.comment_id].lastCommentShown = comment.replies[comment.replies.findIndex((findReply: any) => findReply === reply) + showReplies[comment.comment_id].showAmount]?.comment_id;
-                                                                    setShowReplies({...tmpShowReplies});
+                                                                    setShowReplies({ ...tmpShowReplies });
                                                                 }}>
                                                                     <p className="moreRepliesText">
                                                                         More Replies
