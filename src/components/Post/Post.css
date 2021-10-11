@@ -242,8 +242,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-left: 1.5rem;
-    margin-bottom: 1rem;
+    margin-left: 1rem;
+    margin-bottom: .45rem;
 }
 
 .socialWaveIcon {
@@ -256,11 +256,11 @@
 }
 
 .socialStats {
-    margin-top: .5rem;
-    color: rgba(22, 24, 35, 0.8);
-    
+    margin-top: .25rem;
+    color: rgba(22, 24, 35);
     font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
+    font-weight: 500;
+    font-style: normal;
     font-size: 12px;
 }
 
