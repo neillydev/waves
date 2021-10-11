@@ -100,6 +100,9 @@ const Profile = () => {
             .then(res => {
                 if (res.status == 200) {
                     res.json().then((json: any[]) => {
+                        if(json.includes(profile?.user_id?.toString())) {
+                            setFollowed(true);
+                        }
                         setFollowingList(json);
                     });
                 }
@@ -115,11 +118,9 @@ const Profile = () => {
         enlarge_dispatch({ type: 'false' });
         loading_dispatch({ loading: true, type: 'loading_bar' });
 
-
         if (authState) {
-            handleCheckIfFollowing();
         }
-
+    
         handleFetchProfile().then((json: any) => {
             setProfile(json)
             setTimeout(() => {
@@ -128,6 +129,10 @@ const Profile = () => {
         });
     }, [location.pathname]);
 
+    useEffect(() => {
+        
+        handleCheckIfFollowing();
+    }, [profile]);
     return (
         <>
             {
@@ -201,7 +206,7 @@ const Profile = () => {
                                             </ul>
                                             <div className="userBio">
                                                 <h1>{profile?.name}</h1>
-                                                <h2>*+!:) !!🖤& * ^ 🌙* !+ ! * +</h2>
+                                                <h2></h2>
                                             </div>
                                         </div>
                                     </header>
