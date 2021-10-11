@@ -144,6 +144,7 @@ const Post = ({ post_id, author, author_id, nickname, title, creatorAvatarImg, c
                         name={nickname}
                         title=""
                         creatorAvatarImg={creatorAvatarImg}
+                        following={followed}
                         contentTitle={contentTitle}
                         contentDescription={contentDescription}
                         mediaType={mediaType}

@@ -28,6 +28,7 @@ type EnlargedPostProps = {
     name: string;
     title: string;
     creatorAvatarImg: string;
+    following: boolean;
     contentTitle: string;
     contentDescription: string;
     mediaType: "video" | "image";
@@ -48,7 +49,7 @@ type ShowRepliesType = {
     }
 };
 
-const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, contentDescription, mediaURL, soundDescription, likes, comments, commentAmt, handleCommentAmountChange, handlePostClicked }: EnlargedPostProps) => {
+const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, following, contentDescription, mediaURL, soundDescription, likes, comments, commentAmt, handleCommentAmountChange, handlePostClicked }: EnlargedPostProps) => {
 
     const [loadState, setLoadState] = useState(false);
 
@@ -63,7 +64,7 @@ const EnlargedPost = ({ verified, post_id, username, name, creatorAvatarImg, con
     const [liked, setLiked] = useState(false);
     const [commentLiked, setCommentLiked] = useState<number[]>([]);
 
-    const [followed, setFollowed] = useState(false);
+    const [followed, setFollowed] = useState(following);
 
     const [comment, setComment] = useState<string>('');
     const [postComments, setPostComments] = useState(comments);

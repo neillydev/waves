@@ -147,6 +147,7 @@ const Profile = () => {
                             name={profile?.name || ''}
                             title={postClicked.caption}
                             creatorAvatarImg={profile?.avatar || ''}
+                            following={followed}
                             contentTitle={postClicked.caption}
                             contentDescription={postClicked.caption}
                             mediaType={"video"}
