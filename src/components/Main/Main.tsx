@@ -157,6 +157,9 @@ const Main = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
 
+        if (authState) {
+        }
+        handleCheckIfFollowing();
         handleFetchSuggested();
         switch (viewType) {
             case ViewType.FOLLOWING:
@@ -170,9 +173,6 @@ const Main = () => {
         }
     }, [viewType]);
 
-    if (authState) {
-        handleCheckIfFollowing();
-    }
 
     return (
         <div className="mainContainer flex justify-between">
