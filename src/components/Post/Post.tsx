@@ -220,7 +220,7 @@ const Post = ({ post_id, author, author_id, nickname, title, creatorAvatarImg, c
                                             videoRef?.current?.pause();
                                         }
                                     }}>
-                                        <video controls ref={videoRef} key={post_id} src={mediaURL.length > 0 ? mediaURL : ''} loop onPlay={() => visible ? null : videoRef.current?.pause()} className="media"
+                                        <video ref={videoRef} key={post_id} src={mediaURL.length > 0 ? mediaURL : ''} loop onPlay={() => visible ? null : videoRef.current?.pause()} className="media"
                                             onLoadedData={(event) => event.currentTarget.play()} onClick={(event) => {
                                                 event.preventDefault();
                                                 setPostClicked(post_id);
