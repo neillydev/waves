@@ -165,4 +165,16 @@
         margin-left: 1rem !important;
         width: 10rem !important;
     }
+
+    .skeletonProfileUsername {
+        width: 12.75rem;
+    }
+
+    .skeletonProfileData {
+        width: 3.5rem;
+    }
+
+    .skeletonBio {
+        width: 12rem;
+    }
 }
