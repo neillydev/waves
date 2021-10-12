@@ -152,3 +152,17 @@
       background-position: 325px
     }
 }
+
+
+@media (max-width: 767px) {
+    .skeletonContainer {
+        max-width: none !important;
+        width: auto !important;
+        margin-left: 1rem;
+    }
+
+    .skeletonDescription {
+        margin-left: 1rem !important;
+        width: 10rem !important;
+    }
+}

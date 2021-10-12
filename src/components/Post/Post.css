@@ -655,9 +655,9 @@
 
     .contentDescription {
         margin: 1rem 0;
-        width: 90%;
-        word-wrap: break-word;
-        font-weight: 500;
+        width: 90% !important;
+        word-wrap: break-word !important;
+        font-weight: 500 !important;
         font-size: 10px !important;
     }
 
