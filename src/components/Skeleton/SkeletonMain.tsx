@@ -4,7 +4,7 @@ const SkeletonMain = () => {
     return (
         <div className="skeletonContainer">
             <span className="postWrapper">
-                <div className="post">
+                <div className="post skeletonPost">
                     <span className="creatorAvatar creatorAvatarImg skeletonAvatar skeletonShimmer">
                     </span>
                     <div className="content skeletonContent">

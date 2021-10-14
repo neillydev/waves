@@ -240,15 +240,17 @@
 }
 
 /* Extra small devices (phones, less than 768px) */
-@media (max-width: 767px) { 
+@media (max-width: 991px) { 
     .mainContainer {
         max-width: none !important;
         justify-content: unset !important;
     }
 
     .trendingContainer {
-        max-width: none !important;
-        width: auto !important;
+        /* max-width: none !important;
+        width: auto !important; */
+        width: 692px;
+        max-width: 692px;
         margin-left: 1rem;
     }
 
@@ -382,5 +384,22 @@
 
     .noPostsFound {
         width: 100vw !important;
+    }
+}
+
+
+@media (max-width: 675px) { 
+    .trendingContainer {
+        width: 550px !important;
+        max-width: 550px !important;
+    }
+
+}
+
+
+@media (max-width: 575px) {
+    .trendingContainer {
+        width: calc((100vw - 32px) - 68px) !important;
+        margin-left: 1rem;
     }
 }

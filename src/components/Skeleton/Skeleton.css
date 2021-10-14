@@ -154,15 +154,24 @@
 }
 
 
-@media (max-width: 767px) {
+@media (max-width: 991px) { 
     .skeletonContainer {
-        max-width: none !important;
-        width: auto !important;
+        width: 100vw;
+        max-width: unset;
         margin-left: 1rem;
     }
 
+    .skeletonPost {
+        display: flex !important;
+        justify-content: center !important;
+    }
+
+    .skeletonContent {
+        margin-left: unset !important;
+    }
+
     .skeletonDescription {
-        margin-left: 1rem !important;
+        /* margin-left: 1rem !important; */
         width: 10rem !important;
     }
 
@@ -177,4 +186,55 @@
     .skeletonBio {
         width: 12rem;
     }
+}
+
+@media (max-width: 675px) { 
+    .skeletonContainer {
+        width: 550px !important;
+        max-width: 550px !important;
+    }
+
+}
+
+
+@media (max-width: 575px) {
+    .skeletonContainer {
+        width: calc((100vw - 32px) - 68px) !important;
+        margin-left: .5rem;
+    }
+
+    .skeletonHeader {
+        margin-left: .5rem;
+    }
+
+    .skeletonContentDescription {
+        margin-left: .5rem;
+    }
+
+    .skeletonMedia {
+        margin-left: .5rem;
+    }
+
+    .skeletonSoundDescription {
+        margin-left: .5rem;
+    }
+
+    .skeletonMediaDescription {
+        margin-left: .5rem;
+    }
+}
+
+@media (max-width: 460px) {
+    .skeletonContainer {
+        margin-left: unset;
+        margin-right: unset;
+        width: calc((100vw) - 68px) !important;
+    }
+
+    .skeletonAvatar {
+        padding-right: 32px;
+        width: 32px;
+        height: 32px;
+    }
+
 }
