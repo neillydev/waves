@@ -3,6 +3,7 @@ import Avatar from '../Avatar/Avatar';
 
 import WaveSVG from '../../svg/wave.svg';
 import UploadSVG from '../../svg/upload.svg';
+import NotificationSVG from '../../svg/notification.svg';
 
 import { AuthContext } from '../contexts/AuthContext';
 import { ModalContext } from '../contexts/ModalContext';
@@ -109,6 +110,10 @@ function NavBar() {
                         <Link to={authState ? "/upload" : "/"} onClick={authState ? () => null : () => dispatch({ type: 'true' })} className="uploadBtn border-none">
                             <UploadSVG />
                         </Link>
+
+                        {
+                            authState ? <div className="inboxWrapper"><NotificationSVG /></div> : null
+                        }
                         {
                             authState ? <Avatar /> : <button onClick={() => dispatch({ type: 'true' })} className="loginBtn rounded-sm border-none">
                                 Login

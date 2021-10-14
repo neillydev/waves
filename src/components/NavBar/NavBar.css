@@ -51,6 +51,16 @@
     align-items: center;
 }
 
+.inboxWrapper {
+    cursor: pointer;
+}
+
+.inboxWrapper > svg {
+    margin-left: 24px;
+    width: 28px;
+    height: 28px;
+}
+
 .loginBtn {
     min-width: 100px;
     background-color: #2ba0ff;
@@ -92,7 +102,7 @@
 }
 
 /* Extra small devices (phones, less than 768px) */
-@media (max-width: 767px) { 
+@media (max-width: 991px) { 
     .navbarWrapper {
         max-width: none !important;
         margin-left: 1.25rem !important;
