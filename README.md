@@ -4,4 +4,6 @@
 <p align="center">
   Built with <a href="https://reactjs.org/" target="_blank">React</a>
 </p>
-![image](https://user-images.githubusercontent.com/51303046/148043274-fefbcc6f-e46d-4796-9c60-e9cc46547689.png)
+
+![image](https://user-images.githubusercontent.com/51303046/148043434-bbc72e45-f7f7-4fe0-a1d5-8b3dd902c719.png)
+
