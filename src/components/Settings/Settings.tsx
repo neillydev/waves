@@ -17,10 +17,43 @@ const Settings = () => {
     const [editingType, setEditingType] = useState<EditingType>();
 
     const avatarInput = useRef<HTMLInputElement>(null);
-    const [avatarFile, setAvatarFile] = useState(localStorage.getItem('avatar') || '<none>');
+    const [avatarFile, setAvatarFile] = useState<File>();
+    const [avatarURI, setAvatarURI] = useState(localStorage.getItem('avatar') || '<none>');
 
     const usernameInput = useRef<HTMLInputElement>(null);
     const nameInput = useRef<HTMLInputElement>(null);
+
+    const handleSendAvatar = () => {
+        if (avatarFile) {
+            const oldUsername = localStorage.getItem('username_cache');
+            const token = localStorage.getItem('token');
+            loading_dispatch({ loading: true, type: 'loading_bar' });
+            const formData = new FormData();
+            formData.append('file', avatarFile);
+            formData.append('oldUsername', oldUsername!);
+            formData.append('token', token!);
+            fetch('https://neilly.dev/avatar', {
+                method: 'POST',
+                //add auth header here
+                body: formData
+            })
+                .then(res => {
+                    if (res) {
+                        if (res.status === 200) {
+                            res.json().then(json => {
+                                localStorage.setItem('avatar', json.url);
+                                setAvatarURI(json.url);
+                                loading_dispatch({ loading: true, type: 'bar' });
+                            });
+                        }
+                        else if (res.status === 404) {
+
+                        }
+                    }
+                })
+                .catch(error => console.error('Error: ', error));
+        }
+    };
 
     const handleFormSubmit = () => {
         loading_dispatch({ loading: true, type: 'loading_bar' });
@@ -29,16 +62,17 @@ const Settings = () => {
         const name = nameInput?.current?.value || localStorage.getItem('name_cache');
         const oldUsername = localStorage.getItem('username_cache');
         const token = localStorage.getItem('token');
-
-        if (oldUsername && token && username && name && avatarFile) {
-            fetch('http://localhost:3000/profile', {
+        if(avatarFile){
+            handleSendAvatar();
+        }
+        if (oldUsername && token && username && name) {
+            fetch('https://neilly.dev/profile', {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     token: token,
-                    avatar: avatarFile,
                     username: username,
                     oldUsername: localStorage.getItem('username_cache'),
                     name: name,
@@ -47,11 +81,10 @@ const Settings = () => {
                 .then(res => {
                     if (res) {
                         if (res.status === 200) {
-                            localStorage.setItem('avatar', avatarFile);
                             //use json response for these
                             localStorage.setItem('username_cache', username);
                             localStorage.setItem('name_cache', name);
-                            window.location.reload(false);
+                            //window.location.reload();
                             loading_dispatch({ loading: true, type: 'bar' });
                         }
                         else {
@@ -73,7 +106,7 @@ const Settings = () => {
                         </div>
                         <div className="avatarSettingsContainer">
                             <span className="avatarSettingsWrapper">
-                                <img src={`${avatarFile}`} />
+                                <img src={`${avatarURI}`} />
                                 <EditAvatarSVG className="editAvatar" onClick={() => {
                                     if (avatarInput && avatarInput.current) {
                                         setEditingType(undefined);
@@ -85,13 +118,14 @@ const Settings = () => {
                                         let file = event.target.files[0];
 
                                         if (file) {
+                                            setAvatarFile(file);
                                             const reader = new FileReader();
                                             reader.readAsDataURL(file);
                                             reader.onload = (event) => {
                                                 if (reader?.result) {
-                                                    setAvatarFile(reader?.result.toString());
+                                                    setAvatarURI(reader?.result.toString())
                                                 }
-                                            }
+                                            } 
                                         }
 
                                     }
