@@ -2,7 +2,7 @@
 
 export const handleFetchFollow = (username: string) => {
     return new Promise<void>((resolve, reject) => {
-        fetch(`http://localhost:3000/follow`, {
+        fetch(`https://neilly.dev/follow`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -24,7 +24,7 @@ export const handleFetchFollow = (username: string) => {
 
 export const handleDeletePost = (post_id: number) => {
     return new Promise<void>((resolve, reject) => {
-        fetch(`http://localhost:3000/post`, {
+        fetch(`https://neilly.dev/post`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -48,7 +48,7 @@ export const handleDeletePost = (post_id: number) => {
 
 export const handlePostComment = (post_id: number, reply_to: number, comment: string) => {
     return new Promise((resolve, reject) => {
-        fetch(`http://localhost:3000/comment`, {
+        fetch(`https://neilly.dev/comment`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -73,7 +73,7 @@ export const handlePostComment = (post_id: number, reply_to: number, comment: st
 
 export const handleFetchLike = (comment_like: boolean, post_id: number, comment_id?: number) => {
     return new Promise((resolve, reject) => {
-        fetch(`http://localhost:3000/like`, {
+        fetch(`https://neilly.dev/like`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -97,7 +97,7 @@ export const handleFetchLike = (comment_like: boolean, post_id: number, comment_
 
 export const handleCheckIfLiked = (post_id: number, comment_id?: number) => {
     return new Promise((resolve, reject) => {
-        fetch(`http://localhost:3000/liked`, {
+        fetch(`https://neilly.dev/liked`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

@@ -89,7 +89,7 @@ const SignUpForm = () => {
         }
         setMatchingPass(true);
         setLoadState(true);
-        fetch(`http://localhost:3000/register`, {
+        fetch(`https://neilly.dev/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -108,7 +108,7 @@ const SignUpForm = () => {
                         localStorage.setItem('avatar', json.user_profile.avatar);
                         localStorage.setItem('birthday_cache', json.user_profile.birthday);
 
-                        window.location.reload(false);
+                        window.location.reload();
                     });
                 }
                 else if (res.status == 409) {
@@ -190,7 +190,7 @@ const SignUpForm = () => {
                 </div>
                 <div className={`loginFormWrapper flex flex-col ${matchingPass ? '' : 'loginFormError'}`}>
                     <input
-                        type="text"
+                        type="password"
                         placeholder="Confirm Password"
                         onChange={onPasswordConfirm}
                         required

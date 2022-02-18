@@ -18,7 +18,7 @@ const LoginForm = () => {
     const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setLoadState(true);
-        fetch(`http://localhost:3000/login`, {
+        fetch(`https://neilly.dev/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

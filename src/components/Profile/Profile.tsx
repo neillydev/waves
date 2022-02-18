@@ -90,7 +90,7 @@ const Profile = () => {
     }
 
     const handleCheckIfFollowing = () => {
-        fetch(`http://localhost:3000/following`, {
+        fetch(`https://neilly.dev/following`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

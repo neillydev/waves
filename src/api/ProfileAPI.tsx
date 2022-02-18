@@ -2,7 +2,7 @@ import React from 'react';
 
 export const handleFetchProfile = () => {
     return new Promise((resolve, reject) => {
-        fetch(`http://localhost:3000/profile`, {
+        fetch(`https://neilly.dev/profile`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

@@ -51,7 +51,7 @@ const Main = () => {
     const [followingList, setFollowingList] = useState<any>([]);
 
     const handleFetchSuggested = () => {
-        fetch(`http://localhost:3000/suggested`, {
+        fetch(`https://neilly.dev/suggested`, {
             method: 'GET'
         })
             .then(res => {
@@ -66,7 +66,7 @@ const Main = () => {
 
     const handleFetchPosts = () => {
         loading_dispatch({ loading: true, type: 'loading_bar' });
-        fetch(`http://localhost:3000/posts`, {
+        fetch(`https://neilly.dev/posts`, {
             method: 'GET'
         })
             .then(res => {
@@ -105,7 +105,7 @@ const Main = () => {
     }
 
     const handleCheckIfFollowing = () => {
-        fetch(`http://localhost:3000/following`, {
+        fetch(`https://neilly.dev/following`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -128,7 +128,7 @@ const Main = () => {
 
     const handleFetchFollowingPosts = () => {
         loading_dispatch({ loading: true, type: 'loading_bar' });
-        fetch(`http://localhost:3000/posts`, {
+        fetch(`https://neilly.dev/posts`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

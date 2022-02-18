@@ -29,7 +29,7 @@ const Upload = () => {
             loading_dispatch({ loading: true, type: 'loading_bar' });
             const formData = new FormData();
             formData.append('file', mediaFile);
-            fetch('http://localhost:3000/preview', {
+            fetch('https://neilly.dev/preview', {
                 method: 'POST',
                 //add auth header here
                 body: formData
@@ -57,7 +57,7 @@ const Upload = () => {
                 const userID = localStorage.getItem('userid_cache');
                 const username = localStorage.getItem('username_cache');
                 const token = localStorage.getItem('token');
-                fetch('http://localhost:3000/post', {
+                fetch('https://neilly.dev/post', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

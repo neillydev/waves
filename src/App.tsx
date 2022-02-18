@@ -26,7 +26,7 @@ const App = () => {
     const { state } = useContext(ModalContext);
 
     const handleTokenVerify = (token: string) => {
-        fetch(`http://localhost:3000/auth`, {
+        fetch(`https://neilly.dev/auth`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -50,7 +50,7 @@ const App = () => {
                 localStorage.removeItem('name_cache');
                 localStorage.removeItem('avatar');
                 localStorage.removeItem('birthday_cache');
-                window.location.reload(false);
+                window.location.reload();
             });
     };
 
