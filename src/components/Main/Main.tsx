@@ -233,7 +233,7 @@ const Main = () => {
                             </div>
                         </div>
                         <div className="leftFooterWrapper">
-                            <h3 className="wavesCopyright">© 2021 Waves</h3>
+                            <h3 className="wavesCopyright">© 2022 Waves</h3>
                         </div>
                     </div>
                 </div>
