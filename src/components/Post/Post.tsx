@@ -81,7 +81,7 @@ const Post = ({ post_id, author, author_id, nickname, title, creatorAvatarImg, c
     }
 
     const handleFetchFollow = () => {
-        fetch(`http://localhost:3000/follow`, {
+        fetch(`https://neilly.dev/follow`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
